@@ -1,13 +1,13 @@
 //
-//  starter_gameUITests.swift
-//  starter-gameUITests
+//  MazeA2UITests.swift
+//  MazeA2UITests
 //
-//  Created by Jeff Phan on 2024-02-15.
+//  Created by jeff phan on 2024-02-28.
 //
 
 import XCTest
 
-final class starter_gameUITests: XCTestCase {
+final class MazeA2UITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

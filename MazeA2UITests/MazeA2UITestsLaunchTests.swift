@@ -1,13 +1,13 @@
 //
-//  starter_gameUITestsLaunchTests.swift
-//  starter-gameUITests
+//  MazeA2UITestsLaunchTests.swift
+//  MazeA2UITests
 //
-//  Created by Jeff Phan on 2024-02-15.
+//  Created by jeff phan on 2024-02-28.
 //
 
 import XCTest
 
-final class starter_gameUITestsLaunchTests: XCTestCase {
+final class MazeA2UITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

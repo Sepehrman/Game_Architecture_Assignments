@@ -168,13 +168,13 @@ class ControlableRotatingCrate: SCNScene {
         
         if offset.width > 10.0 {
             // Rotate the camera
-            let rotation = SCNAction.rotateTo(x: 0, y: CGFloat(cameraNode.eulerAngles.y) - offset.width/10000, z: 0, duration: 0)
+            let rotation = SCNAction.rotateTo(x: 0, y: CGFloat(cameraNode.eulerAngles.y) - offset.width/5000, z: 0, duration: 0)
             cameraNode.runAction(rotation)
         } else if offset.width < -10.0 {
             // Rotate the camera to the left
-            let rotation = SCNAction.rotateTo(x: 0, y: CGFloat(cameraNode.eulerAngles.y) - offset.width/10000, z: 0, duration: 0)
+            let rotation = SCNAction.rotateTo(x: 0, y: CGFloat(cameraNode.eulerAngles.y) - offset.width/5000, z: 0, duration: 0)
             cameraNode.runAction(rotation)
-        } else if offset.height < CGFloat(-20.0) {
+        } else if offset.height < CGFloat(-5.0) {
             
             let cameraSpeed: Float = 0.05 // Adjust the speed as needed
             
@@ -185,7 +185,7 @@ class ControlableRotatingCrate: SCNScene {
             // Move the camera
             cameraNode.position.x += Float(CGFloat(xMovement))
             cameraNode.position.z += Float(CGFloat(zMovement))
-        } else if offset.height > CGFloat(20.0) {
+        } else if offset.height > CGFloat(5.0) {
             
             let cameraSpeed: Float = 0.05
             

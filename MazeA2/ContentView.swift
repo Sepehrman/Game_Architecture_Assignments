@@ -47,8 +47,8 @@ struct ContentView: View {
                             }.overlay(UIKitTwoFingerDoubleTapGesture {
                                 // Double Tap 2 Fingers
                                 // Toggle the Map here
-                                
-                                overlayIsHidden.toggle()  // Toggle overlay visibility
+                                scene.toggleMinimap()
+                                //overlayIsHidden.toggle()  // Toggle overlay visibility
                                 print("Two Finger Double Tap on Overlay")
                             }
                         )

@@ -17,6 +17,7 @@ class ControlableRotatingCrate: SCNScene {
     var isRotating = true // Keep track of if rotation is toggled
     var cameraNode = SCNNode() // Initialize camera node
     var mazeSize = Int32(6)
+    var toggleMap = true
     
     var isDay: Bool = true
     
@@ -51,7 +52,7 @@ class ControlableRotatingCrate: SCNScene {
         
         setupCamera()
         drawMaze()
-        
+        toggleMinimap()
         // setupFlashlight()
         setupPlayerFlashlight()
         setupAmbientLight()
@@ -84,13 +85,28 @@ class ControlableRotatingCrate: SCNScene {
         rootNode.addChildNode(drawnMaze)
     }
     
+    func toggleMinimap(){
+        toggleMap = !toggleMap
+            if let map = rootNode.childNode(withName: "minimap", recursively: true) {
+                if (toggleMap){
+                    map.opacity = 100.0
+                }else{
+                    map.opacity = 0.0
+                }
+            } else {
+                // Handle the case where "The Maze" node is not found
+                return
+            }
+        }
+    
+    
     func addMinimap(maze: inout Maze) {
         let minimapBaseSize: CGFloat = 0.9
         let wallHeight: CGFloat = 0.1
         let offset = 0.52
         
         let minimapBase = SCNNode(/*geometry: SCNPlane(width: minimapBaseSize, height: minimapBaseSize)*/)
-        minimapBase.geometry?.firstMaterial?.diffuse.contents = UIColor.red
+        minimapBase.name = "minimap"
         minimapBase.position = SCNVector3(4.2, 3.5, 4.0)
         minimapBase.eulerAngles = SCNVector3(-Float.pi / 4, Float.pi / 4, 0)  // Adjust base orientation
        
@@ -106,40 +122,41 @@ class ControlableRotatingCrate: SCNScene {
                 let cellY = Float(row) * Float(cellSize)
                 
                 // Draw the cell
-//                let cellGeometry = SCNPlane(width: cellSize*0.9, height: cellSize*0.9)
-//                cellGeometry.firstMaterial?.diffuse.contents = UIColor.blue
-                let cellNode = SCNNode(/*geometry: cellGeometry*/)
-                cellNode.position = SCNVector3(Double(cellX) - offset, Double(cellY) - offset, 0.1)
+                let cellGeometry = SCNPlane(width: cellSize, height: cellSize)
+                cellGeometry.firstMaterial?.diffuse.contents = UIColor.gray
+                let cellNode = SCNNode(geometry: cellGeometry)
+                cellNode.opacity = 0.7
+                cellNode.position = SCNVector3(Double(cellX) - offset, Double(cellY) - offset, 0.0)
                 minimapBase.addChildNode(cellNode)
                 cellNode.eulerAngles = SCNVector3(Float.pi, Float.pi, Float.pi/2) // Match base orientation
                 
                 // Draw walls around the cell
                 if mazeCell.northWallPresent {
-                    let wall = SCNPlane(width: cellSize*0.1, height: cellSize*0.8)
+                    let wall = SCNPlane(width: cellSize*0.15, height: cellSize)
                     wall.firstMaterial?.diffuse.contents = UIColor.red
                     let wallNode = SCNNode(geometry: wall)
-                    wallNode.position = SCNVector3(cellSize/2,0,0)
+                    wallNode.position = SCNVector3(cellSize/2,0,0.01)
                     cellNode.addChildNode(wallNode)
                 }
                 if mazeCell.southWallPresent {
-                    let wall = SCNPlane(width: cellSize*0.1, height: cellSize*0.8)
-                    wall.firstMaterial?.diffuse.contents = UIColor.blue
+                    let wall = SCNPlane(width: cellSize*0.15, height: cellSize)
+                    wall.firstMaterial?.diffuse.contents = UIColor.red
                     let wallNode = SCNNode(geometry: wall)
-                    wallNode.position = SCNVector3(-cellSize/2,0,0)
+                    wallNode.position = SCNVector3(-cellSize/2,0,0.01)
                     cellNode.addChildNode(wallNode)
                 }
                 if mazeCell.eastWallPresent {
-                    let wall = SCNPlane(width: cellSize*0.8, height: cellSize*0.1)
-                    wall.firstMaterial?.diffuse.contents = UIColor.green
+                    let wall = SCNPlane(width: cellSize, height: cellSize*0.15)
+                    wall.firstMaterial?.diffuse.contents = UIColor.red
                     let wallNode = SCNNode(geometry: wall)
-                    wallNode.position = SCNVector3(0,cellSize/2,0)
+                    wallNode.position = SCNVector3(0,cellSize/2,0.01)
                     cellNode.addChildNode(wallNode)
                 }
                 if mazeCell.westWallPresent {
-                    let wall = SCNPlane(width: cellSize*0.8, height: cellSize*0.1)
-                    wall.firstMaterial?.diffuse.contents = UIColor.yellow
+                    let wall = SCNPlane(width: cellSize, height: cellSize*0.15)
+                    wall.firstMaterial?.diffuse.contents = UIColor.red
                     let wallNode = SCNNode(geometry: wall)
-                    wallNode.position = SCNVector3(0,-cellSize/2,0)
+                    wallNode.position = SCNVector3(0,-cellSize/2,0.01)
                     cellNode.addChildNode(wallNode)
                 }
             }

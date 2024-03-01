@@ -144,13 +144,7 @@ class ControlableRotatingCrate: SCNScene {
     func reanimate() {
         let theMaze = rootNode.childNode(withName: "The Maze", recursively: true) // Get the cube object by its name (This is where line 45 comes in)
         let theCube = rootNode.childNode(withName: "The Cube", recursively: true)
-        
-            rot.width += 0.05 // Increment rotation of the cube by 0.0005 radians
-
-//        if (isRotating) {
-//        } else {
-//            rot = rotAngle // Let the rot variable follow the drag gesture
-//        }
+        rot.width += 0.05 // Increment rotation of the cube by 0.0005 radians
                 
         theCube?.eulerAngles = SCNVector3(Double(rot.height / 50), Double(rot.width / 50), 0) // Set the cube rotation to the numbers given from the drag gesture
         // Repeat increment of rotation every 10000 nanoseconds
@@ -169,34 +163,24 @@ class ControlableRotatingCrate: SCNScene {
     // Function to be called by drag gesture
     func handleDrag(offset: CGSize) {
         
-        let forwardDirection = SCNVector3(
-            -sin(cameraNode.eulerAngles.y),
-            0,
-            -cos(cameraNode.eulerAngles.y)
-        )
-        
-        // Normalize the forward direction vector
-        let normalizedDirection = forwardDirection.normalized()
-        
-        // Move the camera forward or backward based on the drag offset
-        let movementSpeed: Float = 0.005 // Adjust as needed
-        let movementVector = SCNVector3(
-            normalizedDirection.x * movementSpeed * Float(offset.height),
-            0,
-            normalizedDirection.z * movementSpeed * Float(offset.height)
-        )
-        
-        // Update the camera position by adding the movement vector
-        cameraNode.position.x += movementVector.x
-        cameraNode.position.z += movementVector.z
-        
-        // Calculate the rotation angle based on the drag offset
-        let rotationSpeed: Float = 0.0005 // Adjust as needed
-        let rotationAngle = rotationSpeed * Float(offset.width)
-        
-        // Rotate the camera relative to its current rotation
-        let newRotationY = cameraNode.eulerAngles.y + rotationAngle
-        cameraNode.eulerAngles.y = newRotationY
+        if offset.width > CGFloat(40.0) {
+            // Rotate the camera
+            
+            let rotation = SCNAction.rotateTo(x: 0, y: CGFloat(cameraNode.eulerAngles.y) + 0.05, z: 0, duration: 0)
+            cameraNode.runAction(rotation)
+        } else if offset.height < CGFloat(-40.0) {
+            
+            let cameraSpeed: Float = 0.05 // Adjust the speed as needed
+            
+            // Calculate the movement vector based on the camera's rotation
+            let xMovement = -sin(cameraNode.eulerAngles.y) * cameraSpeed
+            let zMovement = -cos(cameraNode.eulerAngles.y) * cameraSpeed
+            
+            // Move the camera
+            cameraNode.position.x += Float(CGFloat(xMovement))
+            cameraNode.position.z += Float(CGFloat(zMovement))
+        }
+
     }
     
   

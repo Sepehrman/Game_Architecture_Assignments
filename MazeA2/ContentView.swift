@@ -23,6 +23,7 @@ struct ContentView: View {
     
     // Phone orientation
     @State private var orientation = UIDeviceOrientation.unknown
+    @State private var numberOfTouches = 0
     
     var body: some View {
         NavigationStack {
@@ -31,15 +32,10 @@ struct ContentView: View {
                     ZStack {
                         SceneView(scene: scene, pointOfView: scene.cameraNode)
                             .ignoresSafeArea()
-//                            .onTapGesture(count: 2) {
-//                                scene.handleDoubleTap()
-//                            }
-//                            .gesture(
-//                                DragGesture()
-//                                    .onChanged{ gesture in
-//                                        scene.handleDrag(offset: gesture.translation)
-//                                    }
-//                            )
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .edgesIgnoringSafeArea(.all)
+                        
+                        
                         SCNOverlayView(overlayScene: overlayScene)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .edgesIgnoringSafeArea(.all)
@@ -48,19 +44,33 @@ struct ContentView: View {
                                 newOrientation in orientation = newOrientation
                                 print("rotate ")
                                 overlayScene.resizeOverlay(size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+                            }.overlay(UIKitTwoFingerDoubleTapGesture {
+                                // Double Tap 2 Fingers
+                                // Toggle the Map here
+                                
+                                overlayIsHidden.toggle()  // Toggle overlay visibility
+                                print("Two Finger Double Tap on Overlay")
                             }
+                        )
 
                     }.ignoresSafeArea()
-                    .gesture(
-                        DragGesture()
-                            .onChanged{ gesture in
-                                scene.handleDrag(offset: gesture.translation)
-                            }
-                    )
-                    .onTapGesture(count: 2) {
-                        scene.handleDoubleTap()
-                        overlayIsHidden = !overlayIsHidden  // Hides map overlay on double tap
-                        print("Double Tap")
+                        .gesture(
+                            DragGesture()
+                                .onChanged{ gesture in
+                                    scene.handleDrag(offset: gesture.translation)
+                                }
+                        )
+                        .onTapGesture(count: 2) {
+                            // Double Tap 1 Finger
+                            print("Double Tap")
+                        }
+                        
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .edgesIgnoringSafeArea(.all)
+                        .background(Color.black.opacity(0.3)) // Semi-transparent background
+                    
+                    Button(action: scene.handleDoubleTap) {
+                        Text("Toggle Day/Night")
                     }
                 } label: { Text("Maze") }
             }.navigationTitle("COMP8051")

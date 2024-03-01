@@ -17,7 +17,10 @@ class ControlableRotatingCrate: SCNScene {
     var isRotating = true // Keep track of if rotation is toggled
     var cameraNode = SCNNode() // Initialize camera node
     var mazeSize = Int32(6)
-    
+    var initPlayerPosition = SCNVector3(-4.8, 0.6, -3)
+    var initPlayerDirection = SCNVector3(0, -Float.pi/2, 0)
+    var initCubePosition = SCNVector3(-2.5, 0.6, -3)
+
     
     
     // Catch if initializer in init() fails
@@ -33,7 +36,7 @@ class ControlableRotatingCrate: SCNScene {
         
         setupCamera()
         drawMaze()
-        //addCube()
+        addCube()
         Task(priority: .userInitiated) {
             await firstUpdate()
         }
@@ -117,19 +120,20 @@ class ControlableRotatingCrate: SCNScene {
         let camera = SCNCamera() // Create Camera object
         cameraNode.camera = camera // Give the cameraNode a camera
         cameraNode.position = SCNVector3(-4.8, 0.6, -3) // Set the position to (5, 5, 5)
+        cameraNode.camera?.zNear = 0.1
         cameraNode.eulerAngles = SCNVector3(0, -Float.pi/2, 0) // Set the pitch, yaw, and roll
 //        cameraNode.camera?.fieldOfView = 100
         rootNode.addChildNode(cameraNode) // Add the cameraNode to the scene
     }
     
     // Create Cube
-//    func addCube() {
-//        let theCube = SCNNode(geometry: SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0)) // Create a object node of box shape with width of 1 and height of 1
-//        theCube.name = "The Cube" // Name the node so we can reference it later
-//        theCube.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "crate.jpg") // Diffuse the crate image material across the whole cube
-//        theCube.position = SCNVector3(0, 0, 0) // Put the cube at position (0, 0, 0)
-//        rootNode.addChildNode(theCube) // Add the cube node to the scene
-//    }
+    func addCube() {
+        let theCube = SCNNode(geometry: SCNBox(width: 0.2, height: 0.2, length: 0.2, chamferRadius: 0)) // Create a object node of box shape with width of 1 and height of 1
+        theCube.name = "The Cube" // Name the node so we can reference it later
+        theCube.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "crate.png") // Diffuse the crate image material across the whole cube
+        theCube.position = initCubePosition // Put the cube at position (0, 0, 0)
+        rootNode.addChildNode(theCube) // Add the cube node to the scene
+    }
     
     @MainActor
     func firstUpdate() {
@@ -139,14 +143,16 @@ class ControlableRotatingCrate: SCNScene {
     @MainActor
     func reanimate() {
         let theMaze = rootNode.childNode(withName: "The Maze", recursively: true) // Get the cube object by its name (This is where line 45 comes in)
+        let theCube = rootNode.childNode(withName: "The Cube", recursively: true)
+        
+            rot.width += 0.05 // Increment rotation of the cube by 0.0005 radians
 
 //        if (isRotating) {
-//            rot.width += 0.05 // Increment rotation of the cube by 0.0005 radians
 //        } else {
 //            rot = rotAngle // Let the rot variable follow the drag gesture
 //        }
                 
-        theMaze?.eulerAngles = SCNVector3(Double(rot.height / 50), Double(rot.width / 50), 0) // Set the cube rotation to the numbers given from the drag gesture
+        theCube?.eulerAngles = SCNVector3(Double(rot.height / 50), Double(rot.width / 50), 0) // Set the cube rotation to the numbers given from the drag gesture
         // Repeat increment of rotation every 10000 nanoseconds
         Task { try! await Task.sleep(nanoseconds: 10000)
             reanimate()
@@ -162,8 +168,51 @@ class ControlableRotatingCrate: SCNScene {
     @MainActor
     // Function to be called by drag gesture
     func handleDrag(offset: CGSize) {
-        rotAngle = offset // Get the width and height components of the CGSize, which only gives us two, and put them into the x and y rotations of the flashlight
+        
+        let forwardDirection = SCNVector3(
+            -sin(cameraNode.eulerAngles.y),
+            0,
+            -cos(cameraNode.eulerAngles.y)
+        )
+        
+        // Normalize the forward direction vector
+        let normalizedDirection = forwardDirection.normalized()
+        
+        // Move the camera forward or backward based on the drag offset
+        let movementSpeed: Float = 0.005 // Adjust as needed
+        let movementVector = SCNVector3(
+            normalizedDirection.x * movementSpeed * Float(offset.height),
+            0,
+            normalizedDirection.z * movementSpeed * Float(offset.height)
+        )
+        
+        // Update the camera position by adding the movement vector
+        cameraNode.position.x += movementVector.x
+        cameraNode.position.z += movementVector.z
+        
+        // Calculate the rotation angle based on the drag offset
+        let rotationSpeed: Float = 0.0005 // Adjust as needed
+        let rotationAngle = rotationSpeed * Float(offset.width)
+        
+        // Rotate the camera relative to its current rotation
+        let newRotationY = cameraNode.eulerAngles.y + rotationAngle
+        cameraNode.eulerAngles.y = newRotationY
     }
     
   
+}
+
+extension SCNVector3 {
+    func length() -> Float {
+        return sqrtf(x * x + y * y + z * z)
+    }
+
+    func normalized() -> SCNVector3 {
+        let len = length()
+        if len != 0 {
+            return SCNVector3(x / len, y / len, z / len)
+        } else {
+            return SCNVector3(0, 0, 0)
+        }
+    }
 }

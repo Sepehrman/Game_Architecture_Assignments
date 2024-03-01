@@ -74,12 +74,14 @@ class ControlableRotatingCrate: SCNScene {
     }
 
     func createWall(position: SCNVector3, eulerAngles: SCNVector3, left: Bool, right: Bool) -> SCNNode {
-        let wall = SCNBox(width: 0.05, height: 1.0, length: 1.0, chamferRadius: 0)
+        let wall = SCNPlane(width: 1.0, height: 1.0)
         wall.materials = [wallMaterial(left: left, right: right)]
+        wall.firstMaterial?.isDoubleSided = true
         
         let wallNode = SCNNode(geometry: wall)
         wallNode.position = position
         wallNode.eulerAngles = eulerAngles
+        
         
         return wallNode
     }
@@ -93,16 +95,16 @@ class ControlableRotatingCrate: SCNScene {
         drawnCell.addChildNode(SCNNode(geometry: floor))
         
         if cell.northWallPresent {
-            drawnCell.addChildNode(createWall(position: SCNVector3(-0.5, 0.5, 0), eulerAngles: SCNVector3(0,0, 0), left: cell.eastWallPresent, right: cell.westWallPresent))
+            drawnCell.addChildNode(createWall(position: SCNVector3(-0.49, 0.49, 0), eulerAngles: SCNVector3(0,Float.pi/2, 0), left: cell.eastWallPresent, right: cell.westWallPresent))
         }
         if cell.southWallPresent {
-            drawnCell.addChildNode(createWall(position: SCNVector3(0.5, 0.5, 0), eulerAngles: SCNVector3(0, 0, 0), left: cell.westWallPresent, right: cell.eastWallPresent))
+            drawnCell.addChildNode(createWall(position: SCNVector3(0.49, 0.49, 0), eulerAngles: SCNVector3(0, Float.pi/2, 0), left: cell.westWallPresent, right: cell.eastWallPresent))
         }
         if cell.eastWallPresent {
-            drawnCell.addChildNode(createWall(position: SCNVector3(0, 0.5, 0.5), eulerAngles: SCNVector3(0, Float.pi/2, 0), left: cell.southWallPresent, right: cell.northWallPresent))
+            drawnCell.addChildNode(createWall(position: SCNVector3(0, 0.49, 0.49), eulerAngles: SCNVector3(0, 0, 0), left: cell.southWallPresent, right: cell.northWallPresent))
         }
         if cell.westWallPresent {
-            drawnCell.addChildNode(createWall(position: SCNVector3(0, 0.5, -0.5), eulerAngles: SCNVector3(0, Float.pi/2, 0), left: cell.northWallPresent, right: cell.southWallPresent))
+            drawnCell.addChildNode(createWall(position: SCNVector3(0, 0.49, -0.49), eulerAngles: SCNVector3(0, 0, 0), left: cell.northWallPresent, right: cell.southWallPresent))
         }
         return drawnCell
     }

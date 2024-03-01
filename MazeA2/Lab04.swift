@@ -60,14 +60,15 @@ class ControlableRotatingCrate: SCNScene {
     }
     
     func addMinimap(maze: inout Maze) {
-        let minimapBaseSize: CGFloat = 1.25
+        let minimapBaseSize: CGFloat = 0.9
         let wallHeight: CGFloat = 0.1
         let offset = 0.52
         
         let minimapBase = SCNNode(/*geometry: SCNPlane(width: minimapBaseSize, height: minimapBaseSize)*/)
         minimapBase.geometry?.firstMaterial?.diffuse.contents = UIColor.red
+        minimapBase.position = SCNVector3(4.2, 3.5, 4.0)
         minimapBase.eulerAngles = SCNVector3(-Float.pi / 4, Float.pi / 4, 0)  // Adjust base orientation
-        minimapBase.position = SCNVector3(4.0, 3.5, 4.0)
+       
         rootNode.addChildNode(minimapBase)
         
         // Calculate cell size based on maze size and minimap base size

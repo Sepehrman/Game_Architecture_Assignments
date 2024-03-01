@@ -116,8 +116,9 @@ class ControlableRotatingCrate: SCNScene {
     func setupCamera() {
         let camera = SCNCamera() // Create Camera object
         cameraNode.camera = camera // Give the cameraNode a camera
-        cameraNode.position = SCNVector3(5, 5, 5) // Set the position to (5, 5, 5)
-        cameraNode.eulerAngles = SCNVector3(-Float.pi/4, Float.pi/4, 0) // Set the pitch, yaw, and roll
+        cameraNode.position = SCNVector3(-4.8, 0.6, -3) // Set the position to (5, 5, 5)
+        cameraNode.eulerAngles = SCNVector3(0, -Float.pi/2, 0) // Set the pitch, yaw, and roll
+//        cameraNode.camera?.fieldOfView = 100
         rootNode.addChildNode(cameraNode) // Add the cameraNode to the scene
     }
     
@@ -138,11 +139,13 @@ class ControlableRotatingCrate: SCNScene {
     @MainActor
     func reanimate() {
         let theMaze = rootNode.childNode(withName: "The Maze", recursively: true) // Get the cube object by its name (This is where line 45 comes in)
-        if (isRotating) {
-            rot.width += 0.05 // Increment rotation of the cube by 0.0005 radians
-        } else {
-            rot = rotAngle // Let the rot variable follow the drag gesture
-        }
+
+//        if (isRotating) {
+//            rot.width += 0.05 // Increment rotation of the cube by 0.0005 radians
+//        } else {
+//            rot = rotAngle // Let the rot variable follow the drag gesture
+//        }
+                
         theMaze?.eulerAngles = SCNVector3(Double(rot.height / 50), Double(rot.width / 50), 0) // Set the cube rotation to the numbers given from the drag gesture
         // Repeat increment of rotation every 10000 nanoseconds
         Task { try! await Task.sleep(nanoseconds: 10000)

@@ -23,6 +23,7 @@
 		F0A61ADD2B91493F00F35E2F /* orange.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F0A61AD82B91493E00F35E2F /* orange.jpg */; };
 		F0A61ADE2B91493F00F35E2F /* gray.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F0A61AD92B91493F00F35E2F /* gray.jpg */; };
 		F0A61ADF2B91493F00F35E2F /* yellow.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F0A61ADA2B91493F00F35E2F /* yellow.jpg */; };
+		F0A61AE12B917E3C00F35E2F /* crate.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A61AE02B917E3C00F35E2F /* crate.png */; };
 		F0C537292B91453200AF6F67 /* Lab04.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C537282B91453200AF6F67 /* Lab04.swift */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +68,7 @@
 		F0A61AD82B91493E00F35E2F /* orange.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = orange.jpg; sourceTree = "<group>"; };
 		F0A61AD92B91493F00F35E2F /* gray.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = gray.jpg; sourceTree = "<group>"; };
 		F0A61ADA2B91493F00F35E2F /* yellow.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yellow.jpg; sourceTree = "<group>"; };
+		F0A61AE02B917E3C00F35E2F /* crate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crate.png; sourceTree = "<group>"; };
 		F0C537282B91453200AF6F67 /* Lab04.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lab04.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -177,6 +179,7 @@
 				F0A61AD72B91493E00F35E2F /* green.jpg */,
 				F0A61AD82B91493E00F35E2F /* orange.jpg */,
 				F0A61ADA2B91493F00F35E2F /* yellow.jpg */,
+				F0A61AE02B917E3C00F35E2F /* crate.png */,
 			);
 			path = textures;
 			sourceTree = "<group>";
@@ -289,6 +292,7 @@
 				89926A4F2B90193D00F898EA /* Preview Assets.xcassets in Resources */,
 				F0A61ADC2B91493F00F35E2F /* green.jpg in Resources */,
 				F0A61ADB2B91493F00F35E2F /* blue.jpg in Resources */,
+				F0A61AE12B917E3C00F35E2F /* crate.png in Resources */,
 				F0A61ADD2B91493F00F35E2F /* orange.jpg in Resources */,
 				F0A61ADE2B91493F00F35E2F /* gray.jpg in Resources */,
 				89926A4B2B90193D00F898EA /* Assets.xcassets in Resources */,
@@ -484,7 +488,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MazeA2/Preview Content\"";
-				DEVELOPMENT_TEAM = 9Q7Q6VUJJ3;
+				DEVELOPMENT_TEAM = WM87T6723B;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -498,12 +502,12 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "MazeA2-git";
+				PRODUCT_BUNDLE_IDENTIFIER = MazeA2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
@@ -526,7 +530,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MazeA2/Preview Content\"";
-				DEVELOPMENT_TEAM = 9Q7Q6VUJJ3;
+				DEVELOPMENT_TEAM = WM87T6723B;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -540,12 +544,12 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "MazeA2-git";
+				PRODUCT_BUNDLE_IDENTIFIER = MazeA2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";

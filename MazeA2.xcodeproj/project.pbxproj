@@ -15,6 +15,7 @@
 		89926A652B90193D00F898EA /* MazeA2UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89926A642B90193D00F898EA /* MazeA2UITestsLaunchTests.swift */; };
 		89926A7A2B9019BE00F898EA /* maze.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 89926A762B9019BD00F898EA /* maze.cpp */; };
 		89926A7B2B9019BE00F898EA /* DisjointSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 89926A792B9019BE00F898EA /* DisjointSet.cpp */; };
+		A5CC83362B915821006F8E28 /* MapSKOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CC83352B915820006F8E28 /* MapSKOverlay.swift */; };
 		F03450A82B9143FD0058DC37 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03450A72B9143FD0058DC37 /* ContentView.swift */; };
 		F0A61ADB2B91493F00F35E2F /* blue.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F0A61AD62B91493E00F35E2F /* blue.jpg */; };
 		F0A61ADC2B91493F00F35E2F /* green.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F0A61AD72B91493E00F35E2F /* green.jpg */; };
@@ -57,6 +58,7 @@
 		89926A772B9019BD00F898EA /* DisjointSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisjointSet.h; sourceTree = "<group>"; };
 		89926A782B9019BE00F898EA /* maze.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = maze.h; sourceTree = "<group>"; };
 		89926A792B9019BE00F898EA /* DisjointSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisjointSet.cpp; sourceTree = "<group>"; };
+		A5CC83352B915820006F8E28 /* MapSKOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapSKOverlay.swift; sourceTree = "<group>"; };
 		F03450A72B9143FD0058DC37 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F0A61AD62B91493E00F35E2F /* blue.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = blue.jpg; sourceTree = "<group>"; };
 		F0A61AD72B91493E00F35E2F /* green.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = green.jpg; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				89926A462B90193200F898EA /* MazeA2App.swift */,
 				F03450A72B9143FD0058DC37 /* ContentView.swift */,
 				F0C537282B91453200AF6F67 /* Lab04.swift */,
+				A5CC83352B915820006F8E28 /* MapSKOverlay.swift */,
 				89926A4A2B90193D00F898EA /* Assets.xcassets */,
 				89926A4C2B90193D00F898EA /* MazeA2.entitlements */,
 				89926A752B9019BD00F898EA /* MazeA2-Bridging-Header.h */,
@@ -316,6 +319,7 @@
 				F03450A82B9143FD0058DC37 /* ContentView.swift in Sources */,
 				89926A7A2B9019BE00F898EA /* maze.cpp in Sources */,
 				89926A7B2B9019BE00F898EA /* DisjointSet.cpp in Sources */,
+				A5CC83362B915821006F8E28 /* MapSKOverlay.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

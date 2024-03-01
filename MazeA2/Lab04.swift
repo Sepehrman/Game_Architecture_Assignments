@@ -18,8 +18,26 @@ class ControlableRotatingCrate: SCNScene {
     var cameraNode = SCNNode() // Initialize camera node
     var mazeSize = Int32(6)
     
+    var isDay: Bool = true
     
+    // Light
+    var diffuseLightPos = SCNVector4(0, 10, 0, Double.pi/2) // Keep track of flashlight position
+    var isAmbientLightOn = false
+    var ambientLightColorDay = UIColor.white
+    var ambientLightColorNight = UIColor.blue
+    var ambientLightIntensity = CGFloat(500)
+    var ambientLightIntensityNight = CGFloat(100)
     
+    var isDirectionalLightOn = false
+    var isFlashLightOn = false
+    var directionalLightIntensity = CGFloat(0)
+    var flashLightIntensity = CGFloat(1000)
+    
+    // Fog
+    var fogDensity = 2.0    // 0.0, 1.0, or 2.0
+    let fogStartDistance_ = 4 // The fog effect starts at z = 4
+    let fogEndDistance_ = 10 // The fog effect ends at z = 10
+
     // Catch if initializer in init() fails
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -33,6 +51,14 @@ class ControlableRotatingCrate: SCNScene {
         
         setupCamera()
         drawMaze()
+        
+        // setupFlashlight()
+        setupPlayerFlashlight()
+        setupAmbientLight()
+        setupDirectionalLight()
+        setLightBasedOnIsDay()
+        
+        setupFog()
         //addCube()
         Task(priority: .userInitiated) {
             await firstUpdate()
@@ -128,6 +154,91 @@ class ControlableRotatingCrate: SCNScene {
 //        rootNode.addChildNode(theCube) // Add the cube node to the scene
 //    }
     
+    // Sets up an ambient light (all around)
+    func setupAmbientLight() {
+        let ambientLight = SCNNode() // Create a SCNNode for the lamp
+        ambientLight.name = "Ambient Light"
+        ambientLight.light = SCNLight() // Add a new light to the lamp
+        ambientLight.light!.type = .ambient // Set the light type to ambient
+        ambientLight.light!.color = UIColor.white // Set the light color to white
+        ambientLight.light!.intensity = ambientLightIntensity // Set the light intensity to 5000 lumins (1000 is default)
+        rootNode.addChildNode(ambientLight) // Add the lamp node to the scene
+    }
+    
+    // Sets up a directional light (flashlight)
+    func setupDirectionalLight() {
+        let directionalLight = SCNNode() // Create a SCNNode for the lamp
+        directionalLight.name = "Directional Light" // Name the node so we can reference it later
+        directionalLight.light = SCNLight() // Add a new light to the lamp
+        directionalLight.light!.type = .directional // Set the light type to directional
+        directionalLight.light!.color = UIColor.green // Set the light color to white
+        directionalLight.light!.intensity = directionalLightIntensity // Set the light intensity to 1000 lumins (1000 is default)
+        
+        directionalLight.position = SCNVector3(5, 6, 0)   // Position of camera
+        directionalLight.eulerAngles = SCNVector3(-Float.pi/4, Float.pi/2, 0) // Pitch, yaw and roll
+        
+//        directionalLight.rotation = diffuseLightPos // Set the rotation of the light from the flashlight to the flashlight position variable
+        rootNode.addChildNode(directionalLight) // Add the lamp node to the scene
+    }
+    
+    func setupFlashlight() {
+        let flashLight = SCNNode()
+        flashLight.name = "Flashlight"
+        flashLight.light = SCNLight()
+        flashLight.light!.type = SCNLight.LightType.spot
+        
+        flashLight.light!.castsShadow = true
+        flashLight.light!.color = UIColor.red
+        flashLight.light!.intensity = 1000
+//        cameraNode.position = SCNVector3(5, 5, 5) // Set the position to (5, 5, 5)
+//        cameraNode.eulerAngles = SCNVector3(-Float.pi/4, Float.pi/4, 0) // Set
+        flashLight.position = SCNVector3(5, 6, 0)   // Position of camera
+        flashLight.eulerAngles = SCNVector3(-Float.pi/4, Float.pi/2, 0) // Pitch, yaw and roll
+        flashLight.light!.spotInnerAngle = 0
+        flashLight.light!.spotOuterAngle = 30
+        flashLight.light!.shadowColor = UIColor.black
+        flashLight.light!.zFar = 500
+        flashLight.light!.zNear = 50
+        rootNode.addChildNode(flashLight)
+    }
+    
+    func setupPlayerFlashlight() {
+        let flashLight = SCNNode()
+        flashLight.name = "PlayerFlashlight"
+        flashLight.light = SCNLight()
+        flashLight.light!.type = SCNLight.LightType.spot
+        
+        flashLight.light!.castsShadow = true
+        flashLight.light!.color = UIColor(red: 1, green: 0.6, blue: 0.2, alpha: 1)
+        flashLight.light!.intensity = flashLightIntensity
+        
+//        flashLight.position = SCNVector3(5, 6, 0)   // Position of camera
+//        flashLight.eulerAngles = SCNVector3(-Float.pi/4, Float.pi/2, 0) // Pitch, yaw and roll
+        flashLight.position = SCNVector3(5, 5, 5) // Set the position to (5, 5, 5)
+        flashLight.eulerAngles = SCNVector3(-Float.pi/4, Float.pi/4, 0) // Set the pitch, yaw, and roll
+        
+        flashLight.light!.spotInnerAngle = 0
+        flashLight.light!.spotOuterAngle = 30
+        flashLight.light!.shadowColor = UIColor.black
+        flashLight.light!.zFar = 500
+        flashLight.light!.zNear = 50
+        rootNode.addChildNode(flashLight)
+    }
+    
+    // Setup fog
+    func setupFog() {
+        fogColor = UIColor.black // Set fog colour to white
+        fogStartDistance = 4 // The fog effect starts at z = 0
+        fogEndDistance = 10 // The fog effect ends at z = 10
+        fogDensityExponent = fogDensity // Set the function of distrubution of fog to nonic (The exponent is 9)
+    }
+    
+    func setLightBasedOnIsDay() {
+        let ambientLight = rootNode.childNode(withName: "Ambient Light", recursively: true)
+        ambientLight?.light?.intensity = isDay ? ambientLightIntensity : ambientLightIntensityNight
+        ambientLight?.light?.color = isDay ? ambientLightColorDay : ambientLightColorNight
+    }
+    
     @MainActor
     func firstUpdate() {
         reanimate() // Call reanimate on the first graphics update frame
@@ -152,6 +263,9 @@ class ControlableRotatingCrate: SCNScene {
     // Function to be called by double-tap gesture
     func handleDoubleTap() {
         isRotating = !isRotating // Toggle rotation
+        
+        isDay = !isDay
+        setLightBasedOnIsDay()
     }
     
     @MainActor

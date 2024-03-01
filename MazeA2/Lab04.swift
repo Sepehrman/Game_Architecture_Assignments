@@ -163,12 +163,18 @@ class ControlableRotatingCrate: SCNScene {
     // Function to be called by drag gesture
     func handleDrag(offset: CGSize) {
         
-        if offset.width > CGFloat(40.0) {
+        print(offset.width)
+        print(offset.height)
+        
+        if offset.width > 10.0 {
             // Rotate the camera
-            
-            let rotation = SCNAction.rotateTo(x: 0, y: CGFloat(cameraNode.eulerAngles.y) + 0.05, z: 0, duration: 0)
+            let rotation = SCNAction.rotateTo(x: 0, y: CGFloat(cameraNode.eulerAngles.y) - offset.width/10000, z: 0, duration: 0)
             cameraNode.runAction(rotation)
-        } else if offset.height < CGFloat(-40.0) {
+        } else if offset.width < -10.0 {
+            // Rotate the camera to the left
+            let rotation = SCNAction.rotateTo(x: 0, y: CGFloat(cameraNode.eulerAngles.y) - offset.width/10000, z: 0, duration: 0)
+            cameraNode.runAction(rotation)
+        } else if offset.height < CGFloat(-20.0) {
             
             let cameraSpeed: Float = 0.05 // Adjust the speed as needed
             
@@ -179,6 +185,15 @@ class ControlableRotatingCrate: SCNScene {
             // Move the camera
             cameraNode.position.x += Float(CGFloat(xMovement))
             cameraNode.position.z += Float(CGFloat(zMovement))
+        } else if offset.height > CGFloat(20.0) {
+            
+            let cameraSpeed: Float = 0.05
+            
+            let xMovement = -sin(cameraNode.eulerAngles.y) * cameraSpeed
+            let zMovement = -cos(cameraNode.eulerAngles.y) * cameraSpeed
+            
+            cameraNode.position.x -= Float(CGFloat(xMovement))
+            cameraNode.position.z -= Float(CGFloat(zMovement))
         }
 
     }

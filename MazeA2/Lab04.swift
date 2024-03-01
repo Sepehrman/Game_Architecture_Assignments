@@ -126,7 +126,7 @@ class ControlableRotatingCrate: SCNScene {
                 cellGeometry.firstMaterial?.diffuse.contents = UIColor.gray
                 let cellNode = SCNNode(geometry: cellGeometry)
                 cellNode.opacity = 0.7
-                cellNode.position = SCNVector3(Double(cellX) - offset, Double(cellY) - offset, 0.0)
+                cellNode.position = SCNVector3(Double(cellX) - offset, Double(cellY), 0.0)
                 minimapBase.addChildNode(cellNode)
                 cellNode.eulerAngles = SCNVector3(Float.pi, Float.pi, Float.pi/2) // Match base orientation
                 

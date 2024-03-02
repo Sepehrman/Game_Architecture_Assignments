@@ -109,7 +109,7 @@ class MazeAssignment: SCNScene {
     
     //Draws a 2d minimap based on the generated maze
     func addMinimap(maze: inout Maze) {
-        let minimapBaseSize: CGFloat = 0.9
+        let minimapBaseSize: CGFloat = 0.4
         let wallHeight: CGFloat = 0.1
         let offset = 0.52
         
@@ -120,7 +120,7 @@ class MazeAssignment: SCNScene {
         let cameraNode = rootNode.childNode(withName: "CameraNode", recursively: true)
         cameraNode?.addChildNode(minimapBase)
 
-        minimapBase.position = SCNVector3(0.15,0,-2)
+        minimapBase.position = SCNVector3(0.35,0,-0.8)
     
         // Calculate cell size based on maze size and minimap base size
         let cellSize = minimapBaseSize / CGFloat(mazeSize)

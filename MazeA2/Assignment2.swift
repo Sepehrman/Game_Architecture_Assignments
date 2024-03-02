@@ -58,6 +58,7 @@ class MazeAssignment: SCNScene {
         setupCamera()
         drawMaze()
         toggleMinimap()
+        createPlayerIcon()
         // setupFlashlight()
         setupPlayerFlashlight()
         setupAmbientLight()
@@ -106,6 +107,69 @@ class MazeAssignment: SCNScene {
             }
         }
     
+    func createPlayerIcon(){
+        let vertices: [SCNVector3] = [
+            SCNVector3(0, 0.05, 0),
+                    SCNVector3(-0.025, -0.025, 0),
+                    SCNVector3(0.025, -0.025, 0)
+                ]
+
+        let vertexSource = SCNGeometrySource(vertices: vertices)
+
+        let indices: [UInt16] = [0, 1, 2]
+        let element = SCNGeometryElement(indices: indices, primitiveType: .triangles)
+
+        let geometry = SCNGeometry(sources: [vertexSource], elements: [element])
+
+        // Create a material for the triangle
+        let material = SCNMaterial()
+        material.diffuse.contents = UIColor.yellow
+
+        // Apply the material to the geometry
+        geometry.materials = [material]
+
+        // Create a node with the triangle geometry
+        let triangleNode = SCNNode(geometry: geometry)
+        triangleNode.name = "player"
+        
+        
+        let offsetNode = SCNNode()
+        offsetNode.addChildNode(triangleNode)
+
+        
+        //Set playerNode as a child to minimap
+        let minimapNode = rootNode.childNode(withName: "minimap", recursively: true)
+        minimapNode?.addChildNode(offsetNode)
+        
+        offsetNode.position = SCNVector3(-0.95, -0.55, -0.5)
+        offsetNode.eulerAngles.z = -Float.pi
+        triangleNode.eulerAngles = SCNVector3(0, 0, 0)
+    }
+    
+
+    func updatePlayerMap() {
+        if let playerNode = rootNode.childNode(withName: "player", recursively: true) {
+        
+            let positionCameraX = cameraNode.position.x * 0.1
+            let positionCameraZ = cameraNode.position.z * 0.1
+            let cameraAngle = cameraNode.eulerAngles.y
+
+            playerNode.position = SCNVector3(positionCameraZ, positionCameraX, playerNode.position.z)
+            playerNode.eulerAngles = SCNVector3(playerNode.eulerAngles.x, playerNode.eulerAngles.y, cameraAngle)
+            
+            print(playerNode.position.x)
+            print(playerNode.position.y)
+            print(playerNode.position.z)
+            print("------------")
+            print(positionCameraX)
+            print(positionCameraZ)
+            
+            
+        } else {
+            print("Player node not found in the scene.")
+        }
+    }
+
     
     //Draws a 2d minimap based on the generated maze
     func addMinimap(maze: inout Maze) {
@@ -115,10 +179,11 @@ class MazeAssignment: SCNScene {
         
         let minimapBase = SCNNode(/*geometry: SCNPlane(width: minimapBaseSize, height: minimapBaseSize)*/)
         minimapBase.name = "minimap"
-        
+    
         //Set the camera as the parent so the minimap follows the camera.
         let cameraNode = rootNode.childNode(withName: "CameraNode", recursively: true)
         cameraNode?.addChildNode(minimapBase)
+    
 
         minimapBase.position = SCNVector3(0.35,0,-0.8)
     
@@ -346,6 +411,8 @@ class MazeAssignment: SCNScene {
         let theMaze = rootNode.childNode(withName: "The Maze", recursively: true) // Get the cube object by its name (This is where line 45 comes in)
         let theCube = rootNode.childNode(withName: "The Cube", recursively: true)
         rot.width += 0.05 // Increment rotation of the cube by 0.0005 radians
+        
+        updatePlayerMap()
                 
         theCube?.eulerAngles = SCNVector3(Double(rot.height / 50), Double(rot.width / 50), 0) // Set the cube rotation to the numbers given from the drag gesture
         // Repeat increment of rotation every 10000 nanoseconds
@@ -389,6 +456,7 @@ class MazeAssignment: SCNScene {
             // Move the camera
             cameraNode.position.x += Float(CGFloat(xMovement))
             cameraNode.position.z += Float(CGFloat(zMovement))
+//
         } else if offset.height > CGFloat(5.0) {
             
             let cameraSpeed: Float = 0.05
@@ -398,6 +466,7 @@ class MazeAssignment: SCNScene {
             
             cameraNode.position.x -= Float(CGFloat(xMovement))
             cameraNode.position.z -= Float(CGFloat(zMovement))
+//
         }
 
     }

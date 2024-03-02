@@ -67,8 +67,13 @@ struct ContentView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .edgesIgnoringSafeArea(.all)
                         .background(Color.black.opacity(0.3)) //Semi-transparent background
-                    Button(action: scene.handleDoubleTap) {
-                        Text("Toggle Day/Night")
+                    HStack {
+                        Button(action: scene.handleDoubleTap) {
+                            Text("Toggle Day/Night")
+                        }
+                        Button(action: scene.toggleFog) {
+                            Text("Toggle Fog")
+                        }
                     }
                     HStack {
                         Text("Fog Distance")

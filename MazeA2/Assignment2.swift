@@ -43,6 +43,8 @@ class MazeAssignment: SCNScene {
     var fogDensity = 0.3    // 0.0, 1.0, or 2.0
     var fogStartDistance_ = 2.5 // The fog effect starts at z = 4
     let fogEndDistance_ = 4.5 // The fog effect ends at z = 10
+    var isFogOn = true
+    var fogColor_: UIColor = UIColor.lightGray
 
     // Catch if initializer in init() fails
     required init?(coder aDecoder: NSCoder) {
@@ -333,7 +335,7 @@ class MazeAssignment: SCNScene {
     
     // Setup fog
     func setupFog() {
-        fogColor = UIColor.lightGray // Set fog colour to white
+        fogColor = fogColor_ // Set fog colour to white
         fogStartDistance = fogStartDistance_ // The fog effect starts at z = 0
         fogEndDistance = fogEndDistance_ // The fog effect ends at z = 10
         fogDensityExponent = fogDensity // Set the function of distrubution of fog to nonic (The exponent is 9)
@@ -348,6 +350,11 @@ class MazeAssignment: SCNScene {
     func setFogDistance(distance: Double) {
         fogStartDistance = CGFloat(distance)
         fogEndDistance = CGFloat(distance + 2.0)
+    }
+    
+    func toggleFog () {
+        isFogOn = !isFogOn
+        fogColor = isFogOn ? fogColor_ : UIColor.clear // Turns fog on or off
     }
     
     @MainActor

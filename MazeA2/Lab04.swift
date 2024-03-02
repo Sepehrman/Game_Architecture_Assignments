@@ -1,9 +1,9 @@
 //====================================================================
 //
-// (c) Borna Noureddin
-// COMP 8051   British Columbia Institute of Technology
-// Lab04: Make a cube that can be rotated with gestures
-//
+// Created by: Nathan Dong, Sepehr Mansouri, Jeff Phan
+// COMP 8051  British Columbia Institute of Technology
+// Assignment02: Generates a maze and draws it in scenekit, provides functions for day/night toggle, 2d minimap toggle, fog parameters, movement and flashlight.
+// Created from a Lab04 Template provided by Borna Noureddin. Maze generation code provided by Borna Noureddin.
 //====================================================================
 
 import SceneKit
@@ -11,7 +11,7 @@ import SwiftUI
 import SpriteKit
 
 
-class ControlableRotatingCrate: SCNScene {
+class MazeAssignment: SCNScene {
     var rotAngle = CGSize.zero // Keep track of drag gesture numbers
     var rot = CGSize.zero // Keep track of rotation angle
     var isRotating = true // Keep track of if rotation is toggled
@@ -33,6 +33,7 @@ class ControlableRotatingCrate: SCNScene {
     var ambientLightIntensity = CGFloat(500)
     var ambientLightIntensityNight = CGFloat(100)
     
+    //Flashlight
     var isDirectionalLightOn = false
     var isFlashLightOn = false
     var directionalLightIntensity = CGFloat(0)
@@ -69,6 +70,7 @@ class ControlableRotatingCrate: SCNScene {
         }
     }
     
+    //Draws a maze in 3d based on the CPP maze generation code
     func drawMaze(){
         var maze : Maze = Maze(mazeSize, mazeSize)
         maze.Create()
@@ -88,6 +90,7 @@ class ControlableRotatingCrate: SCNScene {
         rootNode.addChildNode(drawnMaze)
     }
     
+    //Toggles a translucent 2d minimap
     func toggleMinimap(){
         toggleMap = !toggleMap
             if let map = rootNode.childNode(withName: "minimap", recursively: true) {
@@ -98,11 +101,13 @@ class ControlableRotatingCrate: SCNScene {
                 }
             } else {
                 // Handle the case where "The Maze" node is not found
+                print("Cant find maze!")
                 return
             }
         }
     
     
+    //Draws a 2d minimap based on the generated maze
     func addMinimap(maze: inout Maze) {
         let minimapBaseSize: CGFloat = 0.9
         let wallHeight: CGFloat = 0.1
@@ -110,11 +115,13 @@ class ControlableRotatingCrate: SCNScene {
         
         let minimapBase = SCNNode(/*geometry: SCNPlane(width: minimapBaseSize, height: minimapBaseSize)*/)
         minimapBase.name = "minimap"
-        minimapBase.position = SCNVector3(4.2, 3.5, 4.0)
-        minimapBase.eulerAngles = SCNVector3(-Float.pi / 4, Float.pi / 4, 0)  // Adjust base orientation
-       
-        rootNode.addChildNode(minimapBase)
         
+        //Set the camera as the parent so the minimap follows the camera.
+        let cameraNode = rootNode.childNode(withName: "CameraNode", recursively: true)
+        cameraNode?.addChildNode(minimapBase)
+
+        minimapBase.position = SCNVector3(0.15,0,-2)
+    
         // Calculate cell size based on maze size and minimap base size
         let cellSize = minimapBaseSize / CGFloat(mazeSize)
         
@@ -124,7 +131,7 @@ class ControlableRotatingCrate: SCNScene {
                 let cellX = Float(col) * Float(cellSize)
                 let cellY = Float(row) * Float(cellSize)
                 
-                // Draw the cell
+                //Draw the cell
                 let cellGeometry = SCNPlane(width: cellSize, height: cellSize)
                 cellGeometry.firstMaterial?.diffuse.contents = UIColor.gray
                 let cellNode = SCNNode(geometry: cellGeometry)
@@ -133,7 +140,7 @@ class ControlableRotatingCrate: SCNScene {
                 minimapBase.addChildNode(cellNode)
                 cellNode.eulerAngles = SCNVector3(Float.pi, Float.pi, Float.pi/2) // Match base orientation
                 
-                // Draw walls around the cell
+                //Draw walls around the cell
                 if mazeCell.northWallPresent {
                     let wall = SCNPlane(width: cellSize*0.15, height: cellSize)
                     wall.firstMaterial?.diffuse.contents = UIColor.red
@@ -165,10 +172,6 @@ class ControlableRotatingCrate: SCNScene {
             }
         }
     }
-
-
-
-
     
     func wallMaterial(left: Bool, right: Bool) -> SCNMaterial {
         var material = SCNMaterial()
@@ -186,6 +189,7 @@ class ControlableRotatingCrate: SCNScene {
         return material
     }
 
+    //Draws a wall given the parameters as a SCNPlane
     func createWall(position: SCNVector3, eulerAngles: SCNVector3, left: Bool, right: Bool) -> SCNNode {
         let wall = SCNPlane(width: 1.0, height: 1.0)
         wall.materials = [wallMaterial(left: left, right: right)]
@@ -199,6 +203,7 @@ class ControlableRotatingCrate: SCNScene {
         return wallNode
     }
 
+    //Creates a set of maze parameters based on the walls present in the maze cell and sends it to createWall
     func drawCell(cell: MazeCell) -> SCNNode {
         
         let drawnCell = SCNNode()
@@ -233,6 +238,7 @@ class ControlableRotatingCrate: SCNScene {
         cameraNode.camera?.zNear = 0.1
         cameraNode.eulerAngles = SCNVector3(0, -Float.pi/2, 0) // Set the pitch, yaw, and roll
 //        cameraNode.camera?.fieldOfView = 100
+        cameraNode.name = "CameraNode"
         rootNode.addChildNode(cameraNode) // Add the cameraNode to the scene
     }
     
@@ -395,10 +401,6 @@ class ControlableRotatingCrate: SCNScene {
         }
 
     }
-    
- 
-
-  
 }
 
 extension SCNVector3 {

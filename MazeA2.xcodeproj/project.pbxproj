@@ -60,6 +60,7 @@
 		89926A772B9019BD00F898EA /* DisjointSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisjointSet.h; sourceTree = "<group>"; };
 		89926A782B9019BE00F898EA /* maze.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = maze.h; sourceTree = "<group>"; };
 		89926A792B9019BE00F898EA /* DisjointSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisjointSet.cpp; sourceTree = "<group>"; };
+		951056652B92B5F200E4B581 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A5CC83352B915820006F8E28 /* MapSKOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapSKOverlay.swift; sourceTree = "<group>"; };
 		A5CC833B2B9174A9006F8E28 /* UIKitTwoFingerDoubleTapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTwoFingerDoubleTapGesture.swift; sourceTree = "<group>"; };
 		F03450A72B9143FD0058DC37 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -131,6 +132,7 @@
 				89926A4C2B90193D00F898EA /* MazeA2.entitlements */,
 				89926A752B9019BD00F898EA /* MazeA2-Bridging-Header.h */,
 				89926A4D2B90193D00F898EA /* Preview Content */,
+				951056652B92B5F200E4B581 /* README.md */,
 			);
 			path = MazeA2;
 			sourceTree = "<group>";

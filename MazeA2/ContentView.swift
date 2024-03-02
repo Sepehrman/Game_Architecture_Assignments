@@ -1,12 +1,9 @@
 //====================================================================
 //
-// (c) Borna Noureddin
-// COMP 8051   British Columbia Institute of Technology
-// Lab01: Draw red square using SceneKit
-// Lab02: Make an auto-rotating cube with different colours on each side
-// Lab03: Make a rotating cube with a crate texture that can be toggled
-// Lab04: Make a cube that can be rotated with gestures
-//
+// Created by: Nathan Dong, Sepehr Mansouri, Jeff Phan
+// COMP 8051  British Columbia Institute of Technology
+// Assignment02: Generates a maze and draws it in scenekit, provides functions for day/night toggle, 2d minimap toggle, fog parameters, movement and flashlight.
+// Created from a Lab04 Template provided by Borna Noureddin. Maze generation code provided by Borna Noureddin.
 //====================================================================
 
 import SwiftUI
@@ -15,7 +12,7 @@ import SpriteKit
 
 struct ContentView: View {
     
-    let scene = ControlableRotatingCrate()
+    let scene = MazeAssignment()
     let overlayScene = MapOverlayScene(size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
     
     @State var rotationOffset = CGSize.zero
@@ -45,10 +42,9 @@ struct ContentView: View {
                                 print("rotate ")
                                 overlayScene.resizeOverlay(size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
                             }.overlay(UIKitTwoFingerDoubleTapGesture {
-                                // Double Tap 2 Fingers
-                                // Toggle the Map here
+                                //Double Tap 2 Fingers
                                 scene.toggleMinimap()
-                                //overlayIsHidden.toggle()  // Toggle overlay visibility
+                                //overlayIsHidden.toggle()  //Toggle overlay visibility
                                 print("Two Finger Double Tap on Overlay")
                             }
                         )
@@ -61,13 +57,13 @@ struct ContentView: View {
                                 }
                         )
                         .onTapGesture(count: 2) {
-                            // Double Tap 1 Finger
+                            //Double Tap 1 Finger
                             print("Double Tap")
                         }
                         
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .edgesIgnoringSafeArea(.all)
-                        .background(Color.black.opacity(0.3)) // Semi-transparent background
+                        .background(Color.black.opacity(0.3)) //Semi-transparent background
                     
                     Button(action: scene.handleDoubleTap) {
                         Text("Toggle Day/Night")

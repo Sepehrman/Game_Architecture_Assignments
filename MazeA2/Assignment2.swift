@@ -188,6 +188,12 @@ class MazeAssignment: SCNScene {
         
         return material
     }
+    
+    
+    func resetPlayerPosition() {
+        cameraNode.position = initPlayerPosition
+        cameraNode.eulerAngles = initPlayerDirection
+    }
 
     //Draws a wall given the parameters as a SCNPlane
     func createWall(position: SCNVector3, eulerAngles: SCNVector3, left: Bool, right: Bool) -> SCNNode {

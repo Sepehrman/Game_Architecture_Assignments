@@ -58,6 +58,7 @@ struct ContentView: View {
                         )
                         .onTapGesture(count: 2) {
                             //Double Tap 1 Finger
+                            scene.resetPlayerPosition()
                             print("Double Tap")
                         }
                         

@@ -11,3 +11,4 @@ Controls: 1 finger drag left and right to pan the camera in their respective dir
           double tap to reset position to maze start
           fog parameters and day/night toggle are set as on screen UI buttons.
 
+

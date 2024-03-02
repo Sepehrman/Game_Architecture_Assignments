@@ -15,6 +15,7 @@
 		89926A652B90193D00F898EA /* MazeA2UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89926A642B90193D00F898EA /* MazeA2UITestsLaunchTests.swift */; };
 		89926A7A2B9019BE00F898EA /* maze.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 89926A762B9019BD00F898EA /* maze.cpp */; };
 		89926A7B2B9019BE00F898EA /* DisjointSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 89926A792B9019BE00F898EA /* DisjointSet.cpp */; };
+		951056672B92BD5B00E4B581 /* Assignment2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951056662B92BD5B00E4B581 /* Assignment2.swift */; };
 		A5CC83362B915821006F8E28 /* MapSKOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CC83352B915820006F8E28 /* MapSKOverlay.swift */; };
 		A5CC833C2B9174A9006F8E28 /* UIKitTwoFingerDoubleTapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CC833B2B9174A9006F8E28 /* UIKitTwoFingerDoubleTapGesture.swift */; };
 		F03450A82B9143FD0058DC37 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03450A72B9143FD0058DC37 /* ContentView.swift */; };
@@ -24,7 +25,6 @@
 		F0A61ADE2B91493F00F35E2F /* gray.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F0A61AD92B91493F00F35E2F /* gray.jpg */; };
 		F0A61ADF2B91493F00F35E2F /* yellow.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F0A61ADA2B91493F00F35E2F /* yellow.jpg */; };
 		F0A61AE12B917E3C00F35E2F /* crate.png in Resources */ = {isa = PBXBuildFile; fileRef = F0A61AE02B917E3C00F35E2F /* crate.png */; };
-		F0C537292B91453200AF6F67 /* Lab04.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C537282B91453200AF6F67 /* Lab04.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +61,7 @@
 		89926A782B9019BE00F898EA /* maze.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = maze.h; sourceTree = "<group>"; };
 		89926A792B9019BE00F898EA /* DisjointSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisjointSet.cpp; sourceTree = "<group>"; };
 		951056652B92B5F200E4B581 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		951056662B92BD5B00E4B581 /* Assignment2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assignment2.swift; sourceTree = "<group>"; };
 		A5CC83352B915820006F8E28 /* MapSKOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapSKOverlay.swift; sourceTree = "<group>"; };
 		A5CC833B2B9174A9006F8E28 /* UIKitTwoFingerDoubleTapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitTwoFingerDoubleTapGesture.swift; sourceTree = "<group>"; };
 		F03450A72B9143FD0058DC37 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -70,7 +71,6 @@
 		F0A61AD92B91493F00F35E2F /* gray.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = gray.jpg; sourceTree = "<group>"; };
 		F0A61ADA2B91493F00F35E2F /* yellow.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yellow.jpg; sourceTree = "<group>"; };
 		F0A61AE02B917E3C00F35E2F /* crate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crate.png; sourceTree = "<group>"; };
-		F0C537282B91453200AF6F67 /* Lab04.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lab04.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,7 +125,7 @@
 				89926A872B9053CE00F898EA /* StarterMaze */,
 				89926A462B90193200F898EA /* MazeA2App.swift */,
 				F03450A72B9143FD0058DC37 /* ContentView.swift */,
-				F0C537282B91453200AF6F67 /* Lab04.swift */,
+				951056662B92BD5B00E4B581 /* Assignment2.swift */,
 				A5CC83352B915820006F8E28 /* MapSKOverlay.swift */,
 				A5CC833B2B9174A9006F8E28 /* UIKitTwoFingerDoubleTapGesture.swift */,
 				89926A4A2B90193D00F898EA /* Assets.xcassets */,
@@ -325,11 +325,11 @@
 			files = (
 				A5CC833C2B9174A9006F8E28 /* UIKitTwoFingerDoubleTapGesture.swift in Sources */,
 				89926A472B90193200F898EA /* MazeA2App.swift in Sources */,
-				F0C537292B91453200AF6F67 /* Lab04.swift in Sources */,
 				F03450A82B9143FD0058DC37 /* ContentView.swift in Sources */,
 				89926A7A2B9019BE00F898EA /* maze.cpp in Sources */,
 				89926A7B2B9019BE00F898EA /* DisjointSet.cpp in Sources */,
 				A5CC83362B915821006F8E28 /* MapSKOverlay.swift in Sources */,
+				951056672B92BD5B00E4B581 /* Assignment2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

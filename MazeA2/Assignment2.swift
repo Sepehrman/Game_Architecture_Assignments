@@ -154,18 +154,19 @@ class MazeAssignment: SCNScene {
         
             let positionCameraX = cameraNode.position.x * 0.1
             let positionCameraZ = cameraNode.position.z * 0.1
-            let cameraAngle = cameraNode.eulerAngles.y
+            let cameraAngle = cameraNode.eulerAngles.y - Float.pi/2
+            
+            print((cameraNode.position.x - -4.8))
 
-            playerNode.position = SCNVector3(positionCameraZ, positionCameraX, playerNode.position.z)
+            playerNode.position = SCNVector3(positionCameraZ, (-0.4 + -(cameraNode.position.x - -4.8)*0.1), playerNode.position.z)
             playerNode.eulerAngles = SCNVector3(playerNode.eulerAngles.x, playerNode.eulerAngles.y, cameraAngle)
             
-            print(playerNode.position.x)
-            print(playerNode.position.y)
-            print(playerNode.position.z)
-            print("------------")
-            print(positionCameraX)
-            print(positionCameraZ)
-            
+//            print(playerNode.position.x)
+//            print(playerNode.position.y)
+//            print(playerNode.position.z)
+//            print("------------")
+//            print(positionCameraX)
+//            print(positionCameraZ)
             
         } else {
             print("Player node not found in the scene.")

@@ -40,7 +40,7 @@ class MazeAssignment: SCNScene {
     var flashLightIntensity = CGFloat(1000)
     
     // Fog
-    var fogDensity = 1.0    // 0.0, 1.0, or 2.0
+    var fogDensity = 0.3    // 0.0, 1.0, or 2.0
     var fogStartDistance_ = 2.5 // The fog effect starts at z = 4
     let fogEndDistance_ = 4.5 // The fog effect ends at z = 10
 
@@ -333,7 +333,7 @@ class MazeAssignment: SCNScene {
     
     // Setup fog
     func setupFog() {
-        fogColor = UIColor.black // Set fog colour to white
+        fogColor = UIColor.lightGray // Set fog colour to white
         fogStartDistance = fogStartDistance_ // The fog effect starts at z = 0
         fogEndDistance = fogEndDistance_ // The fog effect ends at z = 10
         fogDensityExponent = fogDensity // Set the function of distrubution of fog to nonic (The exponent is 9)
@@ -394,6 +394,16 @@ class MazeAssignment: SCNScene {
             cameraNode.runAction(rotation)
         } else if offset.height < CGFloat(-5.0) {
             
+            let cameraSpeed: Float = 0.05
+            
+            let xMovement = -sin(cameraNode.eulerAngles.y) * cameraSpeed
+            let zMovement = -cos(cameraNode.eulerAngles.y) * cameraSpeed
+            
+            cameraNode.position.x -= Float(CGFloat(xMovement))
+            cameraNode.position.z -= Float(CGFloat(zMovement))
+            
+
+        } else if offset.height > CGFloat(5.0) {
             let cameraSpeed: Float = 0.05 // Adjust the speed as needed
             
             // Calculate the movement vector based on the camera's rotation
@@ -403,31 +413,7 @@ class MazeAssignment: SCNScene {
             // Move the camera
             cameraNode.position.x += Float(CGFloat(xMovement))
             cameraNode.position.z += Float(CGFloat(zMovement))
-        } else if offset.height > CGFloat(5.0) {
-            
-            let cameraSpeed: Float = 0.05
-            
-            let xMovement = -sin(cameraNode.eulerAngles.y) * cameraSpeed
-            let zMovement = -cos(cameraNode.eulerAngles.y) * cameraSpeed
-            
-            cameraNode.position.x -= Float(CGFloat(xMovement))
-            cameraNode.position.z -= Float(CGFloat(zMovement))
         }
 
-    }
-}
-
-extension SCNVector3 {
-    func length() -> Float {
-        return sqrtf(x * x + y * y + z * z)
-    }
-
-    func normalized() -> SCNVector3 {
-        let len = length()
-        if len != 0 {
-            return SCNVector3(x / len, y / len, z / len)
-        } else {
-            return SCNVector3(0, 0, 0)
-        }
     }
 }

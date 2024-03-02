@@ -18,6 +18,8 @@ struct ContentView: View {
     @State var rotationOffset = CGSize.zero
     @State var overlayIsHidden = true   // Initially hide overlay
     
+    @State var fogStartDistance: Double = 2.5
+    
     // Phone orientation
     @State private var orientation = UIDeviceOrientation.unknown
     @State private var numberOfTouches = 0
@@ -65,12 +67,23 @@ struct ContentView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .edgesIgnoringSafeArea(.all)
                         .background(Color.black.opacity(0.3)) //Semi-transparent background
-                    
                     Button(action: scene.handleDoubleTap) {
                         Text("Toggle Day/Night")
                     }
+                    HStack {
+                        Text("Fog Distance")
+                        Slider(value: $fogStartDistance, in: 0.5...5, onEditingChanged: sliderChanged)
+                    }
                 } label: { Text("Maze") }
             }.navigationTitle("COMP8051")
+        }
+    }
+    func sliderChanged(_ editing: Bool) {
+        // Call your function here
+        if !editing {
+            print("Slider value changed to: ", fogStartDistance)
+            // Call your function here
+            scene.setFogDistance(distance: fogStartDistance)
         }
     }
 }

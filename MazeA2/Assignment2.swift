@@ -40,9 +40,9 @@ class MazeAssignment: SCNScene {
     var flashLightIntensity = CGFloat(1000)
     
     // Fog
-    var fogDensity = 2.0    // 0.0, 1.0, or 2.0
-    let fogStartDistance_ = 4 // The fog effect starts at z = 4
-    let fogEndDistance_ = 10 // The fog effect ends at z = 10
+    var fogDensity = 1.0    // 0.0, 1.0, or 2.0
+    var fogStartDistance_ = 2.5 // The fog effect starts at z = 4
+    let fogEndDistance_ = 4.5 // The fog effect ends at z = 10
 
     // Catch if initializer in init() fails
     required init?(coder aDecoder: NSCoder) {
@@ -317,22 +317,25 @@ class MazeAssignment: SCNScene {
         
 //        flashLight.position = SCNVector3(5, 6, 0)   // Position of camera
 //        flashLight.eulerAngles = SCNVector3(-Float.pi/4, Float.pi/2, 0) // Pitch, yaw and roll
-        flashLight.position = SCNVector3(5, 5, 5) // Set the position to (5, 5, 5)
-        flashLight.eulerAngles = SCNVector3(-Float.pi/4, Float.pi/4, 0) // Set the pitch, yaw, and roll
+//        flashLight.position = SCNVector3(5, 5, 5)
+//        flashLight.eulerAngles = SCNVector3(-Float.pi/4, Float.pi/4, 0) // Set the pitch, yaw, and roll
+        flashLight.eulerAngles = SCNVector3(0, 0, 0) // Set the pitch, yaw, and rol
+        flashLight.position = SCNVector3(0, 0, 0) // Set the position to (5, 5, 5)
         
         flashLight.light!.spotInnerAngle = 0
         flashLight.light!.spotOuterAngle = 30
         flashLight.light!.shadowColor = UIColor.black
         flashLight.light!.zFar = 500
         flashLight.light!.zNear = 50
-        rootNode.addChildNode(flashLight)
+        //rootNode.addChildNode(flashLight)
+        cameraNode.addChildNode(flashLight)
     }
     
     // Setup fog
     func setupFog() {
         fogColor = UIColor.black // Set fog colour to white
-        fogStartDistance = 4 // The fog effect starts at z = 0
-        fogEndDistance = 10 // The fog effect ends at z = 10
+        fogStartDistance = fogStartDistance_ // The fog effect starts at z = 0
+        fogEndDistance = fogEndDistance_ // The fog effect ends at z = 10
         fogDensityExponent = fogDensity // Set the function of distrubution of fog to nonic (The exponent is 9)
     }
     
@@ -340,6 +343,11 @@ class MazeAssignment: SCNScene {
         let ambientLight = rootNode.childNode(withName: "Ambient Light", recursively: true)
         ambientLight?.light?.intensity = isDay ? ambientLightIntensity : ambientLightIntensityNight
         ambientLight?.light?.color = isDay ? ambientLightColorDay : ambientLightColorNight
+    }
+    
+    func setFogDistance(distance: Double) {
+        fogStartDistance = CGFloat(distance)
+        fogEndDistance = CGFloat(distance + 2.0)
     }
     
     @MainActor

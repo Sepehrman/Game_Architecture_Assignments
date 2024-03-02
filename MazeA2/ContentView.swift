@@ -25,63 +25,57 @@ struct ContentView: View {
     @State private var numberOfTouches = 0
     
     var body: some View {
-        NavigationStack {
-            List {
-                NavigationLink{
-                    ZStack {
-                        SceneView(scene: scene, pointOfView: scene.cameraNode)
-                            .ignoresSafeArea()
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .edgesIgnoringSafeArea(.all)
-                        
-                        
-                        SCNOverlayView(overlayScene: overlayScene)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .edgesIgnoringSafeArea(.all)
-                            .opacity(overlayIsHidden ? 0 : 1)
-                            .onRotate {
-                                newOrientation in orientation = newOrientation
-                                print("rotate ")
-                                overlayScene.resizeOverlay(size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
-                            }.overlay(UIKitTwoFingerDoubleTapGesture {
-                                //Double Tap 2 Fingers
-                                scene.toggleMinimap()
-                                //overlayIsHidden.toggle()  //Toggle overlay visibility
-                                print("Two Finger Double Tap on Overlay")
-                            }
-                        )
+            ZStack {
+                SceneView(scene: scene, pointOfView: scene.cameraNode)
+                    .ignoresSafeArea()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
+                
+                
+                SCNOverlayView(overlayScene: overlayScene)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
+                    .opacity(overlayIsHidden ? 0 : 1)
+                    .onRotate {
+                        newOrientation in orientation = newOrientation
+                        print("rotate ")
+                        overlayScene.resizeOverlay(size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+                    }.overlay(UIKitTwoFingerDoubleTapGesture {
+                        //Double Tap 2 Fingers
+                        scene.toggleMinimap()
+                        //overlayIsHidden.toggle()  //Toggle overlay visibility
+                        print("Two Finger Double Tap on Overlay")
+                    }
+                )
 
-                    }.ignoresSafeArea()
-                        .gesture(
-                            DragGesture()
-                                .onChanged{ gesture in
-                                    scene.handleDrag(offset: gesture.translation)
-                                }
-                        )
-                        .onTapGesture(count: 2) {
-                            //Double Tap 1 Finger
-                            scene.resetPlayerPosition()
-                            print("Double Tap")
+            }.ignoresSafeArea()
+                .gesture(
+                    DragGesture()
+                        .onChanged{ gesture in
+                            scene.handleDrag(offset: gesture.translation)
                         }
-                        
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .edgesIgnoringSafeArea(.all)
-                        .background(Color.black.opacity(0.3)) //Semi-transparent background
-                    HStack {
-                        Button(action: scene.handleDoubleTap) {
-                            Text("Toggle Day/Night")
-                        }
-                        Button(action: scene.toggleFog) {
-                            Text("Toggle Fog")
-                        }
-                    }
-                    HStack {
-                        Text("Fog Distance")
-                        Slider(value: $fogStartDistance, in: 0.5...5, onEditingChanged: sliderChanged)
-                    }
-                } label: { Text("Maze") }
-            }.navigationTitle("COMP8051")
-        }
+                )
+                .onTapGesture(count: 2) {
+                    //Double Tap 1 Finger
+                    scene.resetPlayerPosition()
+                    print("Double Tap")
+                }
+                
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.all)
+                .background(Color.black.opacity(0.3)) //Semi-transparent background
+            HStack {
+                Button(action: scene.handleDoubleTap) {
+                    Text("Toggle Day/Night")
+                }
+                Button(action: scene.toggleFog) {
+                    Text("Toggle Fog")
+                }
+            }
+            HStack {
+                Text("Fog Distance")
+                Slider(value: $fogStartDistance, in: 0.5...5, onEditingChanged: sliderChanged)
+            }
     }
     func sliderChanged(_ editing: Bool) {
         // Call your function here

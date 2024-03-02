@@ -20,6 +20,10 @@ class ControlableRotatingCrate: SCNScene {
     var toggleMap = true
     
     var isDay: Bool = true
+    var initPlayerPosition = SCNVector3(-4.8, 0.6, -3)
+    var initPlayerDirection = SCNVector3(0, -Float.pi/2, 0)
+    var initCubePosition = SCNVector3(-2.5, 0.6, -3)
+
     
     // Light
     var diffuseLightPos = SCNVector4(0, 10, 0, Double.pi/2) // Keep track of flashlight position
@@ -58,9 +62,8 @@ class ControlableRotatingCrate: SCNScene {
         setupAmbientLight()
         setupDirectionalLight()
         setLightBasedOnIsDay()
-        
         setupFog()
-        //addCube()
+        addCube()
         Task(priority: .userInitiated) {
             await firstUpdate()
         }
@@ -226,19 +229,21 @@ class ControlableRotatingCrate: SCNScene {
     func setupCamera() {
         let camera = SCNCamera() // Create Camera object
         cameraNode.camera = camera // Give the cameraNode a camera
-        cameraNode.position = SCNVector3(5, 5, 5) // Set the position to (5, 5, 5)
-        cameraNode.eulerAngles = SCNVector3(-Float.pi/4, Float.pi/4, 0) // Set the pitch, yaw, and roll
+        cameraNode.position = SCNVector3(-4.8, 0.6, -3) // Set the position to (5, 5, 5)
+        cameraNode.camera?.zNear = 0.1
+        cameraNode.eulerAngles = SCNVector3(0, -Float.pi/2, 0) // Set the pitch, yaw, and roll
+//        cameraNode.camera?.fieldOfView = 100
         rootNode.addChildNode(cameraNode) // Add the cameraNode to the scene
     }
     
     // Create Cube
-//    func addCube() {
-//        let theCube = SCNNode(geometry: SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0)) // Create a object node of box shape with width of 1 and height of 1
-//        theCube.name = "The Cube" // Name the node so we can reference it later
-//        theCube.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "crate.jpg") // Diffuse the crate image material across the whole cube
-//        theCube.position = SCNVector3(0, 0, 0) // Put the cube at position (0, 0, 0)
-//        rootNode.addChildNode(theCube) // Add the cube node to the scene
-//    }
+    func addCube() {
+        let theCube = SCNNode(geometry: SCNBox(width: 0.2, height: 0.2, length: 0.2, chamferRadius: 0)) // Create a object node of box shape with width of 1 and height of 1
+        theCube.name = "The Cube" // Name the node so we can reference it later
+        theCube.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "crate.png") // Diffuse the crate image material across the whole cube
+        theCube.position = initCubePosition // Put the cube at position (0, 0, 0)
+        rootNode.addChildNode(theCube) // Add the cube node to the scene
+    }
     
     // Sets up an ambient light (all around)
     func setupAmbientLight() {
@@ -333,12 +338,10 @@ class ControlableRotatingCrate: SCNScene {
     @MainActor
     func reanimate() {
         let theMaze = rootNode.childNode(withName: "The Maze", recursively: true) // Get the cube object by its name (This is where line 45 comes in)
-        if (isRotating) {
-            rot.width += 0.05 // Increment rotation of the cube by 0.0005 radians
-        } else {
-            rot = rotAngle // Let the rot variable follow the drag gesture
-        }
-        theMaze?.eulerAngles = SCNVector3(Double(rot.height / 50), Double(rot.width / 50), 0) // Set the cube rotation to the numbers given from the drag gesture
+        let theCube = rootNode.childNode(withName: "The Cube", recursively: true)
+        rot.width += 0.05 // Increment rotation of the cube by 0.0005 radians
+                
+        theCube?.eulerAngles = SCNVector3(Double(rot.height / 50), Double(rot.width / 50), 0) // Set the cube rotation to the numbers given from the drag gesture
         // Repeat increment of rotation every 10000 nanoseconds
         Task { try! await Task.sleep(nanoseconds: 10000)
             reanimate()
@@ -357,10 +360,58 @@ class ControlableRotatingCrate: SCNScene {
     @MainActor
     // Function to be called by drag gesture
     func handleDrag(offset: CGSize) {
-        rotAngle = offset // Get the width and height components of the CGSize, which only gives us two, and put them into the x and y rotations of the flashlight
+        
+        print(offset.width)
+        print(offset.height)
+        
+        if offset.width > 10.0 {
+            // Rotate the camera
+            let rotation = SCNAction.rotateTo(x: 0, y: CGFloat(cameraNode.eulerAngles.y) - offset.width/5000, z: 0, duration: 0)
+            cameraNode.runAction(rotation)
+        } else if offset.width < -10.0 {
+            // Rotate the camera to the left
+            let rotation = SCNAction.rotateTo(x: 0, y: CGFloat(cameraNode.eulerAngles.y) - offset.width/5000, z: 0, duration: 0)
+            cameraNode.runAction(rotation)
+        } else if offset.height < CGFloat(-5.0) {
+            
+            let cameraSpeed: Float = 0.05 // Adjust the speed as needed
+            
+            // Calculate the movement vector based on the camera's rotation
+            let xMovement = -sin(cameraNode.eulerAngles.y) * cameraSpeed
+            let zMovement = -cos(cameraNode.eulerAngles.y) * cameraSpeed
+            
+            // Move the camera
+            cameraNode.position.x += Float(CGFloat(xMovement))
+            cameraNode.position.z += Float(CGFloat(zMovement))
+        } else if offset.height > CGFloat(5.0) {
+            
+            let cameraSpeed: Float = 0.05
+            
+            let xMovement = -sin(cameraNode.eulerAngles.y) * cameraSpeed
+            let zMovement = -cos(cameraNode.eulerAngles.y) * cameraSpeed
+            
+            cameraNode.position.x -= Float(CGFloat(xMovement))
+            cameraNode.position.z -= Float(CGFloat(zMovement))
+        }
+
     }
     
  
 
   
+}
+
+extension SCNVector3 {
+    func length() -> Float {
+        return sqrtf(x * x + y * y + z * z)
+    }
+
+    func normalized() -> SCNVector3 {
+        let len = length()
+        if len != 0 {
+            return SCNVector3(x / len, y / len, z / len)
+        } else {
+            return SCNVector3(0, 0, 0)
+        }
+    }
 }

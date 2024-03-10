@@ -101,9 +101,7 @@
 		89926A3A2B90193200F898EA = {
 			isa = PBXGroup;
 			children = (
-				89926A452B90193200F898EA /* MazeA2 */,
-				89926A572B90193D00F898EA /* MazeA2Tests */,
-				89926A612B90193D00F898EA /* MazeA2UITests */,
+				95B4C57B2B9E6F42004953AD /* Maze */,
 				89926A442B90193200F898EA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -171,6 +169,16 @@
 				89926A782B9019BE00F898EA /* maze.h */,
 			);
 			path = StarterMaze;
+			sourceTree = "<group>";
+		};
+		95B4C57B2B9E6F42004953AD /* Maze */ = {
+			isa = PBXGroup;
+			children = (
+				89926A452B90193200F898EA /* MazeA2 */,
+				89926A572B90193D00F898EA /* MazeA2Tests */,
+				89926A612B90193D00F898EA /* MazeA2UITests */,
+			);
+			path = Maze;
 			sourceTree = "<group>";
 		};
 		F0A61AD52B91489800F35E2F /* textures */ = {

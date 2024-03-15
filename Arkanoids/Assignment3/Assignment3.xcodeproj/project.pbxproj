@@ -65,6 +65,7 @@
 		95B4C66D2B9E7346004953AD /* Assignment3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4C66C2B9E7346004953AD /* Assignment3Tests.swift */; };
 		95B4C6772B9E7346004953AD /* Assignment3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4C6762B9E7346004953AD /* Assignment3UITests.swift */; };
 		95B4C6792B9E7346004953AD /* Assignment3UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4C6782B9E7346004953AD /* Assignment3UITestsLaunchTests.swift */; };
+		A5E6CA1B2BA3B5ED0084CD46 /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E6CA1A2BA3B5ED0084CD46 /* Overlay.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -195,6 +196,7 @@
 		95B4C6722B9E7346004953AD /* Assignment3UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Assignment3UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		95B4C6762B9E7346004953AD /* Assignment3UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment3UITests.swift; sourceTree = "<group>"; };
 		95B4C6782B9E7346004953AD /* Assignment3UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment3UITestsLaunchTests.swift; sourceTree = "<group>"; };
+		A5E6CA1A2BA3B5ED0084CD46 /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -407,6 +409,7 @@
 				953CD5BC2BA39C5700B753DE /* TwoFingerDrag.swift */,
 				95B4C65B2B9E7345004953AD /* Assignment3App.swift */,
 				95B4C65D2B9E7345004953AD /* ContentView.swift */,
+				A5E6CA1A2BA3B5ED0084CD46 /* Overlay.swift */,
 				953CD5252BA39C4500B753DE /* Box2D */,
 				953CD58A2BA39C4500B753DE /* CBox2D.h */,
 				953CD58B2BA39C4500B753DE /* CBox2D.mm */,
@@ -601,6 +604,7 @@
 				953CD5912BA39C4500B753DE /* b2ChainAndCircleContact.cpp in Sources */,
 				953CD5A72BA39C4500B753DE /* b2Rope.cpp in Sources */,
 				953CD5C22BA39C5700B753DE /* TapView.swift in Sources */,
+				A5E6CA1B2BA3B5ED0084CD46 /* Overlay.swift in Sources */,
 				953CD59F2BA39C4500B753DE /* b2RevoluteJoint.cpp in Sources */,
 				953CD58F2BA39C4500B753DE /* b2ChainAndPolygonContact.cpp in Sources */,
 				95B4C65C2B9E7345004953AD /* Assignment3App.swift in Sources */,

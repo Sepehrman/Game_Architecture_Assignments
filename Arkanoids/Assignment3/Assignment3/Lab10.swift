@@ -134,7 +134,7 @@ class Box2DDemo: SCNScene {
     // Function to be called by double-tap gesture: launch the ball
     @MainActor
     func handleDoubleTap() {
-        
+        print("Box2DDemo:handleDoubleTap")
         box2D.launchBall()
         
     }

@@ -51,6 +51,9 @@ struct ContentView: View {
 
     @State private var circleLocations: [CGPoint]?
     @State private var pinchCircles = [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 0)]
+    @State public var overlayIsHidden = false
+    
+    let overlayScene = OverlayScene(size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
 
     var body: some View {
         NavigationStack {
@@ -112,19 +115,28 @@ struct ContentView: View {
                 } label: { Text("Multitap") }
                 NavigationLink {
                     let scene = Box2DDemo()
-                    VStack {
-                        SceneView(scene: scene, pointOfView: scene.cameraNode)
-                            .ignoresSafeArea()
-                            .onTapGesture(count: 2) {
-                                scene.handleDoubleTap()
-                            }
-                        Button(action: {
-                            scene.resetPhysics()
-                        }, label: {
-                            Text("Reset")
-                                .font(.system(size: 24))
-                                .padding(.bottom, 50)
-                        })
+//                    self.overlayIsHidden.
+                    ZStack {
+                        
+                        VStack {
+                            SceneView(scene: scene, pointOfView: scene.cameraNode)
+                                    .ignoresSafeArea()
+                                    .overlay(SKOverlayView(overlayScene: overlayScene)
+                                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                        .edgesIgnoringSafeArea(.all)
+                                        .opacity(overlayIsHidden ? 0 : 1)
+                                    )
+                                .onTapGesture(count: 2) {
+                                    scene.handleDoubleTap()
+                                }
+                            Button(action: {
+                                scene.resetPhysics()
+                            }, label: {
+                                Text("Reset")
+                                    .font(.system(size: 24))
+                                    .padding(.bottom, 50)
+                            })
+                        }
                     }
                     .background(.black)
                 } label: { Text("Lab 10: Box2D") }
@@ -133,6 +145,22 @@ struct ContentView: View {
                     }
             }.navigationTitle("COMP8051")
         }
+    }
+}
+
+struct SKOverlayView: UIViewRepresentable {
+    let overlayScene: SKScene
+    
+    func makeUIView(context: Context) -> SKView {
+        let skView = SKView()
+        skView.presentScene(overlayScene)
+        skView.backgroundColor = .clear
+        skView.allowsTransparency = true
+        return skView
+    }
+    
+    func updateUIView(_ uiView: SKView, context: Context) {
+        // Update if needed
     }
 }
 

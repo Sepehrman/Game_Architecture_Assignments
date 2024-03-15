@@ -104,32 +104,28 @@ public:
     if (self) {
         
         // Initialize Box2D
-        gravity = new b2Vec2(0.0f, -10.0f);
+        gravity = new b2Vec2(0.0f, 0.0f);
         world = new b2World(*gravity);
         
-#ifdef USE_HELLO_WORLD
-        groundBodyDef = NULL;
-        groundBody = NULL;
-        groundBox = NULL;
-#endif
-
+        [self createEnvironment];
+        
         contactListener = new CContactListener();
         world->SetContactListener(contactListener);
         
         // Set up the brick and ball objects for Box2D
-        struct PhysicsObject *newObj = new struct PhysicsObject;
-        newObj->loc.x = BRICK_POS_X;
-        newObj->loc.y = BRICK_POS_Y;
-        newObj->objType = ObjTypeBox;
-        char *objName = strdup("Brick");
-        [self AddObject:objName newObject:newObj];
+//        struct PhysicsObject *newObj = new struct PhysicsObject;
+//        newObj->loc.x = BRICK_POS_X;
+//        newObj->loc.y = BRICK_POS_Y;
+//        newObj->objType = ObjTypeBox;
+//        char *objName = strdup("Brick");
+//        [self AddObject:objName newObject:newObj];
         
-        newObj = new struct PhysicsObject;
-        newObj->loc.x = BALL_POS_X;
-        newObj->loc.y = BALL_POS_Y;
-        newObj->objType = ObjTypeCircle;
-        objName = strdup("Ball");
-        [self AddObject:objName newObject:newObj];
+//        newObj = new struct PhysicsObject;
+//        newObj->loc.x = BALL_POS_X;
+//        newObj->loc.y = BALL_POS_Y;
+//        newObj->objType = ObjTypeCircle;
+//        objName = strdup("Ball");
+//        [self AddObject:objName newObject:newObj];
         
         totalElapsedTime = 0;
         ballHitBrick = false;
@@ -163,10 +159,45 @@ public:
     newObject->loc.x = BALL_POS_X;
     newObject->loc.y = 0;
     newObject->objType = ObjTypeBox; // TODO: create a type wall
+    newObject->name = strdup("WestWall");
+    [self AddObject:newObject->name newObject:newObject];
+    
+    // Creation of East Wall
+    newObject = new struct PhysicsObject;
+    newObject->loc.x = BALL_POS_X;
+    newObject->loc.y = 0;
+    newObject->objType = ObjTypeBox; // TODO: create a type wall
+    newObject->name = strdup("EastWall");
+    [self AddObject:newObject->name newObject:newObject];
+    
+    newObject = new struct PhysicsObject;
+    newObject->loc.x = BALL_POS_X;
+    newObject->loc.y = 0;
+    newObject->objType = ObjTypeBox; // TODO: create a type wall
+    newObject->name = strdup("SouthWall");
+    [self AddObject:newObject->name newObject:newObject];
+    
+    newObject = new struct PhysicsObject;
+    newObject->loc.x = BALL_POS_X;
+    newObject->loc.y = 0;
+    newObject->objType = ObjTypeBox; // TODO: create a type wall
+    newObject->name = strdup("NorthWall");
+    [self AddObject:newObject->name newObject:newObject];
+    
+    // Create a new brick object
+    newObject = new struct PhysicsObject;
+    newObject->loc.x = BRICK_POS_X;
+    newObject->loc.y = BRICK_POS_Y;
+    newObject->objType = ObjTypeBox;
     newObject->name = strdup("Brick");
     [self AddObject:newObject->name newObject:newObject];
     
-    
+    newObject = new struct PhysicsObject;
+    newObject->loc.x = BALL_POS_X;
+    newObject->loc.y = BALL_POS_Y;
+    newObject->objType = ObjTypeCircle;
+    newObject->name = strdup("Ball");
+    [self AddObject:newObject->name newObject:newObject];
         
 }
 
@@ -335,108 +366,38 @@ public:
 {
     
     // Look up the brick, and if it exists, destroy it and delete it
-    struct PhysicsObject *theBrick = physicsObjects["Brick"];
-    if (theBrick) {
-        world->DestroyBody(((b2Body *)theBrick->b2ShapePtr));
-        delete theBrick;
-        theBrick = nullptr;
-        physicsObjects.erase("Brick");
-    }
+//    struct PhysicsObject *theBrick = physicsObjects["Brick"];
+//    if (theBrick) {
+//        world->DestroyBody(((b2Body *)theBrick->b2ShapePtr));
+//        delete theBrick;
+//        theBrick = nullptr;
+//        physicsObjects.erase("Brick");
+//    }
     
-    // Create a new brick object
-    theBrick = new struct PhysicsObject;
-    theBrick->loc.x = BRICK_POS_X;
-    theBrick->loc.y = BRICK_POS_Y;
-    theBrick->objType = ObjTypeBox;
-    char *objName = strdup("Brick");
-    [self AddObject:objName newObject:theBrick];
-    
+//    // Create a new brick object
+//    theBrick = new struct PhysicsObject;
+//    theBrick->loc.x = BRICK_POS_X;
+//    theBrick->loc.y = BRICK_POS_Y;
+//    theBrick->objType = ObjTypeBox;
+//    char *objName = strdup("Brick");
+//    [self AddObject:objName newObject:theBrick];
+//    
     // Look up the ball object and re-initialize the position, etc.
-    struct PhysicsObject *theBall = physicsObjects["Ball"];
-    theBall->loc.x = BALL_POS_X;
-    theBall->loc.y = BALL_POS_Y;
-    ((b2Body *)theBall->b2ShapePtr)->SetTransform(b2Vec2(BALL_POS_X, BALL_POS_Y), 0);
-    ((b2Body *)theBall->b2ShapePtr)->SetLinearVelocity(b2Vec2(0, 0));
-    ((b2Body *)theBall->b2ShapePtr)->SetAngularVelocity(0);
-    ((b2Body *)theBall->b2ShapePtr)->SetAwake(false);
-    ((b2Body *)theBall->b2ShapePtr)->SetActive(true);
-    
-    totalElapsedTime = 0;
+//    struct PhysicsObject *theBall = physicsObjects["Ball"];
+//    theBall->loc.x = BALL_POS_X;
+//    theBall->loc.y = BALL_POS_Y;
+//    ((b2Body *)theBall->b2ShapePtr)->SetTransform(b2Vec2(BALL_POS_X, BALL_POS_Y), 0);
+//    ((b2Body *)theBall->b2ShapePtr)->SetLinearVelocity(b2Vec2(0, 0));
+//    ((b2Body *)theBall->b2ShapePtr)->SetAngularVelocity(0);
+//    ((b2Body *)theBall->b2ShapePtr)->SetAwake(false);
+//    ((b2Body *)theBall->b2ShapePtr)->SetActive(true);
+//    
+//    totalElapsedTime = 0;
     ballHitBrick = false;
     ballLaunched = false;
     
 }
 
 
-
-
-
-
-
-
-
--(void)HelloWorld
-{
-    
-#ifdef USE_HELLO_WORLD
-    
-    groundBodyDef = new b2BodyDef;
-    groundBodyDef->position.Set(0.0f, -10.0f);
-    groundBody = world->CreateBody(groundBodyDef);
-    groundBox = new b2PolygonShape;
-    groundBox->SetAsBox(50.0f, 10.0f);
-    
-    groundBody->CreateFixture(groundBox, 0.0f);
-    
-    // Define the dynamic body. We set its position and call the body factory.
-    b2BodyDef bodyDef;
-    bodyDef.type = b2_dynamicBody;
-    bodyDef.position.Set(0.0f, 4.0f);
-    b2Body* body = world->CreateBody(&bodyDef);
-    
-    // Define another box shape for our dynamic body.
-    b2PolygonShape dynamicBox;
-    dynamicBox.SetAsBox(1.0f, 1.0f);
-    
-    // Define the dynamic body fixture.
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &dynamicBox;
-    
-    // Set the box density to be non-zero, so it will be dynamic.
-    fixtureDef.density = 1.0f;
-    
-    // Override the default friction.
-    fixtureDef.friction = 0.3f;
-    
-    // Add the shape to the body.
-    body->CreateFixture(&fixtureDef);
-    
-    // Prepare for simulation. Typically we use a time step of 1/60 of a
-    // second (60Hz) and 10 iterations. This provides a high quality simulation
-    // in most game scenarios.
-    float32 timeStep = 1.0f / 60.0f;
-    int32 velocityIterations = 6;
-    int32 positionIterations = 2;
-    
-    // This is our little game loop.
-    world->SetGravity(b2Vec2(0, -10.0f));
-    for (int32 i = 0; i < 60; ++i)
-    {
-        
-        // Instruct the world to perform a single step of simulation.
-        // It is generally best to keep the time step and iterations fixed.
-        world->Step(timeStep, velocityIterations, positionIterations);
-        
-        // Now print the position and angle of the body.
-        b2Vec2 position = body->GetPosition();
-        float32 angle = body->GetAngle();
-        
-        printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);
-        
-    }
-    
-#endif
-    
-}
 
 @end

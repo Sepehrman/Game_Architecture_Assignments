@@ -38,7 +38,7 @@
 #define WALL_RIGHT_HEIGHT    180.0f
 
 #define WALL_TOP_POS_X         0
-#define WALL_TOP_POS_Y         92
+#define WALL_TOP_POS_Y         90
 #define WALL_TOP_WIDTH     61.0f
 #define WALL_TOP_HEIGHT    1.0f
 

@@ -127,13 +127,16 @@ public:
         contactListener = new CContactListener();
         world->SetContactListener(contactListener);
         
-        // Set up the brick and ball objects for Box2D
-        struct PhysicsObject *newObj = new struct PhysicsObject;
-        newObj->loc.x = BRICK_POS_X;
-        newObj->loc.y = BRICK_POS_Y;
-        newObj->objType = ObjTypeBox;
-        char *objName = strdup("Brick");
-        [self AddObject:objName newObject:newObj];
+        struct PhysicsObject *newObj;
+        char *objName;
+        
+//        // Set up the brick and ball objects for Box2D
+//        newObj = new struct PhysicsObject;
+//        newObj->loc.x = BRICK_POS_X;
+//        newObj->loc.y = BRICK_POS_Y;
+//        newObj->objType = ObjTypeBox;
+//        objName = strdup("Brick");
+//        [self AddObject:objName newObject:newObj];
         
         newObj = new struct PhysicsObject;
         newObj->loc.x = BALL_POS_X;
@@ -204,7 +207,10 @@ public:
     {
         
         // Apply a force (since the ball is set up not to be affected by gravity)
-        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(0, BALL_VELOCITY),
+//        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(0, BALL_VELOCITY),
+//                                                            ((b2Body *)theBall->b2ShapePtr)->GetPosition(),
+//                                                            true);
+        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(500, BALL_VELOCITY),
                                                             ((b2Body *)theBall->b2ShapePtr)->GetPosition(),
                                                             true);
         ((b2Body *)theBall->b2ShapePtr)->SetActive(true);
@@ -341,8 +347,9 @@ public:
             dynamicBox.SetAsBox(WALL_LEFT_WIDTH/2, WALL_LEFT_HEIGHT/2);
             fixtureDef.shape = &dynamicBox;
             fixtureDef.density = 1.0f;
-            fixtureDef.friction = 0.3f;
+            fixtureDef.friction = 0.0f;
             fixtureDef.restitution = 1.0f;
+            theObject->SetType(b2_staticBody);  // Immovable
             
             break;
             
@@ -351,8 +358,9 @@ public:
             dynamicBox.SetAsBox(WALL_TOP_WIDTH/2, WALL_TOP_HEIGHT/2);
             fixtureDef.shape = &dynamicBox;
             fixtureDef.density = 1.0f;
-            fixtureDef.friction = 0.3f;
-            fixtureDef.restitution = 1.0f;
+            fixtureDef.friction = 0.0f;
+            fixtureDef.restitution = 1.0f;      // Bounce factor?
+            theObject->SetType(b2_staticBody);  // Immovable
             
             break;
             

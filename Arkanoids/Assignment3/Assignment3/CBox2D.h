@@ -17,7 +17,7 @@
 //   and how long to wait before dropping brick
 
 #define BRICK_POS_X         0
-#define BRICK_POS_Y         70
+#define BRICK_POS_Y         0
 #define BRICK_WIDTH         20.0f
 #define BRICK_HEIGHT        5.0f
 #define BRICK_WAIT            1.0f

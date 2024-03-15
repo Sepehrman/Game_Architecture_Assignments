@@ -17,6 +17,8 @@ class Box2DDemo: SCNScene {
     
     var lastTime = CFTimeInterval(floatLiteral: 0)  // Used to calculate elapsed time on each update
     
+    let offsetMultiplier = 0.0002
+    
     private var box2D: CBox2D!                      // Points to Objective-C++ wrapper for C++ Box2D library
     
     // Catch if initializer in init() fails
@@ -188,7 +190,7 @@ class Box2DDemo: SCNScene {
         let offsetX = Double(offset.width) // Convert CGFloat to Double
         
         let theBrick = rootNode.childNode(withName: "Brick", recursively: true)
-        box2D.movePaddle(Double(offset.width))
+        box2D.movePaddle(Double(offset.width) * offsetMultiplier)
     }
     
 }

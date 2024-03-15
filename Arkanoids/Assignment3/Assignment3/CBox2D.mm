@@ -82,6 +82,7 @@ public:
     b2Vec2 *gravity;
     b2World *world;
     CContactListener *contactListener;
+    float paddlePosition;   // the position of the paddle on the x axis.
     float totalElapsedTime;
     
     // Map to keep track of physics object to communicate with the renderer
@@ -117,6 +118,9 @@ public:
         // Initialize Box2D
         gravity = new b2Vec2(0.0f, 0.0f);
         world = new b2World(*gravity);
+        
+        paddlePosition = BRICK_POS_X;
+
 
         contactListener = new CContactListener();
         world->SetContactListener(contactListener);
@@ -388,7 +392,8 @@ public:
 -(void)movePaddle:(double)offset
 {
     struct PhysicsObject *theBrick = physicsObjects["Brick"];
-    theBrick->loc.x += offset;
+    paddlePosition += offset;
+    printf("offset: %0.4f", paddlePosition);
 }
 
 

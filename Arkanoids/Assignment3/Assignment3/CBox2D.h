@@ -17,7 +17,7 @@
 //   and how long to wait before dropping brick
 
 #define BRICK_POS_X         0
-#define BRICK_POS_Y         90
+#define BRICK_POS_Y         70
 #define BRICK_WIDTH         20.0f
 #define BRICK_HEIGHT        5.0f
 #define BRICK_WAIT            1.0f
@@ -26,9 +26,25 @@
 #define BALL_RADIUS            3.0f
 #define BALL_VELOCITY        1000.0f
 
+// Wall Initialization
+#define WALL_LEFT_POS_X         -30
+#define WALL_LEFT_POS_Y         0
+#define WALL_LEFT_WIDTH     1.0f
+#define WALL_LEFT_HEIGHT    180.0f
+
+#define WALL_RIGHT_POS_X         30
+#define WALL_RIGHT_POS_Y         0
+#define WALL_RIGHT_WIDTH     1.0f
+#define WALL_RIGHT_HEIGHT    180.0f
+
+#define WALL_TOP_POS_X         0
+#define WALL_TOP_POS_Y         92
+#define WALL_TOP_WIDTH     61.0f
+#define WALL_TOP_HEIGHT    1.0f
+
 
 // You can define other object types here
-typedef enum { ObjTypeBox=0, ObjTypeCircle=1 } ObjectType;
+typedef enum { ObjTypeBox=0, ObjTypeCircle=1, WallSideTypeBox=2, WallTopTypeBox=4 } ObjectType;
 
 
 // Location of each object in our physics world

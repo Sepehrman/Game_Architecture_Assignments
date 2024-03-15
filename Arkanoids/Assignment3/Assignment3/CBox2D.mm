@@ -55,8 +55,14 @@ public:
             struct PhysicsObject *objData = (struct PhysicsObject *)(bodyA->GetUserData());
             CBox2D *parentObj = (__bridge CBox2D *)(objData->box2DObj);
             
-            // Call RegisterHit (assume CBox2D object is in user data)
-            [parentObj RegisterHit];    // assumes RegisterHit is a callback function to register collision
+            if (objData->objType == WallTopTypeBox) {
+                printf("Hit top wall");
+            } else if (objData->objType == ObjTypeBox) {
+                printf("Hit the falling rect");
+                // Call RegisterHit (assume CBox2D object is in user data)
+                [parentObj RegisterHit];    // assumes RegisterHit is a callback function to register collision
+            }
+            
             
         }
         
@@ -90,6 +96,11 @@ public:
     // Logit for this particular "game"
     bool ballHitBrick;  // register that the ball hit the break
     bool ballLaunched;  // register that the user has launched the ball
+    
+    // Logic for ball hitting walls
+    bool ballHitLeftWall;
+    bool ballHitRightWall;
+    bool ballHitTopWall;
     
 }
 @end
@@ -131,9 +142,35 @@ public:
         objName = strdup("Ball");
         [self AddObject:objName newObject:newObj];
         
+        // Set up Walls for Box2D
+        newObj = new struct PhysicsObject;
+        newObj->loc.x = WALL_LEFT_POS_X;
+        newObj->loc.y = WALL_LEFT_POS_Y;
+        newObj->objType = WallSideTypeBox;
+        objName = strdup("Wall_Left");
+        [self AddObject:objName newObject:newObj];
+        
+        newObj = new struct PhysicsObject;
+        newObj->loc.x = WALL_RIGHT_POS_X;
+        newObj->loc.y = WALL_RIGHT_POS_Y;
+        newObj->objType = WallSideTypeBox;
+        objName = strdup("Wall_Right");
+        [self AddObject:objName newObject:newObj];
+        
+        newObj = new struct PhysicsObject;
+        newObj->loc.x = WALL_TOP_POS_X;
+        newObj->loc.y = WALL_TOP_POS_Y;
+        newObj->objType = WallTopTypeBox;
+        objName = strdup("Wall_Top");
+        [self AddObject:objName newObject:newObj];  // Causing issue
+        
         totalElapsedTime = 0;
         ballHitBrick = false;
         ballLaunched = false;
+        
+//        ballHitLeftWall = false;
+//        ballHitLeftWall = false;
+//        ballHitLeftWall = false;
         
     }
     
@@ -242,6 +279,7 @@ public:
 -(void)RegisterHit
 {
     // Set some flag here for processing later...
+    printf("RegisterHit");
     ballHitBrick = true;
 }
 
@@ -298,6 +336,26 @@ public:
             
             break;
             
+        case WallSideTypeBox:
+            
+            dynamicBox.SetAsBox(WALL_LEFT_WIDTH/2, WALL_LEFT_HEIGHT/2);
+            fixtureDef.shape = &dynamicBox;
+            fixtureDef.density = 1.0f;
+            fixtureDef.friction = 0.3f;
+            fixtureDef.restitution = 1.0f;
+            
+            break;
+            
+        case WallTopTypeBox:
+            
+            dynamicBox.SetAsBox(WALL_TOP_WIDTH/2, WALL_TOP_HEIGHT/2);
+            fixtureDef.shape = &dynamicBox;
+            fixtureDef.density = 1.0f;
+            fixtureDef.friction = 0.3f;
+            fixtureDef.restitution = 1.0f;
+            
+            break;
+            
         default:
             
             break;
@@ -342,6 +400,7 @@ public:
     ((b2Body *)theBall->b2ShapePtr)->SetTransform(b2Vec2(BALL_POS_X, BALL_POS_Y), 0);
     ((b2Body *)theBall->b2ShapePtr)->SetLinearVelocity(b2Vec2(0, 0));
     ((b2Body *)theBall->b2ShapePtr)->SetAngularVelocity(0);
+    ((b2Body *)theBall->b2ShapePtr)->SetAwake(false);
     ((b2Body *)theBall->b2ShapePtr)->SetAwake(false);
     ((b2Body *)theBall->b2ShapePtr)->SetActive(true);
     

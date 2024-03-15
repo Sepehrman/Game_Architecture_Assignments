@@ -37,6 +37,9 @@ class Box2DDemo: SCNScene {
         addBall()
         addBrick()
         
+        // Add walls
+        addWalls()
+        
         // Initialize the Box2D object
         box2D = CBox2D()
         //        box2D.helloWorld()  // If you want to test the HelloWorld example of Box2D
@@ -84,6 +87,29 @@ class Box2DDemo: SCNScene {
     }
     
     
+    func addWalls() {
+        
+        let wallLeft = SCNNode(geometry: SCNBox(width: CGFloat(WALL_LEFT_WIDTH), height: CGFloat(WALL_LEFT_HEIGHT), length: 1, chamferRadius: 0))
+        wallLeft.name = "Wall_Left"
+        wallLeft.geometry?.firstMaterial?.diffuse.contents = UIColor.white
+        wallLeft.position = SCNVector3(Int(WALL_LEFT_POS_X), Int(WALL_LEFT_POS_Y), 0)
+        rootNode.addChildNode(wallLeft)
+        
+        let wallRight = SCNNode(geometry: SCNBox(width: CGFloat(WALL_RIGHT_WIDTH), height: CGFloat(WALL_RIGHT_HEIGHT), length: 1, chamferRadius: 0))
+        wallRight.name = "Wall_Right"
+        wallRight.geometry?.firstMaterial?.diffuse.contents = UIColor.white
+        wallRight.position = SCNVector3(Int(WALL_RIGHT_POS_X), Int(WALL_RIGHT_POS_Y), 0)
+        rootNode.addChildNode(wallRight)
+        
+        let wallTop = SCNNode(geometry: SCNBox(width: CGFloat(WALL_TOP_WIDTH), height: CGFloat(WALL_TOP_HEIGHT), length: 1, chamferRadius: 0))
+        wallTop.name = "Wall_Top"
+        wallTop.geometry?.firstMaterial?.diffuse.contents = UIColor.white
+        wallTop.position = SCNVector3(Int(WALL_TOP_POS_X), Int(WALL_TOP_POS_Y), 0)
+        rootNode.addChildNode(wallTop)
+
+    }
+    
+    
     // Simple game loop that gets called each frame
     @MainActor
     @objc
@@ -127,6 +153,12 @@ class Box2DDemo: SCNScene {
             theBrick?.isHidden = true
             
         }
+        
+        // Get wall positions and update wall nodes for troublshooting purposes
+        let topWallPos = UnsafePointer(box2D.getObject("Wall_Top"))
+        let topWall = rootNode.childNode(withName: "Wall_Top", recursively: true)
+        topWall?.position.x = (topWallPos?.pointee.loc.x)!
+        topWall?.position.y = (topWallPos?.pointee.loc.y)!
         
     }
     

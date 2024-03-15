@@ -151,35 +151,34 @@ public:
 }
 
 -(void)createEnvironment {
-    
     struct PhysicsObject *newObject;
     
     // Creation of West Wall
     newObject = new struct PhysicsObject;
     newObject->loc.x = BALL_POS_X;
-    newObject->loc.y = 0;
+    newObject->loc.y = BALL_POS_Y;
     newObject->objType = ObjTypeBox; // TODO: create a type wall
     newObject->name = strdup("WestWall");
     [self AddObject:newObject->name newObject:newObject];
     
     // Creation of East Wall
     newObject = new struct PhysicsObject;
-    newObject->loc.x = BALL_POS_X;
-    newObject->loc.y = 0;
+    newObject->loc.x = BRICK_POS_X;
+    newObject->loc.y = BRICK_POS_Y;
     newObject->objType = ObjTypeBox; // TODO: create a type wall
     newObject->name = strdup("EastWall");
     [self AddObject:newObject->name newObject:newObject];
     
     newObject = new struct PhysicsObject;
-    newObject->loc.x = BALL_POS_X;
-    newObject->loc.y = 0;
+    newObject->loc.x = BRICK_POS_X;
+    newObject->loc.y = BRICK_POS_Y;
     newObject->objType = ObjTypeBox; // TODO: create a type wall
     newObject->name = strdup("SouthWall");
     [self AddObject:newObject->name newObject:newObject];
     
     newObject = new struct PhysicsObject;
-    newObject->loc.x = BALL_POS_X;
-    newObject->loc.y = 0;
+    newObject->loc.x = BRICK_POS_X;
+    newObject->loc.y = BRICK_POS_Y;
     newObject->objType = ObjTypeBox; // TODO: create a type wall
     newObject->name = strdup("NorthWall");
     [self AddObject:newObject->name newObject:newObject];
@@ -194,9 +193,16 @@ public:
     
     newObject = new struct PhysicsObject;
     newObject->loc.x = BALL_POS_X;
-    newObject->loc.y = BALL_POS_Y;
+    newObject->loc.y = BALL_POS_Y + 10;
     newObject->objType = ObjTypeCircle;
     newObject->name = strdup("Ball");
+    [self AddObject:newObject->name newObject:newObject];
+    
+    newObject = new struct PhysicsObject;
+    newObject->loc.x = BALL_POS_X;
+    newObject->loc.y = BALL_POS_Y;
+    newObject->objType = ObjTypeCircle;
+    newObject->name = strdup("Ball2");
     [self AddObject:newObject->name newObject:newObject];
         
 }
@@ -252,11 +258,11 @@ public:
         ((b2Body *)theBall->b2ShapePtr)->SetActive(false);
         
         // Destroy the brick from Box2D and related objects in this class
-        world->DestroyBody(((b2Body *)theBrick->b2ShapePtr));
-        delete theBrick;
-        theBrick = nullptr;
-        physicsObjects.erase("Brick");
-        ballHitBrick = false;   // until a reset and re-launch
+//        world->DestroyBody(((b2Body *)theBrick->b2ShapePtr));
+//        delete theBrick;
+//        theBrick = nullptr;
+//        physicsObjects.erase("Brick");
+//        ballHitBrick = false;   // until a reset and re-launch
         
     }
     

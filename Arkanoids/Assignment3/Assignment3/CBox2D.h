@@ -16,20 +16,32 @@
 //   position, width+height (or radius), velocity,
 //   and how long to wait before dropping brick
 
-#define BRICK_POS_X         0
+#define BRICK_POS_X         -55
 #define BRICK_POS_Y         90
-#define BRICK_WIDTH         20.0f
+#define BRICK_COLS          10
+#define BRICK_ROWS          3
+#define BRICK_PADDING_X     1.0f
+#define BRICK_PADDING_Y     1.0f
+#define BRICK_WIDTH         10.0f
 #define BRICK_HEIGHT        5.0f
 #define BRICK_WAIT            1.0f
+#define PADDLE_POS_X          0
+#define PADDLE_POS_Y          10
+#define PADDLE_WIDTH        20.0f
+#define PADDLE_HEIGHT       5.0f
 #define BALL_POS_X            0
 #define BALL_POS_Y            5
 #define BALL_RADIUS            3.0f
-#define BALL_VELOCITY        1000.0f
+#define BALL_VELOCITY        2000.0f
+#define WALL_LENGTH          200.0f
+#define WALL_THICKNESS       5.0f
+#define WALL_X_OFFSET        82.5f
+#define CEILING_Y_POS        100
+#define BALL_LIVES           3
 
 
 // You can define other object types here
-typedef enum { ObjTypeBox=0, ObjTypeCircle=1 } ObjectType;
-
+typedef enum { ObjTypeBox=0, ObjTypeCircle=1, ObjTypePaddle = 2, ObjTypeWall = 3, ObjTypeEndZone = 4} ObjectType;
 
 // Location of each object in our physics world
 struct PhysicsLocation {

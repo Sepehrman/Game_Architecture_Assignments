@@ -41,6 +41,7 @@ struct PhysicsLocation {
 struct PhysicsObject {
 
     struct PhysicsLocation loc; // location
+    char* name;                 // name
     ObjectType objType;         // type
     void *b2ShapePtr;           // pointer to Box2D shape definition
     void *box2DObj;             // pointer to the CBox2D object for use in callbacks

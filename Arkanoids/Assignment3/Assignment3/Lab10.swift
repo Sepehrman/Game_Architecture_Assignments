@@ -107,18 +107,18 @@ class Box2DDemo: SCNScene {
         // Get ball position and update ball node
         let ballPos = UnsafePointer(box2D.getObject("Ball"))
         let theBall = rootNode.childNode(withName: "Ball", recursively: true)
-        theBall?.position.x = (ballPos?.pointee.loc.x)!
-        theBall?.position.y = (ballPos?.pointee.loc.y)!
+//        theBall?.position.x = (ballPos?.pointee.loc.x)!
+//        theBall?.position.y = (ballPos?.pointee.loc.y)!
         //        print("Ball pos: \(String(describing: theBall?.position.x)) \(String(describing: theBall?.position.y))")
         
         // Get brick position and update brick node
         let brickPos = UnsafePointer(box2D.getObject("Brick"))
         let theBrick = rootNode.childNode(withName: "Brick", recursively: true)
-        if (brickPos != nil) {
+        if (ballPos != nil) {
             
             // The brick is visible, so set the position
-            theBrick?.position.x = (brickPos?.pointee.loc.x)!
-            theBrick?.position.y = (brickPos?.pointee.loc.y)!
+            theBall?.position.x = (ballPos?.pointee.loc.x)!
+            theBall?.position.y = (ballPos?.pointee.loc.y)!
             //            print("Brick pos: \(String(describing: theBrick?.position.x)) \(String(describing: theBrick?.position.y))")
             
         } else {

@@ -154,6 +154,22 @@ public:
     
 }
 
+-(void)createEnvironment {
+    
+    struct PhysicsObject *newObject;
+    
+    // Creation of West Wall
+    newObject = new struct PhysicsObject;
+    newObject->loc.x = BALL_POS_X;
+    newObject->loc.y = 0;
+    newObject->objType = ObjTypeBox; // TODO: create a type wall
+    newObject->name = strdup("Brick");
+    [self AddObject:newObject->name newObject:newObject];
+    
+    
+        
+}
+
 -(void)Update:(float)elapsedTime
 {
     

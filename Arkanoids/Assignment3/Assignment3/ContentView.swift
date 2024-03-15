@@ -128,7 +128,11 @@ struct ContentView: View {
                                     )
                                 .onTapGesture(count: 2) {
                                     scene.handleDoubleTap()
-                                }
+                                }.gesture(
+                                    DragGesture().onChanged{ gesture in
+                                        scene.movePaddle(offset: gesture.translation)
+                                    }
+                                )
                             Button(action: {
                                 scene.resetPhysics()
                             }, label: {

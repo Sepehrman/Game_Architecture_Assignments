@@ -385,6 +385,13 @@ public:
     
 }
 
+-(void)movePaddle:(double)offset
+{
+    struct PhysicsObject *theBrick = physicsObjects["Brick"];
+    theBrick->loc.x += offset;
+}
+
+
 -(struct PhysicsObject *) GetObject:(const char *)name
 {
     return physicsObjects[name];
@@ -421,6 +428,8 @@ public:
     ballLaunched = false;
     
 }
+
+
 
 
 @end

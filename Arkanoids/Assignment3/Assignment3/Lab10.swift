@@ -16,6 +16,8 @@ class Box2DDemo: SCNScene {
     var cameraNode = SCNNode()                      // Initialize camera node
     
     var lastTime = CFTimeInterval(floatLiteral: 0)  // Used to calculate elapsed time on each update
+    let paddleSens = 0.002                          // The sensitivity of paddle swiping
+
     
     private var box2D: CBox2D!                      // Points to Objective-C++ wrapper for C++ Box2D library
     
@@ -180,6 +182,13 @@ class Box2DDemo: SCNScene {
         let theBrick = rootNode.childNode(withName: "Brick", recursively: true)
         theBrick?.isHidden = false
         
+    }
+    
+    @MainActor
+    func movePaddle(offset: CGSize) {
+        
+        let theBrick = rootNode.childNode(withName: "Brick", recursively: true)
+        box2D.movePaddle(Double(offset * paddleSens))
     }
     
 }

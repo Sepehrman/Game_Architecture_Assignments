@@ -37,7 +37,6 @@ public:
     
     void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
     {
-        
         b2WorldManifold worldManifold;
         contact->GetWorldManifold(&worldManifold);
         b2PointState state1[2], state2[2];
@@ -45,7 +44,6 @@ public:
         
         if (state2[0] == b2_addState)
         {
-            
             // Use contact->GetFixtureA()->GetBody() to get the body that was hit
             b2Body* bodyA = contact->GetFixtureA()->GetBody();
             
@@ -56,11 +54,11 @@ public:
             CBox2D *parentObj = (__bridge CBox2D *)(objData->box2DObj);
             
             // Call RegisterHit (assume CBox2D object is in user data)
-            [parentObj RegisterHit];    // assumes RegisterHit is a callback function to register collision
-            
+            const char *brickHit = "Collision occurred"; // Define your string here
+            [parentObj RegisterHit:brickHit]; // Pass the string into RegisterHit
         }
-        
     }
+
     
     void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse) {};
     
@@ -90,6 +88,7 @@ public:
     // Logit for this particular "game"
     bool ballHitBrick;  // register that the ball hit the break
     bool ballLaunched;  // register that the user has launched the ball
+    const char* lastBrickHit;
     
 }
 @end
@@ -104,7 +103,7 @@ public:
     if (self) {
         
         // Initialize Box2D
-        gravity = new b2Vec2(0.0f, -10.0f);
+        gravity = new b2Vec2(0.0f, 0.0f);
         world = new b2World(*gravity);
         
 #ifdef USE_HELLO_WORLD
@@ -112,24 +111,37 @@ public:
         groundBody = NULL;
         groundBox = NULL;
 #endif
-
+        
         contactListener = new CContactListener();
         world->SetContactListener(contactListener);
         
-        // Set up the brick and ball objects for Box2D
-        struct PhysicsObject *newObj = new struct PhysicsObject;
-        newObj->loc.x = BRICK_POS_X;
-        newObj->loc.y = BRICK_POS_Y;
-        newObj->objType = ObjTypeBox;
-        char *objName = strdup("Brick");
-        [self AddObject:objName newObject:newObj];
         
+        
+        for (int row = BRICK_ROW_ITER_START; row <= BRICK_ROW_ITER_END; row += BRICK_ROW_ITER_STEP) {
+            for (int col = BRICK_COL_ITER_START; col <= BRICK_COL_ITER_END; col += BRICK_COL_ITER_STEP) {
+                struct PhysicsObject *newObj = new struct PhysicsObject;
+                newObj->loc.x = row;
+                newObj->loc.y = col;
+                newObj->objType = ObjTypeBox;
+                
+                
+                // Allocate memory for the object name
+                char objName[20]; // Adjust the size according to your needs
+                sprintf(objName, "Brick %d %d", row, col);
+                [self AddObject:strdup(objName) newObject:newObj newType:b2_staticBody];
+            }
+        }
+        
+        // Set up the brick and ball objects for Box2D
+        
+        
+        struct PhysicsObject *newObj = new struct PhysicsObject;
         newObj = new struct PhysicsObject;
         newObj->loc.x = BALL_POS_X;
         newObj->loc.y = BALL_POS_Y;
         newObj->objType = ObjTypeCircle;
-        objName = strdup("Ball");
-        [self AddObject:objName newObject:newObj];
+        char *objName = strdup("Ball");
+        [self AddObject:objName newObject:newObj newType:b2_dynamicBody];
         
         totalElapsedTime = 0;
         ballHitBrick = false;
@@ -195,23 +207,25 @@ public:
     
     
     // If the last collision test was positive, stop the ball and destroy the brick
-    if (ballHitBrick)
-    {
-        
-        // Stop the ball and make sure it is not affected by forces
-        ((b2Body *)theBall->b2ShapePtr)->SetLinearVelocity(b2Vec2(0, 0));
-        ((b2Body *)theBall->b2ShapePtr)->SetAngularVelocity(0);
-        ((b2Body *)theBall->b2ShapePtr)->SetAwake(false);
-        ((b2Body *)theBall->b2ShapePtr)->SetActive(false);
-        
-        // Destroy the brick from Box2D and related objects in this class
-        world->DestroyBody(((b2Body *)theBrick->b2ShapePtr));
-        delete theBrick;
-        theBrick = nullptr;
-        physicsObjects.erase("Brick");
-        ballHitBrick = false;   // until a reset and re-launch
-        
-    }
+        if (ballHitBrick)
+        {
+    
+            // Stop the ball and make sure it is not affected by forces
+//            ((b2Body *)theBall->b2ShapePtr)->SetLinearVelocity(b2Vec2(0, 0));
+//            ((b2Body *)theBall->b2ShapePtr)->SetAngularVelocity(0);
+//            ((b2Body *)theBall->b2ShapePtr)->SetAwake(false);
+//            ((b2Body *)theBall->b2ShapePtr)->SetActive(false);
+    
+            // Destroy the brick from Box2D and related objects in this class
+//            world->DestroyBody(((b2Body *)theBrick->b2ShapePtr));
+//            delete theBrick;
+//            theBrick = nullptr;
+//            physicsObjects.erase("Brick");
+            printf("%s\n", lastBrickHit);
+            ballHitBrick = false;   // until a reset and re-launch
+            
+    
+        }
     
     if (world)
     {
@@ -239,9 +253,10 @@ public:
     
 }
 
--(void)RegisterHit
+-(void)RegisterHit:(const char*)brickHit
 {
     // Set some flag here for processing later...
+    lastBrickHit = brickHit;
     ballHitBrick = true;
 }
 
@@ -251,13 +266,13 @@ public:
     ballLaunched = true;
 }
 
--(void) AddObject:(char *)name newObject:(struct PhysicsObject *)newObj
+-(void)AddObject:(char *)name newObject:(struct PhysicsObject *)newObj newType:(b2BodyType)type
 {
     
     // Set up the body definition and create the body from it
     b2BodyDef bodyDef;
     b2Body *theObject;
-    bodyDef.type = b2_dynamicBody;
+    bodyDef.type = type;
     bodyDef.position.Set(newObj->loc.x, newObj->loc.y);
     theObject = world->CreateBody(&bodyDef);
     if (!theObject) return;
@@ -278,7 +293,6 @@ public:
     switch (newObj->objType) {
             
         case ObjTypeBox:
-            
             dynamicBox.SetAsBox(BRICK_WIDTH/2, BRICK_HEIGHT/2);
             fixtureDef.shape = &dynamicBox;
             fixtureDef.density = 1.0f;
@@ -306,6 +320,7 @@ public:
     
     // Add the new fixture to the Box2D object and add our physics object to our map
     theObject->CreateFixture(&fixtureDef);
+    newObj->name = name;
     physicsObjects[name] = newObj;
     
 }
@@ -328,12 +343,12 @@ public:
     }
     
     // Create a new brick object
-    theBrick = new struct PhysicsObject;
-    theBrick->loc.x = BRICK_POS_X;
-    theBrick->loc.y = BRICK_POS_Y;
-    theBrick->objType = ObjTypeBox;
-    char *objName = strdup("Brick");
-    [self AddObject:objName newObject:theBrick];
+//    theBrick = new struct PhysicsObject;
+//    theBrick->loc.x = BRICK_POS_X;
+//    theBrick->loc.y = BRICK_POS_Y;
+//    theBrick->objType = ObjTypeBox;
+//    char *objName = strdup("Brick");
+//    [self AddObject:objName newObject:theBrick];
     
     // Look up the ball object and re-initialize the position, etc.
     struct PhysicsObject *theBall = physicsObjects["Ball"];

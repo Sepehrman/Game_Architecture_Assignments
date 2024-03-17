@@ -33,9 +33,15 @@ class Box2DDemo: SCNScene {
         
         setupCamera()
         
-        // Add the ball and the brick
+        // Add the bricks
+        for row in stride(from: BRICK_ROW_ITER_START, to: BRICK_ROW_ITER_END, by: Int32.Stride(BRICK_ROW_ITER_STEP)) {
+            for column in stride(from: BRICK_COL_ITER_START, to: BRICK_COL_ITER_END, by: Int32.Stride(BRICK_ROW_ITER_STEP)){
+                      addBrick(brick_pos_x: CGFloat(row), brick_pos_y: CGFloat(column))
+                  }
+              }
+        
+        // Add the ball
         addBall()
-        addBrick()
         
         // Initialize the Box2D object
         box2D = CBox2D()
@@ -60,17 +66,19 @@ class Box2DDemo: SCNScene {
         rootNode.addChildNode(cameraNode) // Add the cameraNode to the scene
         
     }
+
     
-    
-    func addBrick() {
-        
-        let theBrick = SCNNode(geometry: SCNBox(width: CGFloat(BRICK_WIDTH), height: CGFloat(BRICK_HEIGHT), length: 1, chamferRadius: 0))
-        theBrick.name = "Brick"
-        theBrick.geometry?.firstMaterial?.diffuse.contents = UIColor.red
-        theBrick.position = SCNVector3(Int(BRICK_POS_X), Int(BRICK_POS_Y), 0)
-        rootNode.addChildNode(theBrick)
-        
-    }
+    func addBrick(brick_pos_x: CGFloat, brick_pos_y: CGFloat) {
+           let theBrick = SCNNode(geometry: SCNBox(width: CGFloat(BRICK_WIDTH), height: CGFloat(BRICK_HEIGHT), length: 1, chamferRadius: 0))
+           
+           let brickName = "Brick \(Int(brick_pos_x)) \(Int(brick_pos_y))"
+           theBrick.name = brickName
+           //print(brickName)
+           theBrick.geometry?.firstMaterial?.diffuse.contents = UIColor.red
+           theBrick.position = SCNVector3(Int(brick_pos_x), Int(brick_pos_y), 0)
+           rootNode.addChildNode(theBrick)
+       }
+
     
     
     func addBall() {
@@ -111,22 +119,31 @@ class Box2DDemo: SCNScene {
         theBall?.position.y = (ballPos?.pointee.loc.y)!
         //        print("Ball pos: \(String(describing: theBall?.position.x)) \(String(describing: theBall?.position.y))")
         
-        // Get brick position and update brick node
-        let brickPos = UnsafePointer(box2D.getObject("Brick"))
-        let theBrick = rootNode.childNode(withName: "Brick", recursively: true)
-        if (brickPos != nil) {
-            
-            // The brick is visible, so set the position
-            theBrick?.position.x = (brickPos?.pointee.loc.x)!
-            theBrick?.position.y = (brickPos?.pointee.loc.y)!
-            //            print("Brick pos: \(String(describing: theBrick?.position.x)) \(String(describing: theBrick?.position.y))")
-            
-        } else {
-            
-            // The brick has disappeared, so hide it
-            theBrick?.isHidden = true
-            
-        }
+        
+        for row in stride(from: BRICK_ROW_ITER_START, to: BRICK_ROW_ITER_END, by: Int32.Stride(BRICK_ROW_ITER_STEP)) {
+            for column in stride(from: BRICK_COL_ITER_START, to: BRICK_COL_ITER_END, by: Int32.Stride(BRICK_ROW_ITER_STEP)){
+                // Get brick position and update brick node
+                let brickPos = UnsafePointer(box2D.getObject("Brick \(row) \(column)"))
+                let theBrick = rootNode.childNode(withName: "Brick \(row) \(column)", recursively: true)
+                if (brickPos != nil) {
+//                    print("Brick \(row) \(column)")
+                    // The brick is visible, so set the position
+                    theBrick?.position.x = (brickPos?.pointee.loc.x)!
+                    theBrick?.position.y = (brickPos?.pointee.loc.y)!
+//                    print(theBrick?.position.x)
+//                    print(theBrick?.position.y)
+                    //            print("Brick pos: \(String(describing: theBrick?.position.x)) \(String(describing: theBrick?.position.y))")
+                    
+                } else {
+                    
+                    // The brick has disappeared, so hide it
+                    print("hide")
+                    theBrick?.isHidden = true
+                    
+                }
+                  }
+              }
+       
         
     }
     

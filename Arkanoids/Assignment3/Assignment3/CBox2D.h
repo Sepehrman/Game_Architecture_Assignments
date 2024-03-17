@@ -18,13 +18,21 @@
 
 #define BRICK_POS_X         0
 #define BRICK_POS_Y         90
-#define BRICK_WIDTH         20.0f
+#define BRICK_WIDTH         8.0f
 #define BRICK_HEIGHT        5.0f
 #define BRICK_WAIT            1.0f
 #define BALL_POS_X            0
 #define BALL_POS_Y            5
 #define BALL_RADIUS            3.0f
 #define BALL_VELOCITY        1000.0f
+
+//These parameters dictate the generation for the for loop
+#define BRICK_ROW_ITER_START -10
+#define BRICK_ROW_ITER_END 20
+#define BRICK_ROW_ITER_STEP 10
+#define BRICK_COL_ITER_START 40
+#define BRICK_COL_ITER_END 80
+#define BRICK_COL_ITER_STEP 5
 
 
 // You can define other object types here
@@ -44,6 +52,7 @@ struct PhysicsObject {
     ObjectType objType;         // type
     void *b2ShapePtr;           // pointer to Box2D shape definition
     void *box2DObj;             // pointer to the CBox2D object for use in callbacks
+    char* name;                 // Identifier for each brick to reference from box2d to scenekit
 };
 
 
@@ -54,7 +63,7 @@ struct PhysicsObject {
 
 -(void) LaunchBall;                                                         // launch the ball
 -(void) Update:(float)elapsedTime;                                          // update the Box2D engine
--(void) RegisterHit;                                                        // Register when the ball hits the brick
+-(void) RegisterHit:(const char*)brickHit;                                                        // Register when the ball hits the brick
 -(void) AddObject:(char *)name newObject:(struct PhysicsObject *)newObj;    // Add a new physics object
 -(struct PhysicsObject *) GetObject:(const char *)name;                     // Get a physics object by name
 -(void) Reset;                                                              // Reset Box2D

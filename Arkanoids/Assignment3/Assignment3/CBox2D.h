@@ -80,6 +80,10 @@ struct PhysicsObject {
 // Wrapper class
 @interface CBox2D : NSObject
 
+@property (nonatomic) int score;
+@property (nonatomic) int remainingBricks;
+
+
 -(void) HelloWorld; // Basic Hello World! example from Box2D
 
 -(void) LaunchBall;                                                         // launch the ball
@@ -89,7 +93,7 @@ struct PhysicsObject {
 -(void) AddObject:(char *)name newObject:(struct PhysicsObject *)newObj;    // Add a new physics object
 -(struct PhysicsObject *) GetObject:(const char *)name;                     // Get a physics object by name
 -(void) Reset;                                                              // Reset Box2D
--(void) movePaddle:(double)offset;     
+-(void) movePaddle:(double)offset;
 
 @end
 

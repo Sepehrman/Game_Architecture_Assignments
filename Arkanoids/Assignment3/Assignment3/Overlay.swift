@@ -9,7 +9,8 @@ import SpriteKit
 import SwiftUI
 
 class OverlayScene: SKScene {
-    var title: SKLabelNode
+    var score: SKLabelNode
+    var remainingBricks: SKLabelNode
 //    let map: SKShapeNode
     
     override init(size: CGSize) {
@@ -17,27 +18,44 @@ class OverlayScene: SKScene {
         let mapHeight = 200.0
         
 
-        title = SKLabelNode(text: "Map")
-        title.name = "MapTitle"
-        title.fontColor = .gray
-        title.fontSize = 48
-        title.fontName = "Robota"
-        title.position = CGPoint(x: size.width / 2, y: size.height - 96)
+        score = SKLabelNode(text: "Score: 0")
+        score.name = "score"
+        score.fontColor = .white
+        score.fontSize = 24
+        score.fontName = "Robota"
+        score.position = CGPoint(x: size.width - 80, y: size.height - 210)
         
-//        map = SKShapeNode(rect: CGRect(x: size.width / 2 - mapWidth / 2, y: size.height / 2 - mapHeight / 2, width: mapWidth, height: mapHeight))
-//        map.name = "MapOverlay"
-//        map.lineWidth = 2
-//        map.strokeColor = .gray
-//        map.fillColor = UIColor(red: 0.3, green: 0.3, blue: 0.3, alpha: 0.6)
+        remainingBricks = SKLabelNode(text: "Remaining\nBricks: 20")
+        remainingBricks.numberOfLines = 2
+        remainingBricks.name = "remainingBricks"
+        remainingBricks.fontColor = .white
+        remainingBricks.fontSize = 24
+        remainingBricks.fontName = "Robota"
+        remainingBricks.position = CGPoint(x: 90, y: size.height - 240)
         
         super.init(size: size)
         
         self.backgroundColor = .clear
-        self.addChild(title)
-//        self.addChild(map)
+        self.addChild(score)
+        self.addChild(remainingBricks)
         scene!.scaleMode = .aspectFill
         
         print("MapOverlayScene initialized")
+    }
+    
+    
+    func helloWorld() {
+        print("Hey from OverlayScene")
+    }
+    
+    func setScore(newScore: Int) {
+//        print(newScore)
+        score.text = "Score: " + String(newScore)
+    }
+    
+    func setRemainingBricks(newRemainingBricks: Int) {
+//        print(newRemainingBricks)
+        remainingBricks.text = "Remaining Bricks: " + String(newRemainingBricks)
     }
 
     

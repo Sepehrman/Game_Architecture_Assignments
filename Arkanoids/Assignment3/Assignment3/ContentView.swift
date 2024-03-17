@@ -53,7 +53,7 @@ struct ContentView: View {
     @State private var pinchCircles = [CGPoint(x: 0, y: 0), CGPoint(x: 0, y: 0)]
     @State public var overlayIsHidden = false
     
-    let overlayScene = OverlayScene(size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
+    let overlayScene: OverlayScene = OverlayScene(size: CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
 
     var body: some View {
         NavigationStack {
@@ -115,9 +115,8 @@ struct ContentView: View {
                 } label: { Text("Multitap") }
                 NavigationLink {
                     let scene = Box2DDemo()
-//                    self.overlayIsHidden.
+//                    scene.overlayScene = overlayScene // Set the overlay scene property
                     ZStack {
-                        
                         VStack {
                             SceneView(scene: scene, pointOfView: scene.cameraNode)
                                     .ignoresSafeArea()
@@ -142,6 +141,9 @@ struct ContentView: View {
                             })
                         }
                     }
+                    .onAppear {
+                            scene.overlayScene = overlayScene // Set the overlay scene property
+                        }
                     .background(.black)
                 } label: { Text("Lab 10: Box2D") }
                     .onSubmit {

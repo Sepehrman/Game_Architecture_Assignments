@@ -8,6 +8,7 @@
 //====================================================================
 
 import SceneKit
+import SpriteKit
 
 import QuartzCore
 
@@ -20,6 +21,8 @@ class Box2DDemo: SCNScene {
     let offsetMultiplier = 0.0002
     
     private var box2D: CBox2D!                      // Points to Objective-C++ wrapper for C++ Box2D library
+    
+    var overlayScene: OverlayScene?
     
     // Catch if initializer in init() fails
     required init?(coder aDecoder: NSCoder) {
@@ -174,6 +177,9 @@ class Box2DDemo: SCNScene {
 //        botWall?.position.x = (botWallPos?.pointee.loc.x)!
 //        botWall?.position.y = (botWallPos?.pointee.loc.y)!
         
+        // Updating the UI
+        overlayScene?.setScore(newScore: Int(box2D.score))  // Cast int32 to int
+        overlayScene?.setRemainingBricks(newRemainingBricks: Int(box2D.remainingBricks))  // Cast int32 to int
     }
     
     
@@ -182,7 +188,6 @@ class Box2DDemo: SCNScene {
     func handleDoubleTap() {
         print("Box2DDemo:handleDoubleTap")
         box2D.launchBall()
-        
     }
     
     

@@ -129,6 +129,10 @@ public:
     // Logic for ball hitting bottom boundry
     bool ballHitBoundry;
     
+    // Tracking Game Score
+//    int score;
+//    int bricksRemaining;
+    
 }
 @end
 
@@ -217,9 +221,9 @@ public:
         ballHitBrick = false;
         ballLaunched = false;
         
-//        ballHitLeftWall = false;
-//        ballHitLeftWall = false;
-//        ballHitLeftWall = false;
+        // Initializ score
+        self.score = 0;
+        self.remainingBricks = 0;
         
     }
     
@@ -299,13 +303,13 @@ public:
 //        theBrick = nullptr;
 //        physicsObjects.erase("Brick");
 //        ballHitBrick = false;   // until a reset and re-launch
-        
     }
     
     if (ballHitBoundry) {
         // Ball hit boundry
         printf("ballHitBoundry detected from CBox2D");
         [self Reset];   // Resets the ball
+        self.score--;
         ballHitBoundry = false;
     }
     

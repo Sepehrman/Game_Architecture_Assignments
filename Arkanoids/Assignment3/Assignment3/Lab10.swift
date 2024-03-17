@@ -35,7 +35,7 @@ class Box2DDemo: SCNScene {
         
         // Add the bricks
         for row in stride(from: BRICK_ROW_ITER_START, to: BRICK_ROW_ITER_END, by: Int32.Stride(BRICK_ROW_ITER_STEP)) {
-            for column in stride(from: BRICK_COL_ITER_START, to: BRICK_COL_ITER_END, by: Int32.Stride(BRICK_ROW_ITER_STEP)){
+            for column in stride(from: BRICK_COL_ITER_START, to: BRICK_COL_ITER_END, by: Int32.Stride(BRICK_COL_ITER_STEP)){
                       addBrick(brick_pos_x: CGFloat(row), brick_pos_y: CGFloat(column))
                   }
               }
@@ -121,7 +121,7 @@ class Box2DDemo: SCNScene {
         
         
         for row in stride(from: BRICK_ROW_ITER_START, to: BRICK_ROW_ITER_END, by: Int32.Stride(BRICK_ROW_ITER_STEP)) {
-            for column in stride(from: BRICK_COL_ITER_START, to: BRICK_COL_ITER_END, by: Int32.Stride(BRICK_ROW_ITER_STEP)){
+            for column in stride(from: BRICK_COL_ITER_START, to: (BRICK_COL_ITER_END), by: Int32.Stride(BRICK_COL_ITER_STEP)){
                 // Get brick position and update brick node
                 let brickPos = UnsafePointer(box2D.getObject("Brick \(row) \(column)"))
                 let theBrick = rootNode.childNode(withName: "Brick \(row) \(column)", recursively: true)
@@ -137,7 +137,6 @@ class Box2DDemo: SCNScene {
                 } else {
                     
                     // The brick has disappeared, so hide it
-                    print("hide")
                     theBrick?.isHidden = true
                     
                 }
@@ -162,8 +161,16 @@ class Box2DDemo: SCNScene {
     func resetPhysics() {
         
         box2D.reset()
-        let theBrick = rootNode.childNode(withName: "Brick", recursively: true)
-        theBrick?.isHidden = false
+        
+        
+        for row in stride(from: BRICK_ROW_ITER_START, to: BRICK_ROW_ITER_END, by: Int32.Stride(BRICK_ROW_ITER_STEP)) {
+            for column in stride(from: BRICK_COL_ITER_START, to: (BRICK_COL_ITER_END), by: Int32.Stride(BRICK_COL_ITER_STEP)){
+                
+                let theBrick = rootNode.childNode(withName: "Brick \(row) \(column)", recursively: true)
+                theBrick?.isHidden = false
+                
+            }
+        }
         
     }
     

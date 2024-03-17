@@ -27,12 +27,12 @@
 #define BALL_VELOCITY        1000.0f
 
 //These parameters dictate the generation for the for loop
-#define BRICK_ROW_ITER_START -10
-#define BRICK_ROW_ITER_END 20
+#define BRICK_ROW_ITER_START -10 //-10
+#define BRICK_ROW_ITER_END 20 //20
 #define BRICK_ROW_ITER_STEP 10
 #define BRICK_COL_ITER_START 40
 #define BRICK_COL_ITER_END 80
-#define BRICK_COL_ITER_STEP 5
+#define BRICK_COL_ITER_STEP 10
 
 
 // You can define other object types here

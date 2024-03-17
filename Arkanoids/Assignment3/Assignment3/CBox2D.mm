@@ -31,7 +31,27 @@ class CContactListener : public b2ContactListener
     
 public:
     
-    void BeginContact(b2Contact* contact) {};
+    void BeginContact(b2Contact* contact) {
+        // Use contact->GetFixtureA()->GetBody() to get the body that was hit
+        b2Body* bodyA = contact->GetFixtureA()->GetBody();
+        b2Body* bodyB = contact->GetFixtureB()->GetBody(); // Get the other body involved in the contact
+
+        struct PhysicsObject *objDataA = (struct PhysicsObject *)(bodyA->GetUserData());
+        struct PhysicsObject *objDataB = (struct PhysicsObject *)(bodyB->GetUserData());
+        
+        CBox2D *parentObjA = (__bridge CBox2D *)(objDataA->box2DObj);
+        CBox2D *parentObjB = (__bridge CBox2D *)(objDataB->box2DObj);
+
+        if (objDataA->objType == WallBotTypeBox) {
+            printf("Collision with WallBotTypeBox detected\n");
+            [parentObjA RegisterBoundryHit];    // assumes RegisterHit is a callback function to register collision
+
+        } else if (objDataB->objType == WallBotTypeBox) {
+            printf("Collision with WallBotTypeBox detected\n");
+            [parentObjB RegisterBoundryHit];    // assumes RegisterHit is a callback function to register collision
+        }
+        
+    };
     
     void EndContact(b2Contact* contact) {};
     
@@ -54,6 +74,9 @@ public:
             //  class does not know about the CBox2D that's running the physics
             struct PhysicsObject *objData = (struct PhysicsObject *)(bodyA->GetUserData());
             CBox2D *parentObj = (__bridge CBox2D *)(objData->box2DObj);
+            
+            
+            printf("Collision");
             
             if (objData->objType == WallTopTypeBox) {
                 printf("Hit top wall");
@@ -102,6 +125,9 @@ public:
     bool ballHitLeftWall;
     bool ballHitRightWall;
     bool ballHitTopWall;
+    
+    // Logic for ball hitting bottom boundry
+    bool ballHitBoundry;
     
 }
 @end
@@ -164,6 +190,13 @@ public:
         newObj->objType = WallTopTypeBox;
         objName = strdup("Wall_Top");
         [self AddObject:objName newObject:newObj];  // Causing issue
+        
+        newObj = new struct PhysicsObject;
+        newObj->loc.x = WALL_BOT_POS_X;
+        newObj->loc.y = WALL_BOT_POS_Y;
+        newObj->objType = WallBotTypeBox;
+        objName = strdup("Wall_Bot");
+        [self AddObject:objName newObject:newObj];
         
 //        newObj = new struct PhysicsObject;
 //        newObj->loc.x = BALL_POS_X;
@@ -269,6 +302,13 @@ public:
         
     }
     
+    if (ballHitBoundry) {
+        // Ball hit boundry
+        printf("ballHitBoundry detected from CBox2D");
+        [self Reset];   // Resets the ball
+        ballHitBoundry = false;
+    }
+    
     if (world)
     {
         
@@ -298,8 +338,16 @@ public:
 -(void)RegisterHit
 {
     // Set some flag here for processing later...
+    
     printf("RegisterHit");
     ballHitBrick = true;
+}
+
+-(void)RegisterBoundryHit
+{
+    // Set some flag here for processing later...
+    printf("RegisterBoundryHit");
+    ballHitBoundry = true;
 }
 
 -(void)LaunchBall
@@ -351,6 +399,8 @@ public:
             fixtureDef.density = 1.0f;
             fixtureDef.friction = 0.3f;
             fixtureDef.restitution = 1.0f;
+            fixtureDef.filter.categoryBits = BALL;  // BitMask to identify ball when hitting boundry
+//            fixtureDef.filter.maskBits = BOUNDRY;  // boundry will only collide with a BALL
             theObject->SetGravityScale(0.0f);
             
             break;
@@ -374,6 +424,22 @@ public:
             fixtureDef.friction = 0.0f;
             fixtureDef.restitution = 1.0f;      // Bounce factor?
             theObject->SetType(b2_staticBody);  // Immovable
+            
+            break;
+            
+        case WallBotTypeBox:
+            
+            dynamicBox.SetAsBox(WALL_BOT_WIDTH/2, WALL_BOT_HEIGHT/2);
+            fixtureDef.shape = &dynamicBox;
+//            fixtureDef.density = 1.0f;
+//            fixtureDef.friction = 0.0f;
+//            fixtureDef.restitution = 1.0f;      // Bounce factor?
+            
+            fixtureDef.filter.categoryBits = BOUNDRY;
+            fixtureDef.filter.maskBits = BALL;  // boundry will only collide with a BALL
+//            theObject->SetType(b2_staticBody);  // Immovable
+            fixtureDef.isSensor = true;
+            theObject->SetType(b2_staticBody); // Set the body type to static (immovable)
             
             break;
             
@@ -431,6 +497,7 @@ public:
     totalElapsedTime = 0;
     ballHitBrick = false;
     ballLaunched = false;
+    ballHitBoundry = false;
     
 }
 

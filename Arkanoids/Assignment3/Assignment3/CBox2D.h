@@ -42,9 +42,23 @@
 #define WALL_TOP_WIDTH     61.0f
 #define WALL_TOP_HEIGHT    1.0f
 
+#define WALL_BOT_POS_X         0
+#define WALL_BOT_POS_Y         -7
+#define WALL_BOT_WIDTH     61.0f
+#define WALL_BOT_HEIGHT    1.0f
+
 
 // You can define other object types here
-typedef enum { ObjTypeBox=0, ObjTypeCircle=1, WallSideTypeBox=2, WallTopTypeBox=4 } ObjectType;
+typedef enum { ObjTypeBox=0, ObjTypeCircle=1, WallSideTypeBox=2, WallTopTypeBox=4, WallBotTypeBox=5 } ObjectType;
+enum _entityCategory {
+   BALL =          0x0001,
+   BOUNDRY =     0x0002,
+//   ENEMY_SHIP =        0x0004,
+//   FRIENDLY_AIRCRAFT = 0x0008,
+//   ENEMY_AIRCRAFT =    0x0010,
+//   FRIENDLY_TOWER =    0x0020,
+//   RADAR_SENSOR =      0x0040,
+ };
 
 
 // Location of each object in our physics world
@@ -71,6 +85,7 @@ struct PhysicsObject {
 -(void) LaunchBall;                                                         // launch the ball
 -(void) Update:(float)elapsedTime;                                          // update the Box2D engine
 -(void) RegisterHit;                                                        // Register when the ball hits the brick
+-(void) RegisterBoundryHit;                                                        // Register when the ball hits reset boundry
 -(void) AddObject:(char *)name newObject:(struct PhysicsObject *)newObj;    // Add a new physics object
 -(struct PhysicsObject *) GetObject:(const char *)name;                     // Get a physics object by name
 -(void) Reset;                                                              // Reset Box2D

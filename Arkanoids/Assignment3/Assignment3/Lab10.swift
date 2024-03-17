@@ -108,6 +108,12 @@ class Box2DDemo: SCNScene {
         wallTop.geometry?.firstMaterial?.diffuse.contents = UIColor.white
         wallTop.position = SCNVector3(Int(WALL_TOP_POS_X), Int(WALL_TOP_POS_Y), 0)
         rootNode.addChildNode(wallTop)
+        
+        let wallBot = SCNNode(geometry: SCNBox(width: CGFloat(WALL_BOT_WIDTH), height: CGFloat(WALL_BOT_HEIGHT), length: 1, chamferRadius: 0))
+        wallBot.name = "Wall_Bot"
+        wallBot.geometry?.firstMaterial?.diffuse.contents = UIColor.red
+        wallBot.position = SCNVector3(Int(WALL_BOT_POS_X), Int(WALL_BOT_POS_Y), 0)
+        rootNode.addChildNode(wallBot)
 
     }
     
@@ -156,11 +162,17 @@ class Box2DDemo: SCNScene {
             
         }
         
-        // Get wall positions and update wall nodes for troublshooting purposes
-        let topWallPos = UnsafePointer(box2D.getObject("Wall_Top"))
-        let topWall = rootNode.childNode(withName: "Wall_Top", recursively: true)
-        topWall?.position.x = (topWallPos?.pointee.loc.x)!
-        topWall?.position.y = (topWallPos?.pointee.loc.y)!
+        // Uncomment the following if wall physics is buggy
+//        // Get wall positions and update wall nodes for troublshooting purposes
+//        let topWallPos = UnsafePointer(box2D.getObject("Wall_Top"))
+//        let topWall = rootNode.childNode(withName: "Wall_Top", recursively: true)
+//        topWall?.position.x = (topWallPos?.pointee.loc.x)!
+//        topWall?.position.y = (topWallPos?.pointee.loc.y)!
+//        
+//        let botWallPos = UnsafePointer(box2D.getObject("Wall_Bot"))
+//        let botWall = rootNode.childNode(withName: "Wall_Bot", recursively: true)
+//        botWall?.position.x = (botWallPos?.pointee.loc.x)!
+//        botWall?.position.y = (botWallPos?.pointee.loc.y)!
         
     }
     

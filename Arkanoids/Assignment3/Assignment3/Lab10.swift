@@ -91,11 +91,11 @@ class Box2DDemo: SCNScene {
     
     func addPaddle() {
         
-        let theBrick = SCNNode(geometry: SCNBox(width: CGFloat(BRICK_WIDTH), height: CGFloat(BRICK_HEIGHT), length: 1, chamferRadius: 0))
-        theBrick.name = "Paddle"
-        theBrick.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
-        theBrick.position = SCNVector3(Int(PADDLE_POS_X), Int(PADDLE_POS_Y), 0)
-        rootNode.addChildNode(theBrick)
+        let thePaddle = SCNNode(geometry: SCNBox(width: CGFloat(PADDLE_WIDTH), height: CGFloat(PADDLE_HEIGHT), length: 1, chamferRadius: 0))
+        thePaddle.name = "Paddle"
+        thePaddle.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+        thePaddle.position = SCNVector3(Int(PADDLE_POS_X), Int(PADDLE_POS_Y), 0)
+        rootNode.addChildNode(thePaddle)
     }
     
     

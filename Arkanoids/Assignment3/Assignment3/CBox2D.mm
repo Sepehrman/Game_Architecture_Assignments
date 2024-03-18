@@ -430,7 +430,7 @@ public:
             break;
             
         case PaddleType:
-            dynamicBox.SetAsBox(BRICK_WIDTH/4, BRICK_HEIGHT/4);
+            dynamicBox.SetAsBox(PADDLE_WIDTH/4, PADDLE_HEIGHT/3);
             fixtureDef.shape = &dynamicBox;
             fixtureDef.density = 1.0f;
             fixtureDef.friction = 0.3f;

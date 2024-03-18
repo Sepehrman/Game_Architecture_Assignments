@@ -242,8 +242,8 @@ public:
         
         newObj = new struct PhysicsObject;
         newObj->loc.x = BRICK_POS_X;
-        newObj->loc.y = BRICK_POS_Y - 70;
-        newObj->objType = ObjTypeBox;
+        newObj->loc.y = BRICK_POS_Y;
+        newObj->objType = PaddleType;
         objName = strdup("Paddle");
         [self AddObject:objName newObject:newObj newType:b2_dynamicBody];
         
@@ -422,6 +422,15 @@ public:
             
         case ObjTypeBox:
             dynamicBox.SetAsBox(BRICK_WIDTH/2, BRICK_HEIGHT/2);
+            fixtureDef.shape = &dynamicBox;
+            fixtureDef.density = 1.0f;
+            fixtureDef.friction = 0.3f;
+            fixtureDef.restitution = 1.0f;
+            
+            break;
+            
+        case PaddleType:
+            dynamicBox.SetAsBox(BRICK_WIDTH/4, BRICK_HEIGHT/4);
             fixtureDef.shape = &dynamicBox;
             fixtureDef.density = 1.0f;
             fixtureDef.friction = 0.3f;

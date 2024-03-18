@@ -17,7 +17,7 @@
 //   and how long to wait before dropping brick
 
 #define BRICK_POS_X         0
-#define BRICK_POS_Y         90
+#define BRICK_POS_Y         0
 #define BRICK_WIDTH         8.0f
 // #define BRICK_POS_Y         0
 // #define BRICK_WIDTH         20.0f
@@ -58,7 +58,7 @@
 
 
 // You can define other object types here
-typedef enum { ObjTypeBox=0, ObjTypeCircle=1, WallSideTypeBox=2, WallTopTypeBox=4, WallBotTypeBox=5 } ObjectType;
+typedef enum { ObjTypeBox=0, ObjTypeCircle=1, WallSideTypeBox=2, WallTopTypeBox=4, WallBotTypeBox=5, PaddleType=6} ObjectType;
 enum _entityCategory {
    BALL =          0x0001,
    BOUNDRY =     0x0002,

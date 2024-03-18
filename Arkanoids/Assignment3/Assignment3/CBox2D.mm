@@ -107,6 +107,7 @@ public:
     // Box2D-specific objects
     b2Vec2 *gravity;
     b2World *world;
+    float ballXVelocity;  // encodes
     CContactListener *contactListener;
     float paddlePosition;   // the position of the paddle on the x axis.
     float totalElapsedTime;
@@ -148,6 +149,7 @@ public:
     self = [super init];
     
     if (self) {
+        ballXVelocity = 0.0f;
         
         // Initialize Box2D
         gravity = new b2Vec2(0.0f, 0.0f);
@@ -283,7 +285,7 @@ public:
     //  and if so, use ApplyLinearImpulse() and SetActive(true)
     if (ballLaunched)
     {
-        
+        ((b2Body *)theBall->b2ShapePtr)->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
         // Apply a force (since the ball is set up not to be affected by gravity)
 //        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(0, BALL_VELOCITY),
 //                                                            ((b2Body *)theBall->b2ShapePtr)->GetPosition(),
@@ -291,9 +293,9 @@ public:
         ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(700, BALL_VELOCITY),
                                                             ((b2Body *)theBall->b2ShapePtr)->GetPosition(),
                                                             true);
+
         ((b2Body *)theBall->b2ShapePtr)->SetActive(true);
         ballLaunched = false;
-        
     }
     
     // Check if it is time yet to drop the brick, and if so call SetAwake()

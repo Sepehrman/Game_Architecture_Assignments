@@ -242,9 +242,9 @@ public:
         
         newObj = new struct PhysicsObject;
         newObj->loc.x = BRICK_POS_X;
-        newObj->loc.y = BRICK_POS_Y;
+        newObj->loc.y = BRICK_POS_Y - 70;
         newObj->objType = ObjTypeBox;
-        objName = strdup("Brick");
+        objName = strdup("Paddle");
         [self AddObject:objName newObject:newObj newType:b2_dynamicBody];
         
         

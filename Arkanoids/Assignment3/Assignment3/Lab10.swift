@@ -18,7 +18,7 @@ class Box2DDemo: SCNScene {
     
     var lastTime = CFTimeInterval(floatLiteral: 0)  // Used to calculate elapsed time on each update
     
-    let offsetMultiplier = 0.0002
+    let offsetMultiplier = 0.002
     
     private var box2D: CBox2D!                      // Points to Objective-C++ wrapper for C++ Box2D library
     

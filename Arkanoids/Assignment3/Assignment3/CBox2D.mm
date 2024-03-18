@@ -504,7 +504,7 @@ public:
 
 -(void)movePaddle:(double)offset
 {
-    struct PhysicsObject *theBrick = physicsObjects["Paddle"];
+    struct PhysicsObject *thePaddle = physicsObjects["Paddle"];
     paddlePosition += offset;
     printf("offset: %0.4f", paddlePosition);
 }

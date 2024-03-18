@@ -31,7 +31,27 @@ class CContactListener : public b2ContactListener
     
 public:
     
-    void BeginContact(b2Contact* contact) {};
+    void BeginContact(b2Contact* contact) {
+        // Use contact->GetFixtureA()->GetBody() to get the body that was hit
+        b2Body* bodyA = contact->GetFixtureA()->GetBody();
+        b2Body* bodyB = contact->GetFixtureB()->GetBody(); // Get the other body involved in the contact
+
+        struct PhysicsObject *objDataA = (struct PhysicsObject *)(bodyA->GetUserData());
+        struct PhysicsObject *objDataB = (struct PhysicsObject *)(bodyB->GetUserData());
+        
+        CBox2D *parentObjA = (__bridge CBox2D *)(objDataA->box2DObj);
+        CBox2D *parentObjB = (__bridge CBox2D *)(objDataB->box2DObj);
+
+        if (objDataA->objType == WallBotTypeBox) {
+            printf("Collision with WallBotTypeBox detected\n");
+            [parentObjA RegisterBoundryHit];    // assumes RegisterHit is a callback function to register collision
+
+        } else if (objDataB->objType == WallBotTypeBox) {
+            printf("Collision with WallBotTypeBox detected\n");
+            [parentObjB RegisterBoundryHit];    // assumes RegisterHit is a callback function to register collision
+        }
+        
+    };
     
     void EndContact(b2Contact* contact) {};
     
@@ -45,7 +65,12 @@ public:
         if (state2[0] == b2_addState)
         {
             // Use contact->GetFixtureA()->GetBody() to get the body that was hit
-            b2Body* bodyA = contact->GetFixtureA()->GetBody();
+            
+                        b2Body* bodyA = contact->GetFixtureA()->GetBody();
+            
+            //            if (bodyB->GetType() == ObjectType::WallSideTypeBox && bodyB->GetType() == ObjectType::WallTopTypeBox) {
+            //                return;
+            //            }
             
             // Get the PhysicsObject as the user data, and then the CBox2D object in that struct
             // This is needed because this handler may be running in a different thread and this
@@ -54,8 +79,17 @@ public:
             CBox2D *parentObj = (__bridge CBox2D *)(objData->box2DObj);
             
             // Call RegisterHit (assume CBox2D object is in user data)
-            const char *brickHit = objData->name; // Define your string here
-            [parentObj RegisterHit:brickHit]; // Pass the string into RegisterHit
+            const char *originalCString = objData->name;
+            char firstFiveChars[6]; // Extra space for the null terminator
+            strncpy(firstFiveChars, originalCString, 5);
+            firstFiveChars[5] = '\0'; // Null terminator
+            
+            printf("firstFive: %s \n objData: %s", firstFiveChars, objData->name);
+            if (strcmp(firstFiveChars, "Brick") == 0) {
+                const char *brickHit = objData->name; // Define your string here
+                [parentObj RegisterHit:brickHit]; // Pass the string into RegisterHit
+            }
+
         }
     }
 
@@ -74,6 +108,7 @@ public:
     b2Vec2 *gravity;
     b2World *world;
     CContactListener *contactListener;
+    float paddlePosition;   // the position of the paddle on the x axis.
     float totalElapsedTime;
     
     // Map to keep track of physics object to communicate with the renderer
@@ -89,6 +124,18 @@ public:
     bool ballHitBrick;  // register that the ball hit the break
     bool ballLaunched;  // register that the user has launched the ball
     const char* lastBrickHit;
+    
+    // Logic for ball hitting walls
+    bool ballHitLeftWall;
+    bool ballHitRightWall;
+    bool ballHitTopWall;
+    
+    // Logic for ball hitting bottom boundry
+    bool ballHitBoundry;
+    
+    // Tracking Game Score
+//    int score;
+//    int bricksRemaining;
     
 }
 @end
@@ -115,6 +162,18 @@ public:
         contactListener = new CContactListener();
         world->SetContactListener(contactListener);
         
+        paddlePosition = BRICK_POS_X;
+        
+        struct PhysicsObject *newObj;
+        char *objName;
+        
+//        // Set up the brick and ball objects for Box2D
+//        newObj = new struct PhysicsObject;
+//        newObj->loc.x = BRICK_POS_X;
+//        newObj->loc.y = BRICK_POS_Y;
+//        newObj->objType = ObjTypeBox;
+//        objName = strdup("Brick");
+//        [self AddObject:objName newObject:newObj];
         
         
         for (int row = BRICK_ROW_ITER_START; row < BRICK_ROW_ITER_END; row += BRICK_ROW_ITER_STEP) {
@@ -134,17 +193,66 @@ public:
         // Set up the brick and ball objects for Box2D
         
         
-        struct PhysicsObject *newObj = new struct PhysicsObject;
+        newObj = new struct PhysicsObject;
         newObj = new struct PhysicsObject;
         newObj->loc.x = BALL_POS_X;
         newObj->loc.y = BALL_POS_Y;
         newObj->objType = ObjTypeCircle;
-        char *objName = strdup("Ball");
+        objName = strdup("Ball");
         [self AddObject:objName newObject:newObj newType:b2_dynamicBody];
+        
+        
+        // Set up Walls for Box2D
+        newObj = new struct PhysicsObject;
+        newObj->loc.x = WALL_LEFT_POS_X;
+        newObj->loc.y = WALL_LEFT_POS_Y;
+        newObj->objType = WallSideTypeBox;
+        objName = strdup("Wall_Left");
+        [self AddObject:objName newObject:newObj newType:b2_staticBody];
+        
+        newObj = new struct PhysicsObject;
+        newObj->loc.x = WALL_RIGHT_POS_X;
+        newObj->loc.y = WALL_RIGHT_POS_Y;
+        newObj->objType = WallSideTypeBox;
+        objName = strdup("Wall_Right");
+        [self AddObject:objName newObject:newObj newType:b2_staticBody];
+        
+        newObj = new struct PhysicsObject;
+        newObj->loc.x = WALL_TOP_POS_X;
+        newObj->loc.y = WALL_TOP_POS_Y;
+        newObj->objType = WallTopTypeBox;
+        objName = strdup("Wall_Top");
+        [self AddObject:objName newObject:newObj newType:b2_staticBody];  // Causing issue
+        
+        newObj = new struct PhysicsObject;
+        newObj->loc.x = WALL_BOT_POS_X;
+        newObj->loc.y = WALL_BOT_POS_Y;
+        newObj->objType = WallBotTypeBox;
+        objName = strdup("Wall_Bot");
+        [self AddObject:objName newObject:newObj newType:b2_staticBody];
+        
+//        newObj = new struct PhysicsObject;
+//        newObj->loc.x = BALL_POS_X;
+//        newObj->loc.y = BALL_POS_Y + 10;
+//        newObj->objType = ObjTypeBox;
+//        objName = strdup("Paddle");
+//        [self AddObject:objName newObject:newObj];  // Causing issue
+        
+        newObj = new struct PhysicsObject;
+        newObj->loc.x = BRICK_POS_X;
+        newObj->loc.y = BRICK_POS_Y;
+        newObj->objType = ObjTypeBox;
+        objName = strdup("Brick");
+        [self AddObject:objName newObject:newObj newType:b2_dynamicBody];
+        
         
         totalElapsedTime = 0;
         ballHitBrick = false;
         ballLaunched = false;
+        
+        // Initializ score
+        self.score = 0;
+        self.remainingBricks = 0;
         
     }
     
@@ -177,7 +285,10 @@ public:
     {
         
         // Apply a force (since the ball is set up not to be affected by gravity)
-        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(0, BALL_VELOCITY),
+//        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(0, BALL_VELOCITY),
+//                                                            ((b2Body *)theBall->b2ShapePtr)->GetPosition(),
+//                                                            true);
+        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(500, BALL_VELOCITY),
                                                             ((b2Body *)theBall->b2ShapePtr)->GetPosition(),
                                                             true);
         ((b2Body *)theBall->b2ShapePtr)->SetActive(true);
@@ -222,9 +333,18 @@ public:
             physicsObjects.erase(lastBrickHit);
             printf("%s\n", lastBrickHit);
             ballHitBrick = false;   // until a reset and re-launch
-            
-    
+                
+
+
         }
+
+            if (ballHitBoundry) {
+                // Ball hit boundry
+                printf("ballHitBoundry detected from CBox2D");
+                [self Reset];   // Resets the ball
+                self.score--;
+                ballHitBoundry = false;
+            }
     
     if (world)
     {
@@ -257,6 +377,13 @@ public:
     // Set some flag here for processing later...
     lastBrickHit = brickHit;
     ballHitBrick = true;
+}
+
+-(void)RegisterBoundryHit
+{
+    // Set some flag here for processing later...
+    printf("RegisterBoundryHit");
+    ballHitBoundry = true;
 }
 
 -(void)LaunchBall
@@ -307,7 +434,47 @@ public:
             fixtureDef.density = 1.0f;
             fixtureDef.friction = 0.3f;
             fixtureDef.restitution = 1.0f;
+            fixtureDef.filter.categoryBits = BALL;  // BitMask to identify ball when hitting boundry
+//            fixtureDef.filter.maskBits = BOUNDRY;  // boundry will only collide with a BALL
             theObject->SetGravityScale(0.0f);
+            
+            break;
+            
+        case WallSideTypeBox:
+            
+            dynamicBox.SetAsBox(WALL_LEFT_WIDTH/2, WALL_LEFT_HEIGHT/2);
+            fixtureDef.shape = &dynamicBox;
+            fixtureDef.density = 1.0f;
+            fixtureDef.friction = 0.0f;
+            fixtureDef.restitution = 1.0f;
+//            theObject->SetType(b2_staticBody);  // Immovable
+            
+            break;
+            
+        case WallTopTypeBox:
+            
+            dynamicBox.SetAsBox(WALL_TOP_WIDTH/2, WALL_TOP_HEIGHT/2);
+            fixtureDef.shape = &dynamicBox;
+            fixtureDef.density = 1.0f;
+            fixtureDef.friction = 0.0f;
+            fixtureDef.restitution = 1.0f;      // Bounce factor?
+//            theObject->SetType(b2_staticBody);  // Immovable
+            
+            break;
+            
+        case WallBotTypeBox:
+            
+            dynamicBox.SetAsBox(WALL_BOT_WIDTH/2, WALL_BOT_HEIGHT/2);
+            fixtureDef.shape = &dynamicBox;
+//            fixtureDef.density = 1.0f;
+//            fixtureDef.friction = 0.0f;
+//            fixtureDef.restitution = 1.0f;      // Bounce factor?
+            
+            fixtureDef.filter.categoryBits = BOUNDRY;
+            fixtureDef.filter.maskBits = BALL;  // boundry will only collide with a BALL
+//            theObject->SetType(b2_staticBody);  // Immovable
+            fixtureDef.isSensor = true;
+//            theObject->SetType(b2_staticBody); // Set the body type to static (immovable)
             
             break;
             
@@ -323,6 +490,14 @@ public:
     physicsObjects[name] = newObj;
     
 }
+
+-(void)movePaddle:(double)offset
+{
+    struct PhysicsObject *theBrick = physicsObjects["Brick"];
+    paddlePosition += offset;
+    printf("offset: %0.4f", paddlePosition);
+}
+
 
 -(struct PhysicsObject *) GetObject:(const char *)name
 {
@@ -370,72 +545,8 @@ public:
       totalElapsedTime = 0;
       ballHitBrick = false;
       ballLaunched = false;
-}
+      ballHitBoundry = false;
 
-
-
--(void)HelloWorld
-{
-    
-#ifdef USE_HELLO_WORLD
-    
-    groundBodyDef = new b2BodyDef;
-    groundBodyDef->position.Set(0.0f, -10.0f);
-    groundBody = world->CreateBody(groundBodyDef);
-    groundBox = new b2PolygonShape;
-    groundBox->SetAsBox(50.0f, 10.0f);
-    
-    groundBody->CreateFixture(groundBox, 0.0f);
-    
-    // Define the dynamic body. We set its position and call the body factory.
-    b2BodyDef bodyDef;
-    bodyDef.type = b2_dynamicBody;
-    bodyDef.position.Set(0.0f, 4.0f);
-    b2Body* body = world->CreateBody(&bodyDef);
-    
-    // Define another box shape for our dynamic body.
-    b2PolygonShape dynamicBox;
-    dynamicBox.SetAsBox(1.0f, 1.0f);
-    
-    // Define the dynamic body fixture.
-    b2FixtureDef fixtureDef;
-    fixtureDef.shape = &dynamicBox;
-    
-    // Set the box density to be non-zero, so it will be dynamic.
-    fixtureDef.density = 1.0f;
-    
-    // Override the default friction.
-    fixtureDef.friction = 0.3f;
-    
-    // Add the shape to the body.
-    body->CreateFixture(&fixtureDef);
-    
-    // Prepare for simulation. Typically we use a time step of 1/60 of a
-    // second (60Hz) and 10 iterations. This provides a high quality simulation
-    // in most game scenarios.
-    float32 timeStep = 1.0f / 60.0f;
-    int32 velocityIterations = 6;
-    int32 positionIterations = 2;
-    
-    // This is our little game loop.
-    world->SetGravity(b2Vec2(0, -10.0f));
-    for (int32 i = 0; i < 60; ++i)
-    {
-        
-        // Instruct the world to perform a single step of simulation.
-        // It is generally best to keep the time step and iterations fixed.
-        world->Step(timeStep, velocityIterations, positionIterations);
-        
-        // Now print the position and angle of the body.
-        b2Vec2 position = body->GetPosition();
-        float32 angle = body->GetAngle();
-        
-        printf("%4.2f %4.2f %4.2f\n", position.x, position.y, angle);
-        
-    }
-    
-#endif
-    
 }
 
 @end

@@ -8,6 +8,7 @@
 //====================================================================
 
 import SceneKit
+import SpriteKit
 
 import QuartzCore
 
@@ -17,7 +18,11 @@ class Box2DDemo: SCNScene {
     
     var lastTime = CFTimeInterval(floatLiteral: 0)  // Used to calculate elapsed time on each update
     
+    let offsetMultiplier = 0.0002
+    
     private var box2D: CBox2D!                      // Points to Objective-C++ wrapper for C++ Box2D library
+    
+    var overlayScene: OverlayScene?
     
     // Catch if initializer in init() fails
     required init?(coder aDecoder: NSCoder) {
@@ -42,6 +47,9 @@ class Box2DDemo: SCNScene {
         
         // Add the ball
         addBall()
+        
+        // Add walls
+        addWalls()
         
         // Initialize the Box2D object
         box2D = CBox2D()
@@ -89,6 +97,35 @@ class Box2DDemo: SCNScene {
         theBall.position = SCNVector3(Int(BALL_POS_X), Int(BALL_POS_Y), 0)
         rootNode.addChildNode(theBall)
         
+    }
+    
+    
+    func addWalls() {
+        
+        let wallLeft = SCNNode(geometry: SCNBox(width: CGFloat(WALL_LEFT_WIDTH), height: CGFloat(WALL_LEFT_HEIGHT), length: 1, chamferRadius: 0))
+        wallLeft.name = "Wall_Left"
+        wallLeft.geometry?.firstMaterial?.diffuse.contents = UIColor.white
+        wallLeft.position = SCNVector3(Int(WALL_LEFT_POS_X), Int(WALL_LEFT_POS_Y), 0)
+        rootNode.addChildNode(wallLeft)
+        
+        let wallRight = SCNNode(geometry: SCNBox(width: CGFloat(WALL_RIGHT_WIDTH), height: CGFloat(WALL_RIGHT_HEIGHT), length: 1, chamferRadius: 0))
+        wallRight.name = "Wall_Right"
+        wallRight.geometry?.firstMaterial?.diffuse.contents = UIColor.white
+        wallRight.position = SCNVector3(Int(WALL_RIGHT_POS_X), Int(WALL_RIGHT_POS_Y), 0)
+        rootNode.addChildNode(wallRight)
+        
+        let wallTop = SCNNode(geometry: SCNBox(width: CGFloat(WALL_TOP_WIDTH), height: CGFloat(WALL_TOP_HEIGHT), length: 1, chamferRadius: 0))
+        wallTop.name = "Wall_Top"
+        wallTop.geometry?.firstMaterial?.diffuse.contents = UIColor.white
+        wallTop.position = SCNVector3(Int(WALL_TOP_POS_X), Int(WALL_TOP_POS_Y), 0)
+        rootNode.addChildNode(wallTop)
+        
+        let wallBot = SCNNode(geometry: SCNBox(width: CGFloat(WALL_BOT_WIDTH), height: CGFloat(WALL_BOT_HEIGHT), length: 1, chamferRadius: 0))
+        wallBot.name = "Wall_Bot"
+        wallBot.geometry?.firstMaterial?.diffuse.contents = UIColor.red
+        wallBot.position = SCNVector3(Int(WALL_BOT_POS_X), Int(WALL_BOT_POS_Y), 0)
+        rootNode.addChildNode(wallBot)
+
     }
     
     
@@ -144,15 +181,29 @@ class Box2DDemo: SCNScene {
               }
        
         
+        // Uncomment the following if wall physics is buggy
+//        // Get wall positions and update wall nodes for troublshooting purposes
+//        let topWallPos = UnsafePointer(box2D.getObject("Wall_Top"))
+//        let topWall = rootNode.childNode(withName: "Wall_Top", recursively: true)
+//        topWall?.position.x = (topWallPos?.pointee.loc.x)!
+//        topWall?.position.y = (topWallPos?.pointee.loc.y)!
+//        
+//        let botWallPos = UnsafePointer(box2D.getObject("Wall_Bot"))
+//        let botWall = rootNode.childNode(withName: "Wall_Bot", recursively: true)
+//        botWall?.position.x = (botWallPos?.pointee.loc.x)!
+//        botWall?.position.y = (botWallPos?.pointee.loc.y)!
+        
+        // Updating the UI
+        overlayScene?.setScore(newScore: Int(box2D.score))  // Cast int32 to int
+        overlayScene?.setRemainingBricks(newRemainingBricks: Int(box2D.remainingBricks))  // Cast int32 to int
     }
     
     
     // Function to be called by double-tap gesture: launch the ball
     @MainActor
     func handleDoubleTap() {
-        
+        print("Box2DDemo:handleDoubleTap")
         box2D.launchBall()
-        
     }
     
     
@@ -172,6 +223,15 @@ class Box2DDemo: SCNScene {
             }
         }
         
+    }
+    
+    @MainActor
+    func movePaddle(offset: CGSize) {
+        
+        let offsetX = Double(offset.width) // Convert CGFloat to Double
+        
+        let theBrick = rootNode.childNode(withName: "Brick", recursively: true)
+        box2D.movePaddle(Double(offset.width) * offsetMultiplier)
     }
     
 }

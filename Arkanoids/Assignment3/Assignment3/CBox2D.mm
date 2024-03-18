@@ -506,6 +506,7 @@ public:
 {
     struct PhysicsObject *thePaddle = physicsObjects["Paddle"];
     paddlePosition += offset;
+    ((b2Body*)thePaddle->b2ShapePtr)->SetTransform(b2Vec2(paddlePosition, BALL_POS_Y), 0);
     printf("offset: %0.4f", paddlePosition);
 }
 

@@ -288,7 +288,7 @@ public:
 //        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(0, BALL_VELOCITY),
 //                                                            ((b2Body *)theBall->b2ShapePtr)->GetPosition(),
 //                                                            true);
-        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(500, BALL_VELOCITY),
+        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(700, BALL_VELOCITY),
                                                             ((b2Body *)theBall->b2ShapePtr)->GetPosition(),
                                                             true);
         ((b2Body *)theBall->b2ShapePtr)->SetActive(true);

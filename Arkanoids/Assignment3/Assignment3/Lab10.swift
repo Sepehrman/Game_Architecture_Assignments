@@ -165,6 +165,10 @@ class Box2DDemo: SCNScene {
                 if (brickPos != nil) {
 //                    print("Brick \(row) \(column)")
                     // The brick is visible, so set the position
+                    
+                    theBrick?.isHidden = false
+
+                    
                     theBrick?.position.x = (brickPos?.pointee.loc.x)!
                     theBrick?.position.y = (brickPos?.pointee.loc.y)!
 //                    print(theBrick?.position.x)
@@ -173,8 +177,11 @@ class Box2DDemo: SCNScene {
                     
                 } else {
                     
+                    
                     // The brick has disappeared, so hide it
                     theBrick?.isHidden = true
+                    
+                    
                     
                 }
                   }

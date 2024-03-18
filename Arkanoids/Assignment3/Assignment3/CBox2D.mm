@@ -164,7 +164,7 @@ public:
         contactListener = new CContactListener();
         world->SetContactListener(contactListener);
         
-        paddlePosition = BRICK_POS_X;
+        paddlePosition = PADDLE_POS_X;
         
         struct PhysicsObject *newObj;
         char *objName;
@@ -241,8 +241,8 @@ public:
 //        [self AddObject:objName newObject:newObj];  // Causing issue
         
         newObj = new struct PhysicsObject;
-        newObj->loc.x = BRICK_POS_X;
-        newObj->loc.y = BRICK_POS_Y;
+        newObj->loc.x = PADDLE_POS_X;
+        newObj->loc.y = PADDLE_POS_Y;
         newObj->objType = PaddleType;
         objName = strdup("Paddle");
         [self AddObject:objName newObject:newObj newType:b2_dynamicBody];
@@ -504,7 +504,7 @@ public:
 
 -(void)movePaddle:(double)offset
 {
-    struct PhysicsObject *theBrick = physicsObjects["Brick"];
+    struct PhysicsObject *theBrick = physicsObjects["Paddle"];
     paddlePosition += offset;
     printf("offset: %0.4f", paddlePosition);
 }

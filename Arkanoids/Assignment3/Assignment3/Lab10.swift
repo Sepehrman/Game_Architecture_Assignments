@@ -94,7 +94,7 @@ class Box2DDemo: SCNScene {
         let theBrick = SCNNode(geometry: SCNBox(width: CGFloat(BRICK_WIDTH), height: CGFloat(BRICK_HEIGHT), length: 1, chamferRadius: 0))
         theBrick.name = "Paddle"
         theBrick.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
-        theBrick.position = SCNVector3(Int(BRICK_POS_X), Int(BRICK_POS_Y), 0)
+        theBrick.position = SCNVector3(Int(PADDLE_POS_X), Int(PADDLE_POS_Y), 0)
         rootNode.addChildNode(theBrick)
     }
     

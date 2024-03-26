@@ -18,7 +18,7 @@ class Box2DDemo: SCNScene {
     
     var lastTime = CFTimeInterval(floatLiteral: 0)  // Used to calculate elapsed time on each update
     
-    let offsetMultiplier = 0.002
+    let offsetMultiplier = 0.008
     
     private var box2D: CBox2D!                      // Points to Objective-C++ wrapper for C++ Box2D library
     
@@ -54,7 +54,6 @@ class Box2DDemo: SCNScene {
         
         // Initialize the Box2D object
         box2D = CBox2D()
-        //        box2D.helloWorld()  // If you want to test the HelloWorld example of Box2D
         
         // Setup the game loop tied to the display refresh
         let updater = CADisplayLink(target: self, selector: #selector(gameLoop))
@@ -251,7 +250,6 @@ class Box2DDemo: SCNScene {
     @MainActor
     func movePaddle(offset: CGSize) {
         
-        let offsetX = Double(offset.width) // Convert CGFloat to Double
         
         box2D.movePaddle(Double(offset.width) * offsetMultiplier)
     }

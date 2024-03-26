@@ -233,14 +233,6 @@ public:
         objName = strdup("Wall_Bot");
         [self AddObject:objName newObject:newObj newType:b2_staticBody];
         
-        
-//        newObj = new struct PhysicsObject;
-//        newObj->loc.x = BALL_POS_X;
-//        newObj->loc.y = BALL_POS_Y + 10;
-//        newObj->objType = ObjTypeBox;
-//        objName = strdup("Paddle");
-//        [self AddObject:objName newObject:newObj];  // Causing issue
-        
         newObj = new struct PhysicsObject;
         newObj->loc.x = PADDLE_POS_X;
         newObj->loc.y = PADDLE_POS_Y;

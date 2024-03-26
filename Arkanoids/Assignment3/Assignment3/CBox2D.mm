@@ -280,6 +280,9 @@ public:
     
     // Get pointers to the brick and ball physics objects
     struct PhysicsObject *theBall = physicsObjects["Ball"];
+    struct PhysicsObject *thePaddle = physicsObjects["Paddle"];
+    ((b2Body*)thePaddle->b2ShapePtr)->SetTransform(b2Vec2(paddlePosition, 0), 0);
+
     
     // Check here if we need to launch the ball
     //  and if so, use ApplyLinearImpulse() and SetActive(true)
@@ -504,10 +507,8 @@ public:
 
 -(void)movePaddle:(double)offset
 {
-    struct PhysicsObject *thePaddle = physicsObjects["Paddle"];
-    paddlePosition += offset;
-    ((b2Body*)thePaddle->b2ShapePtr)->SetTransform(b2Vec2(paddlePosition, PADDLE_POS_Y), 0);
-    printf("offset: %0.4f", paddlePosition);
+    paddlePosition += offset + 5;
+    printf("%f",paddlePosition);
 }
 
 

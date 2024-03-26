@@ -247,7 +247,7 @@ class Box2DDemo: SCNScene {
         
         let offsetX = Double(offset.width) // Convert CGFloat to Double
         
-        let theBrick = rootNode.childNode(withName: "Brick", recursively: true)
+        let thePaddle = rootNode.childNode(withName: "Paddle", recursively: true)
         box2D.movePaddle(Double(offset.width) * offsetMultiplier)
     }
     

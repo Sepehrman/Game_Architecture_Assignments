@@ -84,7 +84,6 @@ public:
             strncpy(firstFiveChars, originalCString, 5);
             firstFiveChars[5] = '\0'; // Null terminator
             
-            printf("firstFive: %s \n objData: %s", firstFiveChars, objData->name);
             if (strcmp(firstFiveChars, "Brick") == 0) {
                 const char *brickHit = objData->name; // Define your string here
                 [parentObj RegisterHit:brickHit]; // Pass the string into RegisterHit
@@ -240,8 +239,6 @@ public:
         objName = strdup("Paddle");
         [self AddObject:objName newObject:newObj newType:b2_dynamicBody];
         
-        
-        
         totalElapsedTime = 0;
         ballHitBrick = false;
         ballLaunched = false;
@@ -345,6 +342,7 @@ public:
 {
     // Set some flag here for processing later...
     lastBrickHit = brickHit;
+    printf("ball hit brick");
     ballHitBrick = true;
 }
 
@@ -471,8 +469,25 @@ public:
 
 -(void)movePaddle:(double)offset
 {
-    paddlePosition += offset;
-    printf("%f",paddlePosition);
+    float lowerLimit = -24.22;
+    float upperLimit = 24.22;
+
+    // Check if movement exceeds limits
+    if ((paddlePosition + offset) >= lowerLimit && (paddlePosition + offset) <= upperLimit) {
+        // If within limits, apply offset
+        paddlePosition += offset;
+    } else {
+        // If exceeding limits, set paddlePosition to the nearest limit
+        if (offset > 0) {
+            paddlePosition = upperLimit;
+        } else {
+            paddlePosition = lowerLimit;
+        }
+    }
+
+    // Print the updated paddle position
+    printf("%f\n", paddlePosition);
+
 }
 
 

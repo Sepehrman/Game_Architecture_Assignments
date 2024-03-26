@@ -233,6 +233,7 @@ public:
         objName = strdup("Wall_Bot");
         [self AddObject:objName newObject:newObj newType:b2_staticBody];
         
+        
 //        newObj = new struct PhysicsObject;
 //        newObj->loc.x = BALL_POS_X;
 //        newObj->loc.y = BALL_POS_Y + 10;
@@ -246,6 +247,7 @@ public:
         newObj->objType = PaddleType;
         objName = strdup("Paddle");
         [self AddObject:objName newObject:newObj newType:b2_dynamicBody];
+        
         
         
         totalElapsedTime = 0;
@@ -289,47 +291,19 @@ public:
     if (ballLaunched)
     {
         ((b2Body *)theBall->b2ShapePtr)->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
-        // Apply a force (since the ball is set up not to be affected by gravity)
-//        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(0, BALL_VELOCITY),
-//                                                            ((b2Body *)theBall->b2ShapePtr)->GetPosition(),
-//                                                            true);
+
         ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(700, BALL_VELOCITY),
                                                             ((b2Body *)theBall->b2ShapePtr)->GetPosition(),
                                                             true);
-
         ((b2Body *)theBall->b2ShapePtr)->SetActive(true);
         ballLaunched = false;
     }
-    
-    // Check if it is time yet to drop the brick, and if so call SetAwake()
-//    totalElapsedTime += elapsedTime;
-//    if ((totalElapsedTime > BRICK_WAIT) && theBrick && theBrick->b2ShapePtr) {
-//        ((b2Body *)theBrick->b2ShapePtr)->SetAwake(true);
-//    }
-    
-    // Use these lines for debugging the brick and ball positions
-    //    if (theBrick)
-    //        printf("Brick: %4.2f %4.2f\t",
-    //               ((b2Body *)theBrick->b2ShapePtr)->GetPosition().x,
-    //               ((b2Body *)theBrick->b2ShapePtr)->GetPosition().y);
-    //    if (theBall &&  theBall->b2ShapePtr)
-    //        printf("Ball: %4.2f %4.2f",
-    //               ((b2Body *)theBall->b2ShapePtr)->GetPosition().x,
-    //               ((b2Body *)theBall->b2ShapePtr)->GetPosition().y);
-    //    printf("\n");
-    
-    
-    
+      
+
     // If the last collision test was positive, stop the ball and destroy the brick
         if (ballHitBrick)
         {
             struct PhysicsObject *theBrick = physicsObjects[lastBrickHit];
-    
-            // Stop the ball and make sure it is not affected by forces
-//            ((b2Body *)theBall->b2ShapePtr)->SetLinearVelocity(b2Vec2(0, 0));
-//            ((b2Body *)theBall->b2ShapePtr)->SetAngularVelocity(0);
-//            ((b2Body *)theBall->b2ShapePtr)->SetAwake(false);
-//            ((b2Body *)theBall->b2ShapePtr)->SetActive(false);
     
             // Destroy the brick from Box2D and related objects in this class
             world->DestroyBody(((b2Body *)theBrick->b2ShapePtr));
@@ -339,17 +313,15 @@ public:
             printf("%s\n", lastBrickHit);
             ballHitBrick = false;   // until a reset and re-launch
                 
-
-
         }
 
-            if (ballHitBoundry) {
-                // Ball hit boundry
-                printf("ballHitBoundry detected from CBox2D");
-                [self Reset];   // Resets the ball
-                self.score--;
-                ballHitBoundry = false;
-            }
+        if (ballHitBoundry) {
+            // Ball hit boundry
+            printf("ballHitBoundry detected from CBox2D");
+            [self Reset];   // Resets the ball
+            self.score--;
+            ballHitBoundry = false;
+        }
     
     if (world)
     {
@@ -433,7 +405,7 @@ public:
             break;
             
         case PaddleType:
-            dynamicBox.SetAsBox(PADDLE_WIDTH/4, PADDLE_HEIGHT/3);
+            dynamicBox.SetAsBox(BRICK_WIDTH+5, BRICK_HEIGHT);
             fixtureDef.shape = &dynamicBox;
             fixtureDef.density = 1.0f;
             fixtureDef.friction = 0.3f;
@@ -507,7 +479,7 @@ public:
 
 -(void)movePaddle:(double)offset
 {
-    paddlePosition += offset + 5;
+    paddlePosition += offset;
     printf("%f",paddlePosition);
 }
 

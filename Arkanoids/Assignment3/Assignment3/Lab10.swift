@@ -91,7 +91,7 @@ class Box2DDemo: SCNScene {
     
     func addPaddle() {
         
-        let thePaddle = SCNNode(geometry: SCNBox(width: CGFloat(PADDLE_WIDTH), height: CGFloat(PADDLE_HEIGHT), length: 1, chamferRadius: 0))
+        let thePaddle = SCNNode(geometry: SCNBox(width: CGFloat(BRICK_WIDTH + 5), height: CGFloat(BRICK_HEIGHT/2), length: 1, chamferRadius: 0))
         thePaddle.name = "Paddle"
         thePaddle.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
         thePaddle.position = SCNVector3(Int(PADDLE_POS_X), Int(PADDLE_POS_Y), 0)
@@ -162,6 +162,12 @@ class Box2DDemo: SCNScene {
         // Get ball position and update ball node
         let ballPos = UnsafePointer(box2D.getObject("Ball"))
         let theBall = rootNode.childNode(withName: "Ball", recursively: true)
+        let thePaddle = rootNode.childNode(withName: "Paddle", recursively: true)
+        let paddlePosition = UnsafePointer(box2D.getObject("Paddle"))
+
+
+
+        thePaddle?.position.x = (paddlePosition?.pointee.loc.x)!
         theBall?.position.x = (ballPos?.pointee.loc.x)!
         theBall?.position.y = (ballPos?.pointee.loc.y)!
         //        print("Ball pos: \(String(describing: theBall?.position.x)) \(String(describing: theBall?.position.y))")
@@ -247,7 +253,6 @@ class Box2DDemo: SCNScene {
         
         let offsetX = Double(offset.width) // Convert CGFloat to Double
         
-        let thePaddle = rootNode.childNode(withName: "Paddle", recursively: true)
         box2D.movePaddle(Double(offset.width) * offsetMultiplier)
     }
     

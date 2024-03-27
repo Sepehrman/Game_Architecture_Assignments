@@ -11,7 +11,8 @@
 #include <stdio.h>
 #include <map>
 #include <string>
-
+#include <random>
+#include <vector>
 
 // Some Box2D engine paremeters
 const float MAX_TIMESTEP = 1.0f/60.0f;
@@ -311,9 +312,20 @@ public:
     //  and if so, use ApplyLinearImpulse() and SetActive(true)
     if (ballLaunched)
     {
+        
+        std::vector<int> values = {-700, -300, 300, 700};
+        
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distr(0, values.size() - 1);
+
+        // Randomly select a value from the list
+        int randomIndex = distr(gen);
+        int randomValue = values[randomIndex];
+        
         ((b2Body *)theBall->b2ShapePtr)->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
 
-        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(300, BALL_VELOCITY),
+        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(randomValue, BALL_VELOCITY),
                                                             ((b2Body *)theBall->b2ShapePtr)->GetPosition(),
                                                             true);
         ((b2Body *)theBall->b2ShapePtr)->SetActive(true);

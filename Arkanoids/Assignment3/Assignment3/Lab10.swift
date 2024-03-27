@@ -90,7 +90,7 @@ class Box2DDemo: SCNScene {
     
     func addPaddle() {
         
-        let thePaddle = SCNNode(geometry: SCNBox(width: CGFloat(BRICK_WIDTH + 5), height: CGFloat(BRICK_HEIGHT/2), length: 1, chamferRadius: 0))
+        let thePaddle = SCNNode(geometry: SCNBox(width: CGFloat(PADDLE_WIDTH), height: CGFloat(PADDLE_HEIGHT), length: 1, chamferRadius: 0))
         thePaddle.name = "Paddle"
         thePaddle.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
         thePaddle.position = SCNVector3(Int(PADDLE_POS_X), Int(PADDLE_POS_Y), 0)

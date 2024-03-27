@@ -23,7 +23,7 @@
 // #define BRICK_POS_Y         0
 // #define BRICK_WIDTH         20.0f
 #define BRICK_HEIGHT        5.0f
-#define PADDLE_HEIGHT        2.0f
+#define PADDLE_HEIGHT        3.0f
 #define BRICK_WAIT            1.0f
 #define BALL_POS_X            0
 #define BALL_POS_Y            4

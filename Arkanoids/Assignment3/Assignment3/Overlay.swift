@@ -26,12 +26,12 @@ class OverlayScene: SKScene {
         score.position = CGPoint(x: size.width - 80, y: size.height - 210)
         
         remainingBricks = SKLabelNode(text: "Remaining\nBricks: 20")
-        remainingBricks.numberOfLines = 2
+//        remainingBricks.numberOfLines = 2
         remainingBricks.name = "remainingBricks"
         remainingBricks.fontColor = .white
         remainingBricks.fontSize = 24
         remainingBricks.fontName = "Robota"
-        remainingBricks.position = CGPoint(x: 90, y: size.height - 240)
+        remainingBricks.position = CGPoint(x: 130, y: size.height - 210)
         
         super.init(size: size)
         

@@ -274,7 +274,9 @@ public:
         
         // Initializ score
         self.score = 0;
-        self.remainingBricks = 0;
+//        self.remainingBricks = 0;
+        self.remainingBricks = ((BRICK_ROW_ITER_END - BRICK_ROW_ITER_START) / BRICK_ROW_ITER_STEP) *
+        ((BRICK_COL_ITER_END - BRICK_COL_ITER_START) / BRICK_COL_ITER_STEP);
         
     }
     
@@ -318,7 +320,7 @@ public:
     }
       
 
-    // If the last collision test was positive, stop the ball and destroy the brick
+    // If the last collision test was positive, destroy the brick
         if (ballHitBrick)
         {
             struct PhysicsObject *theBrick = physicsObjects[lastBrickHit];
@@ -330,13 +332,16 @@ public:
             physicsObjects.erase(lastBrickHit);
             printf("%s\n", lastBrickHit);
             ballHitBrick = false;   // until a reset and re-launch
+            
+            
+            self.score++;
+            self.remainingBricks--;
                 
         }
 
         if (ballHitBoundry) {
             // Ball hit boundry
             [self Reset];   // Resets the ball
-            self.score--;
             ballHitBoundry = false;
         }
     
@@ -362,6 +367,12 @@ public:
             b.second->loc.x = ((b2Body *)b.second->b2ShapePtr)->GetPosition().x;
             b.second->loc.y = ((b2Body *)b.second->b2ShapePtr)->GetPosition().y;
         }
+    }
+    
+    if (self.remainingBricks == 0) {
+        [self Reset];   // Resets the ball
+//        self.remainingBricks = ((BRICK_ROW_ITER_END - BRICK_ROW_ITER_START) / BRICK_ROW_ITER_STEP) *
+//        ((BRICK_COL_ITER_END - BRICK_COL_ITER_START) / BRICK_COL_ITER_STEP);
     }
     
 }
@@ -578,7 +589,9 @@ public:
       ballHitBrick = false;
       ballLaunched = false;
       ballHitBoundry = false;
-
+    self.score = 0;
+    self.remainingBricks = ((BRICK_ROW_ITER_END - BRICK_ROW_ITER_START) / BRICK_ROW_ITER_STEP) *
+    ((BRICK_COL_ITER_END - BRICK_COL_ITER_START) / BRICK_COL_ITER_STEP);
 }
 
 @end

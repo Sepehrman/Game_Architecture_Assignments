@@ -62,9 +62,6 @@
 		95B4C65E2B9E7345004953AD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4C65D2B9E7345004953AD /* ContentView.swift */; };
 		95B4C6602B9E7345004953AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95B4C65F2B9E7345004953AD /* Assets.xcassets */; };
 		95B4C6632B9E7345004953AD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95B4C6622B9E7345004953AD /* Preview Assets.xcassets */; };
-		95B4C66D2B9E7346004953AD /* Assignment3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4C66C2B9E7346004953AD /* Assignment3Tests.swift */; };
-		95B4C6772B9E7346004953AD /* Assignment3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4C6762B9E7346004953AD /* Assignment3UITests.swift */; };
-		95B4C6792B9E7346004953AD /* Assignment3UITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95B4C6782B9E7346004953AD /* Assignment3UITestsLaunchTests.swift */; };
 		A5E6CA1B2BA3B5ED0084CD46 /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E6CA1A2BA3B5ED0084CD46 /* Overlay.swift */; };
 /* End PBXBuildFile section */
 
@@ -192,10 +189,7 @@
 		95B4C65F2B9E7345004953AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		95B4C6622B9E7345004953AD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		95B4C6682B9E7346004953AD /* Assignment3Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Assignment3Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		95B4C66C2B9E7346004953AD /* Assignment3Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment3Tests.swift; sourceTree = "<group>"; };
 		95B4C6722B9E7346004953AD /* Assignment3UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Assignment3UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		95B4C6762B9E7346004953AD /* Assignment3UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment3UITests.swift; sourceTree = "<group>"; };
-		95B4C6782B9E7346004953AD /* Assignment3UITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assignment3UITestsLaunchTests.swift; sourceTree = "<group>"; };
 		A5E6CA1A2BA3B5ED0084CD46 /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -384,8 +378,6 @@
 			isa = PBXGroup;
 			children = (
 				95B4C65A2B9E7345004953AD /* Assignment3 */,
-				95B4C66B2B9E7346004953AD /* Assignment3Tests */,
-				95B4C6752B9E7346004953AD /* Assignment3UITests */,
 				95B4C6592B9E7345004953AD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -426,23 +418,6 @@
 				95B4C6622B9E7345004953AD /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		95B4C66B2B9E7346004953AD /* Assignment3Tests */ = {
-			isa = PBXGroup;
-			children = (
-				95B4C66C2B9E7346004953AD /* Assignment3Tests.swift */,
-			);
-			path = Assignment3Tests;
-			sourceTree = "<group>";
-		};
-		95B4C6752B9E7346004953AD /* Assignment3UITests */ = {
-			isa = PBXGroup;
-			children = (
-				95B4C6762B9E7346004953AD /* Assignment3UITests.swift */,
-				95B4C6782B9E7346004953AD /* Assignment3UITestsLaunchTests.swift */,
-			);
-			path = Assignment3UITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -637,7 +612,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				95B4C66D2B9E7346004953AD /* Assignment3Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,8 +619,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				95B4C6772B9E7346004953AD /* Assignment3UITests.swift in Sources */,
-				95B4C6792B9E7346004953AD /* Assignment3UITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -53,7 +53,27 @@ public:
         
     };
     
-    void EndContact(b2Contact* contact) {};
+    void EndContact(b2Contact* contact) {
+        
+        b2Body* bodyA = contact->GetFixtureA()->GetBody();
+        b2Body* bodyB = contact->GetFixtureB()->GetBody(); // Get the other body involved in the contact
+
+        struct PhysicsObject *objDataA = (struct PhysicsObject *)(bodyA->GetUserData());
+        struct PhysicsObject *objDataB = (struct PhysicsObject *)(bodyB->GetUserData());
+        
+        CBox2D *parentObjA = (__bridge CBox2D *)(objDataA->box2DObj);
+        CBox2D *parentObjB = (__bridge CBox2D *)(objDataB->box2DObj);
+
+        
+        if ((objDataB)->objType == PaddleType) {
+           [parentObjB LaunchBall];
+           printf("launched ball a\n");
+       } else if ((objDataA)->objType == PaddleType) {
+           [parentObjA LaunchBall];
+           printf("launched ball b\n");
+       }
+        
+    };
     
     void PreSolve(b2Contact* contact, const b2Manifold* oldManifold)
     {
@@ -168,15 +188,6 @@ public:
         struct PhysicsObject *newObj;
         char *objName;
         
-//        // Set up the brick and ball objects for Box2D
-//        newObj = new struct PhysicsObject;
-//        newObj->loc.x = BRICK_POS_X;
-//        newObj->loc.y = BRICK_POS_Y;
-//        newObj->objType = ObjTypeBox;
-//        objName = strdup("Brick");
-//        [self AddObject:objName newObject:newObj];
-        
-        
         for (int row = BRICK_ROW_ITER_START; row < BRICK_ROW_ITER_END; row += BRICK_ROW_ITER_STEP) {
             for (int col = BRICK_COL_ITER_START; col < BRICK_COL_ITER_END; col += BRICK_COL_ITER_STEP) {
                 struct PhysicsObject *newObj = new struct PhysicsObject;
@@ -273,7 +284,7 @@ public:
     struct PhysicsObject *theBall = physicsObjects["Ball"];
     struct PhysicsObject *thePaddle = physicsObjects["Paddle"];
     ((b2Body*)thePaddle->b2ShapePtr)->SetTransform(b2Vec2(paddlePosition, 0), 0);
-
+    
     
     // Check here if we need to launch the ball
     //  and if so, use ApplyLinearImpulse() and SetActive(true)
@@ -306,7 +317,6 @@ public:
 
         if (ballHitBoundry) {
             // Ball hit boundry
-            printf("ballHitBoundry detected from CBox2D");
             [self Reset];   // Resets the ball
             self.score--;
             ballHitBoundry = false;
@@ -342,16 +352,15 @@ public:
 {
     // Set some flag here for processing later...
     lastBrickHit = brickHit;
-    printf("ball hit brick");
     ballHitBrick = true;
 }
 
 -(void)RegisterBoundryHit
 {
     // Set some flag here for processing later...
-    printf("RegisterBoundryHit");
     ballHitBoundry = true;
 }
+
 
 -(void)LaunchBall
 {
@@ -374,6 +383,7 @@ public:
     newObj->b2ShapePtr = (void *)theObject;
     newObj->box2DObj = (__bridge void *)self;
     
+    
     // Set the user data to be this object and keep it asleep initially
     theObject->SetUserData(newObj);
     theObject->SetAwake(false);
@@ -389,16 +399,16 @@ public:
             dynamicBox.SetAsBox(BRICK_WIDTH/2, BRICK_HEIGHT/2);
             fixtureDef.shape = &dynamicBox;
             fixtureDef.density = 1.0f;
-            fixtureDef.friction = 0.3f;
+            fixtureDef.friction = 0.0f;
             fixtureDef.restitution = 1.0f;
             
             break;
             
         case PaddleType:
-            dynamicBox.SetAsBox(PADDLE_WIDTH, PADDLE_HEIGHT);
+            dynamicBox.SetAsBox(PADDLE_WIDTH/2, PADDLE_HEIGHT/2);
             fixtureDef.shape = &dynamicBox;
             fixtureDef.density = 1.0f;
-            fixtureDef.friction = 0.3f;
+            fixtureDef.friction = 0.0f;
             fixtureDef.restitution = 1.0f;
             
             break;
@@ -408,11 +418,13 @@ public:
             circle.m_radius = BALL_RADIUS;
             fixtureDef.shape = &circle;
             fixtureDef.density = 1.0f;
-            fixtureDef.friction = 0.3f;
+            fixtureDef.friction = 0.0f;
             fixtureDef.restitution = 1.0f;
             fixtureDef.filter.categoryBits = BALL;  // BitMask to identify ball when hitting boundry
 //            fixtureDef.filter.maskBits = BOUNDRY;  // boundry will only collide with a BALL
             theObject->SetGravityScale(0.0f);
+            theObject->SetAngularDamping(0.0f);
+            theObject->SetLinearDamping(0.0f);
             
             break;
             
@@ -484,9 +496,6 @@ public:
             paddlePosition = lowerLimit;
         }
     }
-
-    // Print the updated paddle position
-    printf("%f\n", paddlePosition);
 
 }
 

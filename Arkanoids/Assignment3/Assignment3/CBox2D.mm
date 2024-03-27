@@ -274,10 +274,11 @@ public:
         
         // Initializ score
         self.score = 0;
+        self.balls = 3;
 //        self.remainingBricks = 0;
-        self.remainingBricks = ((BRICK_ROW_ITER_END - BRICK_ROW_ITER_START) / BRICK_ROW_ITER_STEP) *
-        ((BRICK_COL_ITER_END - BRICK_COL_ITER_START) / BRICK_COL_ITER_STEP);
-        
+//        self.remainingBricks = ((BRICK_ROW_ITER_END - BRICK_ROW_ITER_START) / BRICK_ROW_ITER_STEP) *
+//        ((BRICK_COL_ITER_END - BRICK_COL_ITER_START) / BRICK_COL_ITER_STEP);
+//        
     }
     
     return self;
@@ -335,13 +336,20 @@ public:
             
             
             self.score++;
-            self.remainingBricks--;
                 
         }
 
         if (ballHitBoundry) {
             // Ball hit boundry
-            [self Reset];   // Resets the ball
+            if (self.balls > 0) {
+                self.balls--;
+                printf("Soft Reset");
+                [self SoftReset];   // Resets the ball
+                ballLaunched = true;
+            } else {
+                printf("Hard Reset");
+                [self Reset];   // Resets the ball
+            }
             ballHitBoundry = false;
         }
     
@@ -369,11 +377,12 @@ public:
         }
     }
     
-    if (self.remainingBricks == 0) {
-        [self Reset];   // Resets the ball
-//        self.remainingBricks = ((BRICK_ROW_ITER_END - BRICK_ROW_ITER_START) / BRICK_ROW_ITER_STEP) *
-//        ((BRICK_COL_ITER_END - BRICK_COL_ITER_START) / BRICK_COL_ITER_STEP);
-    }
+//    if (self.balls == 0) {
+//        [self Reset];   // Resets the ball
+//        self.balls = 3;
+////        self.remainingBricks = ((BRICK_ROW_ITER_END - BRICK_ROW_ITER_START) / BRICK_ROW_ITER_STEP) *
+////        ((BRICK_COL_ITER_END - BRICK_COL_ITER_START) / BRICK_COL_ITER_STEP);
+//    }
     
 }
 
@@ -590,8 +599,39 @@ public:
       ballLaunched = false;
       ballHitBoundry = false;
     self.score = 0;
-    self.remainingBricks = ((BRICK_ROW_ITER_END - BRICK_ROW_ITER_START) / BRICK_ROW_ITER_STEP) *
-    ((BRICK_COL_ITER_END - BRICK_COL_ITER_START) / BRICK_COL_ITER_STEP);
+    self.balls = 3;
+}
+
+-(void)SoftReset
+{
+   
+    
+    struct PhysicsObject *thePaddle = physicsObjects["Paddle"];
+    thePaddle->loc.x = PADDLE_POS_X;
+    thePaddle->loc.y = PADDLE_POS_Y;
+    paddlePosition = PADDLE_POS_X;
+    ((b2Body*)thePaddle->b2ShapePtr)->SetTransform(b2Vec2(PADDLE_POS_X, PADDLE_POS_Y), 0);
+    ((b2Body*)thePaddle->b2ShapePtr)->SetLinearVelocity(b2Vec2(0, 0));
+    ((b2Body*)thePaddle->b2ShapePtr)->SetAngularVelocity(0);
+    ((b2Body*)thePaddle->b2ShapePtr)->SetAwake(false);
+    ((b2Body*)thePaddle->b2ShapePtr)->SetActive(true);
+    
+    //Look up the ball object and re-initialize the position, etc.
+    struct PhysicsObject *theBall = physicsObjects["Ball"];
+    theBall->loc.x = BALL_POS_X;
+    theBall->loc.y = BALL_POS_Y;
+    ((b2Body*)theBall->b2ShapePtr)->SetTransform(b2Vec2(BALL_POS_X, BALL_POS_Y), 0);
+    ((b2Body*)theBall->b2ShapePtr)->SetLinearVelocity(b2Vec2(0, 0));
+    ((b2Body*)theBall->b2ShapePtr)->SetAngularVelocity(0);
+    ((b2Body*)theBall->b2ShapePtr)->SetAwake(false);
+    ((b2Body*)theBall->b2ShapePtr)->SetActive(true);
+        
+
+
+      totalElapsedTime = 0;
+      ballHitBrick = false;
+      ballLaunched = false;
+      ballHitBoundry = false;
 }
 
 @end

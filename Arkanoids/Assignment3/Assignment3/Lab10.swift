@@ -218,7 +218,7 @@ class Box2DDemo: SCNScene {
         
         // Updating the UI
         overlayScene?.setScore(newScore: Int(box2D.score))  // Cast int32 to int
-        overlayScene?.setRemainingBricks(newRemainingBricks: Int(box2D.remainingBricks))  // Cast int32 to int
+        overlayScene?.setRemainingBricks(newRemainingBricks: Int(box2D.balls))  // Cast int32 to int
     }
     
     

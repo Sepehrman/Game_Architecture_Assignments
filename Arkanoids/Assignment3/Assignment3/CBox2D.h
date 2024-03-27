@@ -93,6 +93,7 @@ struct PhysicsObject {
 @interface CBox2D : NSObject
 
 @property (nonatomic) int score;
+@property (nonatomic) int balls;
 @property (nonatomic) int remainingBricks;
 
 
@@ -105,7 +106,8 @@ struct PhysicsObject {
 -(void) RegisterBoundryHit;                                                        // Register when the ball hits reset boundry
 -(void) AddObject:(char *)name newObject:(struct PhysicsObject *)newObj;    // Add a new physics object
 -(struct PhysicsObject *) GetObject:(const char *)name;                     // Get a physics object by name
--(void) Reset;                                                              // Reset Box2D
+-(void) Reset;                             // Get a physics object by name
+-(void) SoftReset;                                                              // Reset Box2D
 -(void) movePaddle:(double)offset;
 
 @end

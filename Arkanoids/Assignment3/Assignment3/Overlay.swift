@@ -10,7 +10,7 @@ import SwiftUI
 
 class OverlayScene: SKScene {
     var score: SKLabelNode
-    var remainingBricks: SKLabelNode
+    var balls: SKLabelNode
 //    let map: SKShapeNode
     
     override init(size: CGSize) {
@@ -25,19 +25,19 @@ class OverlayScene: SKScene {
         score.fontName = "Robota"
         score.position = CGPoint(x: size.width - 80, y: size.height - 210)
         
-        remainingBricks = SKLabelNode(text: "Remaining\nBricks: 20")
+        balls = SKLabelNode(text: "Balls Left: 3")
 //        remainingBricks.numberOfLines = 2
-        remainingBricks.name = "remainingBricks"
-        remainingBricks.fontColor = .white
-        remainingBricks.fontSize = 24
-        remainingBricks.fontName = "Robota"
-        remainingBricks.position = CGPoint(x: 130, y: size.height - 210)
+        balls.name = "balls"
+        balls.fontColor = .white
+        balls.fontSize = 24
+        balls.fontName = "Robota"
+        balls.position = CGPoint(x: 130, y: size.height - 210)
         
         super.init(size: size)
         
         self.backgroundColor = .clear
         self.addChild(score)
-        self.addChild(remainingBricks)
+        self.addChild(balls)
         scene!.scaleMode = .aspectFill
         
         print("MapOverlayScene initialized")
@@ -55,7 +55,7 @@ class OverlayScene: SKScene {
     
     func setRemainingBricks(newRemainingBricks: Int) {
 //        print(newRemainingBricks)
-        remainingBricks.text = "Remaining Bricks: " + String(newRemainingBricks)
+        balls.text = "Balls Left: " + String(newRemainingBricks)
     }
 
     

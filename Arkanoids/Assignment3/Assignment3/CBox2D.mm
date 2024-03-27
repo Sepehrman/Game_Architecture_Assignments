@@ -533,15 +533,28 @@ public:
 
             }
         }
+    
+    struct PhysicsObject *thePaddle = physicsObjects["Paddle"];
+    thePaddle->loc.x = PADDLE_POS_X;
+    thePaddle->loc.y = PADDLE_POS_Y;
+    paddlePosition = PADDLE_POS_X;
+    ((b2Body*)thePaddle->b2ShapePtr)->SetTransform(b2Vec2(PADDLE_POS_X, PADDLE_POS_Y), 0);
+    ((b2Body*)thePaddle->b2ShapePtr)->SetLinearVelocity(b2Vec2(0, 0));
+    ((b2Body*)thePaddle->b2ShapePtr)->SetAngularVelocity(0);
+    ((b2Body*)thePaddle->b2ShapePtr)->SetAwake(false);
+    ((b2Body*)thePaddle->b2ShapePtr)->SetActive(true);
+    
     //Look up the ball object and re-initialize the position, etc.
-      struct PhysicsObject *theBall = physicsObjects["Ball"];
-      theBall->loc.x = BALL_POS_X;
-      theBall->loc.y = BALL_POS_Y;
-      ((b2Body*)theBall->b2ShapePtr)->SetTransform(b2Vec2(BALL_POS_X, BALL_POS_Y), 0);
-      ((b2Body*)theBall->b2ShapePtr)->SetLinearVelocity(b2Vec2(0, 0));
-      ((b2Body*)theBall->b2ShapePtr)->SetAngularVelocity(0);
-      ((b2Body*)theBall->b2ShapePtr)->SetAwake(false);
-      ((b2Body*)theBall->b2ShapePtr)->SetActive(true);
+    struct PhysicsObject *theBall = physicsObjects["Ball"];
+    theBall->loc.x = BALL_POS_X;
+    theBall->loc.y = BALL_POS_Y;
+    ((b2Body*)theBall->b2ShapePtr)->SetTransform(b2Vec2(BALL_POS_X, BALL_POS_Y), 0);
+    ((b2Body*)theBall->b2ShapePtr)->SetLinearVelocity(b2Vec2(0, 0));
+    ((b2Body*)theBall->b2ShapePtr)->SetAngularVelocity(0);
+    ((b2Body*)theBall->b2ShapePtr)->SetAwake(false);
+    ((b2Body*)theBall->b2ShapePtr)->SetActive(true);
+        
+
 
       totalElapsedTime = 0;
       ballHitBrick = false;

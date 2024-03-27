@@ -19,6 +19,7 @@ class Box2DDemo: SCNScene {
     var lastTime = CFTimeInterval(floatLiteral: 0)  // Used to calculate elapsed time on each update
     
     let offsetMultiplier = 0.006
+    var isStart = true
     
     private var box2D: CBox2D!                      // Points to Objective-C++ wrapper for C++ Box2D library
     
@@ -224,8 +225,10 @@ class Box2DDemo: SCNScene {
     // Function to be called by double-tap gesture: launch the ball
     @MainActor
     func handleDoubleTap() {
-        print("Box2DDemo:handleDoubleTap")
-        box2D.launchBall()
+        if (isStart) {
+            box2D.launchBall()
+            isStart = false
+        }
     }
     
     
@@ -245,13 +248,16 @@ class Box2DDemo: SCNScene {
             }
         }
         
+        isStart = true
+        
     }
     
     @MainActor
     func movePaddle(offset: CGSize) {
         
-        
-        box2D.movePaddle(Double(offset.width) * offsetMultiplier)
+        if (!isStart) {
+            box2D.movePaddle(Double(offset.width) * offsetMultiplier)
+        }
     }
     
 }

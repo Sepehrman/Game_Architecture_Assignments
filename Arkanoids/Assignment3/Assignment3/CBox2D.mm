@@ -55,23 +55,23 @@ public:
     
     void EndContact(b2Contact* contact) {
         
-        b2Body* bodyA = contact->GetFixtureA()->GetBody();
-        b2Body* bodyB = contact->GetFixtureB()->GetBody(); // Get the other body involved in the contact
-
-        struct PhysicsObject *objDataA = (struct PhysicsObject *)(bodyA->GetUserData());
-        struct PhysicsObject *objDataB = (struct PhysicsObject *)(bodyB->GetUserData());
-        
-        CBox2D *parentObjA = (__bridge CBox2D *)(objDataA->box2DObj);
-        CBox2D *parentObjB = (__bridge CBox2D *)(objDataB->box2DObj);
-
-        
-        if ((objDataB)->objType == PaddleType) {
-           [parentObjB LaunchBall];
-           printf("launched ball a\n");
-       } else if ((objDataA)->objType == PaddleType) {
-           [parentObjA LaunchBall];
-           printf("launched ball b\n");
-       }
+//        b2Body* bodyA = contact->GetFixtureA()->GetBody();
+//        b2Body* bodyB = contact->GetFixtureB()->GetBody(); // Get the other body involved in the contact
+//
+//        struct PhysicsObject *objDataA = (struct PhysicsObject *)(bodyA->GetUserData());
+//        struct PhysicsObject *objDataB = (struct PhysicsObject *)(bodyB->GetUserData());
+//        
+//        CBox2D *parentObjA = (__bridge CBox2D *)(objDataA->box2DObj);
+//        CBox2D *parentObjB = (__bridge CBox2D *)(objDataB->box2DObj);
+//
+//        
+//        if ((objDataB)->objType == PaddleType) {
+//           [parentObjB LaunchBall];
+//           printf("launched ball a\n");
+//       } else if ((objDataA)->objType == PaddleType) {
+//           [parentObjA LaunchBall];
+//           printf("launched ball b\n");
+//       }
         
     };
     
@@ -110,6 +110,24 @@ public:
             }
 
         }
+        
+        b2Body* bodyA = contact->GetFixtureA()->GetBody();
+        b2Body* bodyB = contact->GetFixtureB()->GetBody(); // Get the other body involved in the contact
+
+        struct PhysicsObject *objDataA = (struct PhysicsObject *)(bodyA->GetUserData());
+        struct PhysicsObject *objDataB = (struct PhysicsObject *)(bodyB->GetUserData());
+        
+        CBox2D *parentObjA = (__bridge CBox2D *)(objDataA->box2DObj);
+        CBox2D *parentObjB = (__bridge CBox2D *)(objDataB->box2DObj);
+
+        
+        if ((objDataB)->objType == PaddleType) {
+           [parentObjB LaunchBall];
+           printf("launched ball a\n");
+       } else if ((objDataA)->objType == PaddleType) {
+           [parentObjA LaunchBall];
+           printf("launched ball b\n");
+       }
     }
 
     
@@ -292,7 +310,7 @@ public:
     {
         ((b2Body *)theBall->b2ShapePtr)->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
 
-        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(700, BALL_VELOCITY),
+        ((b2Body *)theBall->b2ShapePtr)->ApplyLinearImpulse(b2Vec2(300, BALL_VELOCITY),
                                                             ((b2Body *)theBall->b2ShapePtr)->GetPosition(),
                                                             true);
         ((b2Body *)theBall->b2ShapePtr)->SetActive(true);

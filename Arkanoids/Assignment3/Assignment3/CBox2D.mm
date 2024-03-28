@@ -273,9 +273,14 @@ public:
         ballHitBrick = false;
         ballLaunched = false;
         
+        self.canLaunch = true;
+        
         // Initializ score
         self.score = 0;
         self.balls = 3;
+        
+        self.remainingBricks = ((BRICK_ROW_ITER_END - BRICK_ROW_ITER_START) / BRICK_ROW_ITER_STEP) *
+                ((BRICK_COL_ITER_END - BRICK_COL_ITER_START) / BRICK_COL_ITER_STEP);
 //        self.remainingBricks = 0;
 //        self.remainingBricks = ((BRICK_ROW_ITER_END - BRICK_ROW_ITER_START) / BRICK_ROW_ITER_STEP) *
 //        ((BRICK_COL_ITER_END - BRICK_COL_ITER_START) / BRICK_COL_ITER_STEP);
@@ -322,6 +327,11 @@ public:
         // Randomly select a value from the list
         int randomIndex = distr(gen);
         int randomValue = values[randomIndex];
+    
+//        // Assuming GetLinearVelocity returns a b2Vec2
+//        b2Vec2 velocity = ((b2Body *)theBall->b2ShapePtr)->GetLinearVelocity();
+//        float xVelocity = velocity.x;
+//        NSLog(@"X Velocity: %f", xVelocity);
         
         ((b2Body *)theBall->b2ShapePtr)->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
 
@@ -330,6 +340,7 @@ public:
                                                             true);
         ((b2Body *)theBall->b2ShapePtr)->SetActive(true);
         ballLaunched = false;
+        self.canLaunch = false;
     }
       
 
@@ -348,7 +359,7 @@ public:
             
             
             self.score++;
-                
+            self.remainingBricks--;
         }
 
         if (ballHitBoundry) {
@@ -363,6 +374,7 @@ public:
                 [self Reset];   // Resets the ball
             }
             ballHitBoundry = false;
+            self.canLaunch = true;
         }
     
     if (world)
@@ -389,12 +401,13 @@ public:
         }
     }
     
-//    if (self.balls == 0) {
-//        [self Reset];   // Resets the ball
-//        self.balls = 3;
+    
+    if (self.remainingBricks == 0) {
+        [self Reset];   // Resets the ball
+        self.balls = 3;
 ////        self.remainingBricks = ((BRICK_ROW_ITER_END - BRICK_ROW_ITER_START) / BRICK_ROW_ITER_STEP) *
 ////        ((BRICK_COL_ITER_END - BRICK_COL_ITER_START) / BRICK_COL_ITER_STEP);
-//    }
+    }
     
 }
 
@@ -612,6 +625,9 @@ public:
       ballHitBoundry = false;
     self.score = 0;
     self.balls = 3;
+    self.remainingBricks = ((BRICK_ROW_ITER_END - BRICK_ROW_ITER_START) / BRICK_ROW_ITER_STEP) *
+            ((BRICK_COL_ITER_END - BRICK_COL_ITER_START) / BRICK_COL_ITER_STEP);
+    self.canLaunch = true;
 }
 
 -(void)SoftReset

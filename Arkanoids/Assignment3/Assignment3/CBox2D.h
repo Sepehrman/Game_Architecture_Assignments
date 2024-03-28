@@ -95,6 +95,7 @@ struct PhysicsObject {
 @property (nonatomic) int score;
 @property (nonatomic) int balls;
 @property (nonatomic) int remainingBricks;
+@property (nonatomic) bool canLaunch;
 
 
 -(void) HelloWorld; // Basic Hello World! example from Box2D

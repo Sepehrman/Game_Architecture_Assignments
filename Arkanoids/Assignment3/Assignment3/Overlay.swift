@@ -17,9 +17,6 @@ class OverlayScene: SKScene {
 //    let map: SKShapeNode
     
     override init(size: CGSize) {
-        let mapWidth = 200.0
-        let mapHeight = 200.0
-        
 
         score = SKLabelNode(text: "Score: 0")
         score.name = "score"

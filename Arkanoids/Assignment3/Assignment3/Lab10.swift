@@ -203,19 +203,6 @@ class Box2DDemo: SCNScene {
                   }
               }
        
-        
-        // Uncomment the following if wall physics is buggy
-//        // Get wall positions and update wall nodes for troublshooting purposes
-//        let topWallPos = UnsafePointer(box2D.getObject("Wall_Top"))
-//        let topWall = rootNode.childNode(withName: "Wall_Top", recursively: true)
-//        topWall?.position.x = (topWallPos?.pointee.loc.x)!
-//        topWall?.position.y = (topWallPos?.pointee.loc.y)!
-//        
-//        let botWallPos = UnsafePointer(box2D.getObject("Wall_Bot"))
-//        let botWall = rootNode.childNode(withName: "Wall_Bot", recursively: true)
-//        botWall?.position.x = (botWallPos?.pointee.loc.x)!
-//        botWall?.position.y = (botWallPos?.pointee.loc.y)!
-        
         // Updating the UI
         overlayScene?.setScore(newScore: Int(box2D.score))  // Cast int32 to int
         overlayScene?.setRemainingBricks(newRemainingBricks: Int(box2D.balls))  // Cast int32 to int
@@ -225,7 +212,7 @@ class Box2DDemo: SCNScene {
     // Function to be called by double-tap gesture: launch the ball
     @MainActor
     func handleDoubleTap() {
-        print(box2D.canLaunch);
+        overlayScene?.removeStartText()
         if (isStart || box2D.canLaunch) {
             box2D.launchBall()
             isStart = false
@@ -249,9 +236,7 @@ class Box2DDemo: SCNScene {
             }
         }
         
-        isStart = true
-        
-        
+        isStart = true        
     }
     
     @MainActor

@@ -11,6 +11,9 @@ import SwiftUI
 class OverlayScene: SKScene {
     var score: SKLabelNode
     var balls: SKLabelNode
+    var startText: SKLabelNode
+    var blinkAction: SKAction!
+
 //    let map: SKShapeNode
     
     override init(size: CGSize) {
@@ -25,8 +28,16 @@ class OverlayScene: SKScene {
         score.fontName = "Robota"
         score.position = CGPoint(x: size.width - 80, y: size.height - 210)
         
+        
+        startText = SKLabelNode(text: "Double-Tap to Start!")
+        startText.name = "Double-Tap"
+        startText.fontColor = .yellow
+        startText.fontSize = 24
+        startText.fontName = "Robota"
+        startText.position = CGPoint(x: size.width - 200, y: size.height - 550)
+        
+        
         balls = SKLabelNode(text: "Balls Left: 3")
-//        remainingBricks.numberOfLines = 2
         balls.name = "balls"
         balls.fontColor = .white
         balls.fontSize = 24
@@ -38,6 +49,15 @@ class OverlayScene: SKScene {
         self.backgroundColor = .clear
         self.addChild(score)
         self.addChild(balls)
+        self.addChild(startText)
+
+        let fadeInAction = SKAction.fadeIn(withDuration: 2)
+        let fadeOutAction = SKAction.fadeOut(withDuration: 0.5)
+        let blinkSequence = SKAction.sequence([fadeOutAction, fadeInAction])
+        blinkAction = SKAction.repeatForever(blinkSequence)
+        startText.run(blinkAction)
+        
+        
         scene!.scaleMode = .aspectFill
         
         print("MapOverlayScene initialized")
@@ -57,12 +77,25 @@ class OverlayScene: SKScene {
 //        print(newRemainingBricks)
         balls.text = "Balls Left: " + String(newRemainingBricks)
     }
+    
+    func removeStartText() {
+        startText.removeFromParent()
+    }
 
     
     @MainActor
     func resizeOverlay(size: CGSize) {
         //title.position = CGPoint(x: size.width / 2, y: size.height - 96)
         print("Resizing Overlay")
+    }
+    
+    func showStartText() {
+        startText = SKLabelNode(text: "Double-Tap to Start!")
+        startText.name = "Double-Tap"
+        startText.fontColor = .yellow
+        startText.fontSize = 24
+        startText.fontName = "Robota"
+        startText.position = CGPoint(x: size.width - 200, y: size.height - 550)
     }
     
     @MainActor

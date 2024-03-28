@@ -93,6 +93,15 @@ class OverlayScene: SKScene {
         startText.fontSize = 24
         startText.fontName = "Robota"
         startText.position = CGPoint(x: size.width - 200, y: size.height - 550)
+        
+        let fadeInAction = SKAction.fadeIn(withDuration: 2)
+        let fadeOutAction = SKAction.fadeOut(withDuration: 0.5)
+        let blinkSequence = SKAction.sequence([fadeOutAction, fadeInAction])
+        blinkAction = SKAction.repeatForever(blinkSequence)
+        startText.run(blinkAction)
+        
+        self.addChild(startText)
+
     }
     
     @MainActor

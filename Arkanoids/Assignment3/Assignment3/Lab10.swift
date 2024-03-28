@@ -237,6 +237,7 @@ class Box2DDemo: SCNScene {
         }
         
         isStart = true        
+        overlayScene?.showStartText()
     }
     
     @MainActor

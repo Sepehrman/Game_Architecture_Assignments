@@ -57,63 +57,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                NavigationLink {
-                    ZStack {
-                        PinchView { touches in
-//                            print("Pinch: \(touches[0].x), \(touches[0].y) | \(touches[1].x), \(touches[1].y)")
-                            // store the locations in an array we'll use later to draw the circles
-                            // you can do any other processing needed here
-                            pinchCircles[0] = touches[0]
-                            pinchCircles[1] = touches[1]
-                        }
-                        Circle()
-                        .fill(Color.green)
-                        .frame(width: 20, height: 20)
-                        .position(x: pinchCircles[0].x, y: pinchCircles[0].y)
-                        Circle()
-                        .fill(Color.green)
-                        .frame(width: 20, height: 20)
-                        .position(x: pinchCircles[1].x, y: pinchCircles[1].y)
-                    }
-                } label: { Text("Pinch") }
-                NavigationLink {
-                    ZStack {
-                        TwoFigureDragView { touches in
-//                            print("Pinch: \(touches[0].x), \(touches[0].y) | \(touches[1].x), \(touches[1].y)")
-                            // store the locations in an array we'll use later to draw the circles
-                            // you can do any other processing needed here
-                            pinchCircles[0] = touches[0]
-                            pinchCircles[1] = touches[1]
-                        }
-                        // draw the two circles
-                        Circle()
-                        .fill(Color.red)
-                        .frame(width: 20, height: 20)
-                        .position(x: pinchCircles[0].x, y: pinchCircles[0].y)
-                        Circle()
-                        .fill(Color.red)
-                        .frame(width: 20, height: 20)
-                        .position(x: pinchCircles[1].x, y: pinchCircles[1].y)
-                    }
-                } label: { Text("Two Finger Drag") }
-                NavigationLink {
-                    ZStack {
-                        TapView(requiredTouches: 3) { touches, locations, state in
-                            print("Touch: \(String(describing: touches?.count)) fingers \(state)")
-                            self.circleLocations = locations
-                        }
-                        if (circleLocations != nil) {
-                            ForEach(0..<circleLocations!.count, id: \.self) { index in
-                                Circle()
-                                    .fill(Color.blue)
-                                    .frame(width: 20, height: 20)
-                                    .position(circleLocations![index])
-                            }
-                        }
-                    }
-                } label: { Text("Multitap") }
-                NavigationLink {
+                
                     let scene = Box2DDemo()
 //                    scene.overlayScene = overlayScene // Set the overlay scene property
                     ZStack {
@@ -145,11 +89,6 @@ struct ContentView: View {
                             scene.overlayScene = overlayScene // Set the overlay scene property
                         }
                     .background(.black)
-                } label: { Text("Lab 10: Box2D") }
-                    .onSubmit {
-                        print("Submit")
-                    }
-            }.navigationTitle("COMP8051")
         }
     }
 }
